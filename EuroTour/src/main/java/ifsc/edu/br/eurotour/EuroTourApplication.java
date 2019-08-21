@@ -1,4 +1,4 @@
-package eurotour.br.edu.ifsc;
+package ifsc.edu.br.eurotour;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

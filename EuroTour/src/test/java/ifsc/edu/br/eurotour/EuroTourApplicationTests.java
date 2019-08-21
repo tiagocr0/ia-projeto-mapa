@@ -1,4 +1,4 @@
-package eurotour.br.edu.ifsc;
+package ifsc.edu.br.eurotour;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
