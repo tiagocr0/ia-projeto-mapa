@@ -1,11 +1,11 @@
-package ifsc.edu.br.eurotour.algoritmobusca;
+package ifsc.edu.br.eurotour.util;
 
 import java.util.ArrayList;
 
-import ifsc.edu.br.eurotour.grafo.Arco;
-import ifsc.edu.br.eurotour.grafo.Grafo;
-import ifsc.edu.br.eurotour.grafo.Vertice;
-import ifsc.edu.br.eurotour.pilha.Pilha;
+import ifsc.edu.br.eurotour.model.grafo.Arco;
+import ifsc.edu.br.eurotour.model.grafo.Grafo;
+import ifsc.edu.br.eurotour.model.grafo.Vertice;
+import ifsc.edu.br.eurotour.model.pilha.Pilha;
 
 /**
  * Classe que representa uma busca em profundidade

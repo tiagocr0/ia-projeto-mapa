@@ -3,7 +3,7 @@
     Contempla o uso de buscas, árvores geradoras mínimas, caminho mínimo e fluxo máximo.
 */
 
-package ifsc.edu.br.eurotour.grafo;
+package ifsc.edu.br.eurotour.model.grafo;
 
 public class Arco implements Comparable<Arco> {
 

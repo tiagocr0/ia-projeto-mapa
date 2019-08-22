@@ -1,6 +1,6 @@
-package ifsc.edu.br.eurotour.pilha;
+package ifsc.edu.br.eurotour.model.pilha;
 
-import ifsc.edu.br.eurotour.grafo.Vertice;
+import ifsc.edu.br.eurotour.model.grafo.Vertice;
 
 public class Pilha {
 
