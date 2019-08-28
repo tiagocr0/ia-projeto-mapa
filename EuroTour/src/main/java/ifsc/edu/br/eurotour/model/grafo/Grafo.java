@@ -8,10 +8,20 @@ package ifsc.edu.br.eurotour.model.grafo;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Iterator;
+
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
  * Classe para abstrair grafos direcionados. A classe utiliza representação por
@@ -83,6 +93,90 @@ public class Grafo {
 			}
 		}
 	}
+	
+	public void lerArquivoExcel(File arquivo) throws IOException {
+        InputStream excelFileToRead = new FileInputStream(arquivo);
+        XSSFWorkbook wb = new XSSFWorkbook(excelFileToRead);
+
+        XSSFSheet planilha = wb.getSheetAt(0);
+        XSSFRow linha;
+        XSSFCell celula;
+
+        Iterator linhas = planilha.rowIterator();
+
+        while (linhas.hasNext()) {
+            linha = (XSSFRow) linhas.next();
+
+            if (linha.getRowNum() > 1) {
+
+                Iterator celulas = linha.cellIterator();
+                Vertice conecta = null;
+
+                while (celulas.hasNext()) {
+                    celula = (XSSFCell) celulas.next();
+
+                    if (celula.getColumnIndex() == 0) {
+                        adicionarVertice(celula.getStringCellValue());
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+        
+        linhas = planilha.rowIterator();
+
+        while (linhas.hasNext()) {
+            linha = (XSSFRow) linhas.next();
+
+            if (linha.getRowNum() > 1) {
+
+                Iterator celulas = linha.cellIterator();
+                Vertice conecta = null;
+
+                while (celulas.hasNext()) {
+                    celula = (XSSFCell) celulas.next();
+
+                    if (celula.getColumnIndex() == 0) {
+                        conecta = this.pesquisaVertice(celula.getStringCellValue());
+                    } else {
+                        System.out.println("Tipo: " + celula.getCellType() + " " + celula.getCellType().toString());
+                        if (celula.getCellType().toString().equals("NUMERIC")) {
+                            System.out.println("entrou");
+                            double peso = celula.getNumericCellValue();
+                            this.pesquisaVertice(planilha.getRow(1).getCell(celula.getColumnIndex()).getStringCellValue()).adicionarArco(conecta, peso);
+                        }
+                    }
+                }
+            }
+        }
+
+        planilha = wb.getSheetAt(1);
+        linhas = planilha.rowIterator();
+
+        while (linhas.hasNext()) {
+            linha = (XSSFRow) linhas.next();
+
+            if (linha.getRowNum() > 1) {
+
+                Iterator cells = linha.cellIterator();
+                Vertice conecta = null;
+
+                while (cells.hasNext()) {
+                    celula = (XSSFCell) cells.next();
+
+                    if (celula.getColumnIndex() == 0) {
+                        conecta = this.pesquisaVertice(celula.getStringCellValue());
+                    } else {
+                        if (celula.getCellType().equals("NUMERIC")) {
+                            double peso = celula.getNumericCellValue();
+                            //this.pesquisaVertice(sheet.getRow(1).getCell(cell.getColumnIndex()).getStringCellValue()).adicionarArcoEuristica(conecta, peso);
+                        }
+                    }
+                }
+            }
+        }
+    }
 
 	public ArrayList<Arco> obterTodosOsArcos() {
 		ArrayList<Arco> resultado = new ArrayList();
