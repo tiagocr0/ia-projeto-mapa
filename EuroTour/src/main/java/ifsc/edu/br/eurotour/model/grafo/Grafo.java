@@ -94,9 +94,9 @@ public class Grafo {
 		}
 	}
 	
-	public void lerArquivoExcel(File arquivo) throws IOException {
-        InputStream excelFileToRead = new FileInputStream(arquivo);
-        XSSFWorkbook wb = new XSSFWorkbook(excelFileToRead);
+	public void lerArquivoExcel(FileInputStream arquivo) throws IOException {
+        //InputStream excelFileToRead = new FileInputStream(arquivo);
+        XSSFWorkbook wb = new XSSFWorkbook(arquivo);
 
         XSSFSheet planilha = wb.getSheetAt(0);
         XSSFRow linha;
@@ -140,9 +140,7 @@ public class Grafo {
                     if (celula.getColumnIndex() == 0) {
                         conecta = this.pesquisaVertice(celula.getStringCellValue());
                     } else {
-                        System.out.println("Tipo: " + celula.getCellType() + " " + celula.getCellType().toString());
                         if (celula.getCellType().toString().equals("NUMERIC")) {
-                            System.out.println("entrou");
                             double peso = celula.getNumericCellValue();
                             this.pesquisaVertice(planilha.getRow(1).getCell(celula.getColumnIndex()).getStringCellValue()).adicionarArco(conecta, peso);
                         }
@@ -159,11 +157,11 @@ public class Grafo {
 
             if (linha.getRowNum() > 1) {
 
-                Iterator cells = linha.cellIterator();
+                Iterator celulas = linha.cellIterator();
                 Vertice conecta = null;
 
-                while (cells.hasNext()) {
-                    celula = (XSSFCell) cells.next();
+                while (celulas.hasNext()) {
+                    celula = (XSSFCell) celulas.next();
 
                     if (celula.getColumnIndex() == 0) {
                         conecta = this.pesquisaVertice(celula.getStringCellValue());
