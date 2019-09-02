@@ -12,7 +12,6 @@ import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -29,7 +28,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  */
 public class Grafo {
 
-	private final ArrayList<Vertice> vertices = new ArrayList();
+	private final ArrayList<Vertice> vertices = new ArrayList<>();
 
 	public Grafo() {
 
@@ -74,7 +73,7 @@ public class Grafo {
 	 */
 	public void lerArquivo(File arquivo) throws IOException {
 		BufferedReader leitor = new BufferedReader(new FileReader(arquivo));
-		ArrayList<String[]> linhas = new ArrayList();
+		ArrayList<String[]> linhas = new ArrayList<>();
 		String linhaAtual = leitor.readLine();
 		while (linhaAtual != null) {
 			String[] valores = linhaAtual.split("\t");
@@ -92,92 +91,97 @@ public class Grafo {
 				// System.out.println(linha[0] + " com " + termos[0] + " peso " + peso);
 			}
 		}
+		leitor.close();
 	}
-	
+
 	public void lerArquivoExcel(FileInputStream arquivo) throws IOException {
-        //InputStream excelFileToRead = new FileInputStream(arquivo);
-        XSSFWorkbook wb = new XSSFWorkbook(arquivo);
+		// InputStream excelFileToRead = new FileInputStream(arquivo);
+		XSSFWorkbook wb = new XSSFWorkbook(arquivo);
 
-        XSSFSheet planilha = wb.getSheetAt(0);
-        XSSFRow linha;
-        XSSFCell celula;
+		XSSFSheet planilha = wb.getSheetAt(0);
+		XSSFRow linha;
+		XSSFCell celula;
 
-        Iterator linhas = planilha.rowIterator();
+		Iterator<Row> linhas = planilha.rowIterator();
 
-        while (linhas.hasNext()) {
-            linha = (XSSFRow) linhas.next();
+		while (linhas.hasNext()) {
+			linha = (XSSFRow) linhas.next();
 
-            if (linha.getRowNum() > 1) {
+			if (linha.getRowNum() > 1) {
 
-                Iterator celulas = linha.cellIterator();
-                Vertice conecta = null;
+				Iterator<Cell> celulas = linha.cellIterator();
+				Vertice conecta = null;
 
-                while (celulas.hasNext()) {
-                    celula = (XSSFCell) celulas.next();
+				while (celulas.hasNext()) {
+					celula = (XSSFCell) celulas.next();
 
-                    if (celula.getColumnIndex() == 0) {
-                        adicionarVertice(celula.getStringCellValue());
-                    } else {
-                        break;
-                    }
-                }
-            }
-        }
-        
-        linhas = planilha.rowIterator();
+					if (celula.getColumnIndex() == 0) {
+						adicionarVertice(celula.getStringCellValue());
+					} else {
+						break;
+					}
+				}
+			}
+		}
 
-        while (linhas.hasNext()) {
-            linha = (XSSFRow) linhas.next();
+		linhas = planilha.rowIterator();
 
-            if (linha.getRowNum() > 1) {
+		while (linhas.hasNext()) {
+			linha = (XSSFRow) linhas.next();
 
-                Iterator celulas = linha.cellIterator();
-                Vertice conecta = null;
+			if (linha.getRowNum() > 1) {
 
-                while (celulas.hasNext()) {
-                    celula = (XSSFCell) celulas.next();
+				Iterator<Cell> celulas = linha.cellIterator();
+				Vertice conecta = null;
 
-                    if (celula.getColumnIndex() == 0) {
-                        conecta = this.pesquisaVertice(celula.getStringCellValue());
-                    } else {
-                        if (celula.getCellType().toString().equals("NUMERIC")) {
-                            double peso = celula.getNumericCellValue();
-                            this.pesquisaVertice(planilha.getRow(1).getCell(celula.getColumnIndex()).getStringCellValue()).adicionarArco(conecta, peso);
-                        }
-                    }
-                }
-            }
-        }
+				while (celulas.hasNext()) {
+					celula = (XSSFCell) celulas.next();
 
-        planilha = wb.getSheetAt(1);
-        linhas = planilha.rowIterator();
+					if (celula.getColumnIndex() == 0) {
+						conecta = this.pesquisaVertice(celula.getStringCellValue());
+					} else {
+						if (celula.getCellType().toString().equals("NUMERIC")) {
+							double peso = celula.getNumericCellValue();
+							this.pesquisaVertice(
+									planilha.getRow(1).getCell(celula.getColumnIndex()).getStringCellValue())
+									.adicionarArco(conecta, peso);
+						}
+					}
+				}
+			}
+		}
 
-        while (linhas.hasNext()) {
-            linha = (XSSFRow) linhas.next();
+		planilha = wb.getSheetAt(1);
+		linhas = planilha.rowIterator();
 
-            if (linha.getRowNum() > 1) {
+		while (linhas.hasNext()) {
+			linha = (XSSFRow) linhas.next();
 
-                Iterator celulas = linha.cellIterator();
-                Vertice conecta = null;
+			if (linha.getRowNum() > 1) {
 
-                while (celulas.hasNext()) {
-                    celula = (XSSFCell) celulas.next();
+				Iterator<Cell> celulas = linha.cellIterator();
+				Vertice conecta = null;
 
-                    if (celula.getColumnIndex() == 0) {
-                        conecta = this.pesquisaVertice(celula.getStringCellValue());
-                    } else {
-                        if (celula.getCellType().equals("NUMERIC")) {
-                            double peso = celula.getNumericCellValue();
-                            //this.pesquisaVertice(sheet.getRow(1).getCell(cell.getColumnIndex()).getStringCellValue()).adicionarArcoEuristica(conecta, peso);
-                        }
-                    }
-                }
-            }
-        }
-    }
+				while (celulas.hasNext()) {
+					celula = (XSSFCell) celulas.next();
+
+					if (celula.getColumnIndex() == 0) {
+						conecta = this.pesquisaVertice(celula.getStringCellValue());
+					} else {
+						if (celula.getCellType().equals("NUMERIC")) {
+							double peso = celula.getNumericCellValue();
+							// this.pesquisaVertice(sheet.getRow(1).getCell(cell.getColumnIndex()).getStringCellValue()).adicionarArcoEuristica(conecta,
+							// peso);
+						}
+					}
+				}
+			}
+		}
+		wb.close();
+	}
 
 	public ArrayList<Arco> obterTodosOsArcos() {
-		ArrayList<Arco> resultado = new ArrayList();
+		ArrayList<Arco> resultado = new ArrayList<>();
 		for (Vertice vertice : vertices) {
 			resultado.addAll(vertice.obterArcos());
 		}

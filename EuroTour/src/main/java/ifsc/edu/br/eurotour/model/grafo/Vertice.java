@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class Vertice {
 
 	// Lista de arcos que saem do vértice
-	private final ArrayList<Arco> arcos = new ArrayList();
+	private final ArrayList<Arco> arcos = new ArrayList<>();
 
 	// Rótulo do vértice: serve para identificação
 	private final String rotulo;
@@ -42,7 +42,7 @@ public class Vertice {
 	private int nArvore;
 
 	private int limite;
-	
+
 	private int tempoFinal = 0;
 
 	public Vertice(String rotulo) {
@@ -130,13 +130,13 @@ public class Vertice {
 	}
 
 	public String getCaminho() {
-		return caminho + " - " + this.rotulo;
+		return caminho + " , " + this.rotulo;
 	}
 
 	public void setCaminho(String caminho) {
 		this.caminho = caminho;
 	}
-	
+
 	public int getLimite() {
 		return limite;
 	}
@@ -153,7 +153,7 @@ public class Vertice {
 	 * @return the value of caminhoLista
 	 */
 	public ArrayList<Arco> getCaminhoLista() {
-		return new ArrayList(this.caminhoLista);
+		return new ArrayList<>(this.caminhoLista);
 	}
 
 	/**
@@ -163,9 +163,9 @@ public class Vertice {
 	 */
 	public void setCaminhoLista(ArrayList<Arco> caminhoLista) {
 		if (caminhoLista == null) {
-			this.caminhoLista = new ArrayList();
+			this.caminhoLista = new ArrayList<>();
 		} else {
-			this.caminhoLista = new ArrayList(caminhoLista);
+			this.caminhoLista = new ArrayList<>(caminhoLista);
 		}
 	}
 

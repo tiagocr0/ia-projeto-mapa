@@ -1,4 +1,4 @@
-package ifsc.edu.br.eurotour.model.pilha;
+package ifsc.edu.br.eurotour.model.estruturasdados;
 
 import ifsc.edu.br.eurotour.model.grafo.Vertice;
 
