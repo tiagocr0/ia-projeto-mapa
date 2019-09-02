@@ -41,6 +41,8 @@ public class Vertice {
 	// ciclos.
 	private int nArvore;
 
+	private int limite;
+	
 	private int tempoFinal = 0;
 
 	public Vertice(String rotulo) {
@@ -133,6 +135,14 @@ public class Vertice {
 
 	public void setCaminho(String caminho) {
 		this.caminho = caminho;
+	}
+	
+	public int getLimite() {
+		return limite;
+	}
+
+	public void setLimite(int limite) {
+		this.limite = limite;
 	}
 
 	private ArrayList<Arco> caminhoLista;
