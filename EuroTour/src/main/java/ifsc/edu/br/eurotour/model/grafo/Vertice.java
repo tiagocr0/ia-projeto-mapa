@@ -14,6 +14,7 @@ public class Vertice {
 
 	// Lista de arcos que saem do vértice
 	private final ArrayList<Arco> arcos = new ArrayList<>();
+	private final ArrayList<Arco> arcosHeuristica = new ArrayList<>();
 
 	// Rótulo do vértice: serve para identificação
 	private final String rotulo;
@@ -30,6 +31,7 @@ public class Vertice {
 	// temporariamente distâncias nas iterações dos algoritmos. Os métodos
 	// definirDistancia(), zerarDistancia() e obterDistancia() devem ser usados.
 	private double distancia = Double.POSITIVE_INFINITY;
+	private double distanciaHeuristica = Double.POSITIVE_INFINITY;
 
 	// Algoritmos de caminhos podem precisar da informação de qual caminho foi
 	// utilizado para se obter a distância informada. O caminho é uma String
@@ -52,6 +54,10 @@ public class Vertice {
 	public void adicionarArco(Vertice destino, double peso) {
 		this.arcos.add(new Arco(this, destino, peso));
 	}
+	
+	public void adicionarArcoHeuristica(Vertice destino, double peso) {
+        this.arcosHeuristica.add(new Arco(this, destino, peso));
+    }
 
 	public boolean removerConexao(Vertice destino) {
 		for (Arco arcoAtual : arcos) {
@@ -66,6 +72,10 @@ public class Vertice {
 	public ArrayList<Arco> obterArcos() {
 		return this.arcos;
 	}
+    
+    public ArrayList<Arco> obterArcosHeuristica() {
+        return this.arcosHeuristica;
+    }
 
 	@Override
 	public String toString() {
@@ -108,6 +118,10 @@ public class Vertice {
 	public void definirDistancia(double distancia) {
 		this.distancia = distancia;
 	}
+	
+	public void definirDistanciaHeuristica(double distanciaEuristica) {
+        this.distanciaHeuristica = distanciaEuristica;
+    }
 
 	public void definirTempoFinal(int tempoFinal) {
 		this.tempoFinal = tempoFinal;
@@ -120,6 +134,10 @@ public class Vertice {
 	public double obterDistancia() {
 		return this.distancia;
 	}
+	
+	public double obterDistanciaHeuristica() {
+        return this.distanciaHeuristica;
+    }
 
 	public int getnArvore() {
 		return nArvore;
