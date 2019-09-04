@@ -37,7 +37,7 @@ public class Caminho {
         this.distaciaTotal = distaciaTotal;
     } 
     
-    private static Caminho montarCaminhoTela(Grafo aGrafo, Vertice aFinal, Double lDistanciaMinima) {
+    public static Caminho converter(Grafo aGrafo, Vertice aFinal, Double lDistanciaMinima) {
 		String[] lNomes = aFinal.getCaminho().split("/");
 		Caminho lCaminho = new Caminho(lDistanciaMinima);
 		for (int indice = 0; indice < lNomes.length; indice++) {
