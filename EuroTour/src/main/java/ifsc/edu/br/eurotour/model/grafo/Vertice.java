@@ -57,6 +57,10 @@ public class Vertice implements Serializable {
 		this.rotulo = rotulo;
 	}
 
+	public Vertice() {
+		this.rotulo = "";
+	}
+
 	public void adicionarArco(Vertice destino, double peso) {
 		this.arcos.add(new Arco(this, destino, peso));
 	}

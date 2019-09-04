@@ -7,47 +7,54 @@ import ifsc.edu.br.eurotour.model.grafo.Grafo;
 import ifsc.edu.br.eurotour.model.grafo.Vertice;
 
 public class Caminho {
-    
-    private List<DistanciaEntre2Paises> caminho;
-    private Double distaciaTotal;
 
-    public Caminho( Double distaciaTotal) {
-        this.caminho = new ArrayList<>();
-        this.distaciaTotal = distaciaTotal;
-    }
+	private List<DistanciaEntre2Paises> caminho;
+	private Double distanciaTotal;
 
-    public Caminho(List<DistanciaEntre2Paises> caminho, Double distaciaTotal) {
-        this.caminho = caminho;
-        this.distaciaTotal = distaciaTotal;
-    }
-    
-    public List<DistanciaEntre2Paises> getCaminho() {
-        return caminho;
-    }
+	public Caminho(Double distanciaTotal) {
+		this.caminho = new ArrayList<>();
+		this.distanciaTotal = distanciaTotal;
+	}
 
-    public void setCaminho(List<DistanciaEntre2Paises> caminho) {
-        this.caminho = caminho;
-    }
+	public Caminho(List<DistanciaEntre2Paises> caminho, Double distanciaTotal) {
+		this.caminho = caminho;
+		this.distanciaTotal = distanciaTotal;
+	}
 
-    public Double getDistaciaTotal() {
-        return distaciaTotal;
-    }
+	public List<DistanciaEntre2Paises> getCaminho() {
+		return caminho;
+	}
 
-    public void setDistaciaTotal(Double distaciaTotal) {
-        this.distaciaTotal = distaciaTotal;
-    } 
-    
-    public static Caminho converter(Grafo aGrafo, Vertice aFinal, Double lDistanciaMinima) {
+	public void setCaminho(List<DistanciaEntre2Paises> caminho) {
+		this.caminho = caminho;
+	}
+
+	public Double getDistaciaTotal() {
+		return distanciaTotal;
+	}
+
+	public void setDistaciaTotal(Double distaciaTotal) {
+		this.distanciaTotal = distaciaTotal;
+	}
+
+	public static Caminho converter(Grafo aGrafo, Vertice aFinal, Double lDistanciaMinima) {
 		String[] lNomes = aFinal.getCaminho().split("/");
 		Caminho lCaminho = new Caminho(lDistanciaMinima);
 		for (int indice = 0; indice < lNomes.length; indice++) {
 			if ((indice + 1) != lNomes.length) {
 				Pais lOrigem = Pais.convertVerticeParaPais(aGrafo.pesquisaVertice(lNomes[indice].trim()));
-                Vertice lVerticeDestino = aGrafo.pesquisaVertice(lNomes[indice+1].trim());
-                Pais lDestino = Pais.convertVerticeParaPais(lVerticeDestino);
-				lCaminho.getCaminho().add(new DistanciaEntre2Paises(lOrigem, lDestino, lVerticeDestino.obterDistancia()));
+				Vertice lVerticeDestino = aGrafo.pesquisaVertice(lNomes[indice + 1].trim());
+				Pais lDestino = Pais.convertVerticeParaPais(lVerticeDestino);
+				lCaminho.getCaminho()
+						.add(new DistanciaEntre2Paises(lOrigem, lDestino, lVerticeDestino.obterDistancia()));
 			}
 		}
 		return lCaminho;
 	}
+
+	@Override
+	public String toString() {
+		return "Caminho=" + caminho + "\ndistanciaTotal=" + distanciaTotal;
+	}
+
 }
