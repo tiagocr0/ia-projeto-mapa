@@ -9,7 +9,7 @@ import ifsc.edu.br.eurotour.model.grafo.Arco;
 import ifsc.edu.br.eurotour.model.grafo.Caminho;
 import ifsc.edu.br.eurotour.model.grafo.Grafo;
 import ifsc.edu.br.eurotour.model.grafo.Vertice;
-import ifsc.edu.br.eurotour.model.mapeamento.CaminhoParaATela;
+import ifsc.edu.br.eurotour.model.mapeamento.Caminho;
 import ifsc.edu.br.eurotour.model.mapeamento.DistanciaEntre2Paises;
 import ifsc.edu.br.eurotour.model.mapeamento.Pais;
 
@@ -33,7 +33,7 @@ public class BuscaDeCustoUniforme {
 		lVerticesAbertos.add(aInicial);
 		double lMenorDistancia = 0;
 		Caminho lCaminho;
-		CaminhoParaATela lCaminho2;
+		Caminho lCaminho2;
 		while (lVerticesAbertos.size() > 0) {
 			Vertice lVerticeOrigem = lVerticesAbertos.get(MENOR_DISTANCIA);
 			for (Arco lArco : lVerticeOrigem.obterArcos()) {
@@ -54,42 +54,14 @@ public class BuscaDeCustoUniforme {
 			lVerticesExpandidos.add(lVerticeOrigem);
 			ordernar(lVerticesAbertos);
 			if (lVerticeOrigem.equals(aFinal)) {
-				lCaminho = montarCaminho(aGrafo, aFinal, lMenorDistancia);
-				lCaminho2 = montarCaminhoTela(aGrafo, aFinal, lMenorDistancia);
+				lCaminho2 = Caminho.converter(aGrafo, aFinal, lMenorDistancia);
 				return lVerticesExpandidos;
 			}
 		}
 		return lVerticesExpandidos;
 	}
-
-	private static Caminho montarCaminho(Grafo aGrafo, Vertice aFinal, Double lDistanciaMinima) {
-		String[] lNomes = aFinal.getCaminho().split("/");
-		Caminho lCaminho = new Caminho(lDistanciaMinima);
-		for (int indice = 0; indice < lNomes.length; indice++) {
-			if ((indice + 1) != lNomes.length) {
-				Vertice lOrigem = aGrafo.pesquisaVertice(lNomes[indice].trim());
-				Vertice lVerticeDestino = aGrafo.pesquisaVertice(lNomes[indice + 1].trim());
-				lCaminho.getCaminho().add(new Arco(lOrigem, lVerticeDestino, lVerticeDestino.obterDistancia()));
-			}
-		}
-		return lCaminho;
-	}
 	
-	private static CaminhoParaATela montarCaminhoTela(Grafo aGrafo, Vertice aFinal, Double lDistanciaMinima) {
-		String[] lNomes = aFinal.getCaminho().split("/");
-		CaminhoParaATela lCaminho = new CaminhoParaATela(lDistanciaMinima);
-		for (int indice = 0; indice < lNomes.length; indice++) {
-			if ((indice + 1) != lNomes.length) {
-				Pais lOrigem = Pais.convertVerticeParaPais(aGrafo.pesquisaVertice(lNomes[indice].trim()));
-                Vertice lVerticeDestino = aGrafo.pesquisaVertice(lNomes[indice+1].trim());
-                Pais lDestino = Pais.convertVerticeParaPais(lVerticeDestino);
-				lCaminho.getCaminho().add(new DistanciaEntre2Paises(lOrigem, lDestino, lVerticeDestino.obterDistancia()));
-			}
-		}
-		return lCaminho;
-	}
-
-
+	
 	private static void reiniciarGrafo(Grafo aGrafo) {
 		for (Vertice lVertice : aGrafo.obterVertices()) {
 			lVertice.zerarVisitas();
