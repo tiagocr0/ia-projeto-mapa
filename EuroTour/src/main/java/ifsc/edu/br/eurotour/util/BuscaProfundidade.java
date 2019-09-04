@@ -6,6 +6,7 @@ import ifsc.edu.br.eurotour.model.estruturasdados.Pilha;
 import ifsc.edu.br.eurotour.model.grafo.Arco;
 import ifsc.edu.br.eurotour.model.grafo.Grafo;
 import ifsc.edu.br.eurotour.model.grafo.Vertice;
+import ifsc.edu.br.eurotour.model.mapeamento.Caminho;
 
 /**
  * Classe que representa uma busca em profundidade
@@ -23,12 +24,9 @@ public class BuscaProfundidade {
 	 * @param inicial Vertice inicial (raiz) a começar a busca
 	 * @return A lista com os vertices que podem ser alcançados
 	 */
-	public ArrayList<Vertice> buscaProfundidade(Grafo g, Vertice inicial) {
+	public Caminho buscaProfundidade(Grafo g, Vertice inicial, Vertice destino) {
 		// Lista com todos os vertices do grafo
 		ArrayList<Vertice> vertices_grafo = g.obterVertices();
-
-		// Lista que vai listar todos os vertices ja visitados
-		ArrayList<Vertice> lista_visitados = new ArrayList<>();
 
 		// inicializa todos os vertices do grafo com 0 visitas,
 		// 0 distancia, e sem um caminho (vertices anteriores)
@@ -55,38 +53,46 @@ public class BuscaProfundidade {
 			// retira um vértice da pilha
 			pilha.pop();
 
-			// Recebe todos os caminhos possíveis(arcos) do vértice da iteração atual
-			ArrayList<Arco> lista_filhos = atual.obterArcos();
+			// Verifica se o atual é igual ao destino
+			if (atual.equals(destino)) {
+				return Caminho.converter(g, destino, atual.obterDistancia());
+			} else {
 
-			// Para cada arco do vértice atual
-			for (Arco arco : lista_filhos) {
+				// Recebe todos os caminhos possíveis(arcos) do vértice da iteração atual
+				ArrayList<Arco> lista_filhos = atual.obterArcos();
 
-				// Recebe o vértice de destino do arco (filho)
-				Vertice filho = arco.getDestino();
+				// Para cada arco do vértice atual
+				for (Arco arco : lista_filhos) {
 
-				// entra no if se o vértice filho não foi visitado ainda
-				if (filho.obterVisitado() == 0) {
+					// Recebe o vértice de destino do arco (filho)
+					Vertice filho = arco.getDestino();
 
-					// marca que o vértice filho foi visitado
-					filho.visitar();
+					// entra no if se o vértice filho não foi visitado ainda
+					if (filho.obterVisitado() == 0) {
 
-					// reajusta a distância do vértice filho
-					filho.definirDistancia(atual.obterDistancia() + arco.getPeso());
+						// marca que o vértice filho foi visitado
+						filho.visitar();
 
-					// diz que para chegar nesse vértice filho, é a partir de seu anterior (pai)
-					filho.setCaminho(atual.toString());
+						// reajusta a distância do vértice filho
+						filho.definirDistancia(atual.obterDistancia() + arco.getPeso());
 
-					// insere o vértice filho a pilha
-					pilha.push(filho);
+						// diz que para chegar nesse vértice filho, é a partir de seu anterior (pai)
+						filho.setCaminho(atual.getCaminho());
 
-					// adiciona o vértice na lista de visitados
-					lista_visitados.add(filho);
+						// insere o vértice filho a pilha
+						pilha.push(filho);
+
+						// Verifica se o filho é igual ao destino
+						if (filho.equals(destino)) {
+							return Caminho.converter(g, destino, filho.obterDistancia());
+						}
+					}
+
+					// visita o vértice atual (pai)
+					atual.visitar();
 				}
-
-				// visita o vértice atual (pai)
-				atual.visitar();
 			}
 		}
-		return lista_visitados;
+		return Caminho.converter(g, destino, 0d);
 	}
 }
