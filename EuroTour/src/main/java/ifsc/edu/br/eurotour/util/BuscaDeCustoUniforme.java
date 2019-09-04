@@ -6,6 +6,7 @@ import java.util.List;
 import ifsc.edu.br.eurotour.model.grafo.Arco;
 import ifsc.edu.br.eurotour.model.grafo.Grafo;
 import ifsc.edu.br.eurotour.model.grafo.Vertice;
+import ifsc.edu.br.eurotour.model.mapeamento.Caminho;
 
 /**
  * Nesta classe devem ser implementados todos os métodos de grafos de forma
@@ -16,14 +17,13 @@ import ifsc.edu.br.eurotour.model.grafo.Vertice;
  */
 public class BuscaDeCustoUniforme {
 
-	public static List<Vertice> calcular(Grafo aGrafo, Vertice aInicial, Vertice aFinal) {
+	public static Caminho calcular(Grafo aGrafo, Vertice aInicial, Vertice aFinal) {
 		List<Vertice> lVerticesAbertos = new ArrayList<>();
-		List<Vertice> lVerticesExpandidos = new ArrayList<>();
 		reiniciarGrafo(aGrafo);
 		aInicial.definirDistancia(0);
 		lVerticesAbertos.add(aInicial);
 		double lMenorDistancia = 0.0;
-		Vertice lVerticeOrigem;
+		Vertice lVerticeOrigem = new Vertice();
 
 		lVerticesAbertos.addAll(aGrafo.obterVertices());
 		while (lVerticesAbertos.size() > 0) {
@@ -37,7 +37,6 @@ public class BuscaDeCustoUniforme {
 			}
 
 			lVerticeOrigem = lVerticesAbertos.remove(indice);
-			lVerticesExpandidos.add(lVerticeOrigem);
 
 			if (!lVerticeOrigem.equals(aFinal)) {
 				for (Arco lArco : lVerticeOrigem.obterArcos()) {
@@ -49,10 +48,11 @@ public class BuscaDeCustoUniforme {
 					}
 				}
 			} else {
-				return lVerticesExpandidos;
+
+				return Caminho.converter(aGrafo, aFinal, lVerticeOrigem.obterDistancia());
 			}
 		}
-		return lVerticesExpandidos;
+		return Caminho.converter(aGrafo, aFinal, lVerticeOrigem.obterDistancia());
 	}
 
 	private static void reiniciarGrafo(Grafo aGrafo) {
