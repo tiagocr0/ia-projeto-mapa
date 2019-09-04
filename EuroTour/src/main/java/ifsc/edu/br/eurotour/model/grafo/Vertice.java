@@ -10,16 +10,18 @@ import java.util.ArrayList;
  * Classe para abstrair vértices de grafos direcionados IFSC - Lages Prof.
  * Vilson Heck Junior
  */
-public class Vertice {
+public class Vertice implements Serializable {
 
 	// Lista de arcos que saem do vértice
-	private final ArrayList<Arco> arcos = new ArrayList<>();
-	private final ArrayList<Arco> arcosHeuristica = new ArrayList<>();
+	private final ArrayList<Arco> arcos = new ArrayList();
+
+	private final ArrayList<Arco> arcosEuristica = new ArrayList();
 
 	// Rótulo do vértice: serve para identificação
 	private final String rotulo;
 
 //Os quatro próximos atributos são utilizados pelos algoritmos de grafos.
+
 	// Quando o valor de visitado for 0 (zero) significa que o vértice ainda
 	// não foi visitado pelo algoritmo. Em cada nova visita o método deve invocar
 	// o método visitar() para incrementar este valor. O método zerarVisitas()
@@ -31,7 +33,8 @@ public class Vertice {
 	// temporariamente distâncias nas iterações dos algoritmos. Os métodos
 	// definirDistancia(), zerarDistancia() e obterDistancia() devem ser usados.
 	private double distancia = Double.POSITIVE_INFINITY;
-	private double distanciaHeuristica = Double.POSITIVE_INFINITY;
+
+	private double distanciaEuristica = Double.POSITIVE_INFINITY;
 
 	// Algoritmos de caminhos podem precisar da informação de qual caminho foi
 	// utilizado para se obter a distância informada. O caminho é uma String
@@ -43,10 +46,6 @@ public class Vertice {
 	// ciclos.
 	private int nArvore;
 
-	private int limite;
-
-	private int tempoFinal = 0;
-
 	public Vertice(String rotulo) {
 		this.rotulo = rotulo;
 	}
@@ -54,10 +53,6 @@ public class Vertice {
 	public void adicionarArco(Vertice destino, double peso) {
 		this.arcos.add(new Arco(this, destino, peso));
 	}
-	
-	public void adicionarArcoHeuristica(Vertice destino, double peso) {
-        this.arcosHeuristica.add(new Arco(this, destino, peso));
-    }
 
 	public boolean removerConexao(Vertice destino) {
 		for (Arco arcoAtual : arcos) {
@@ -72,10 +67,14 @@ public class Vertice {
 	public ArrayList<Arco> obterArcos() {
 		return this.arcos;
 	}
-    
-    public ArrayList<Arco> obterArcosHeuristica() {
-        return this.arcosHeuristica;
-    }
+
+	public void adicionarArcoEuristica(Vertice destino, double peso) {
+		this.arcosEuristica.add(new Arco(this, destino, peso));
+	}
+
+	public ArrayList<Arco> obterArcosEuristica() {
+		return this.arcosEuristica;
+	}
 
 	@Override
 	public String toString() {
@@ -113,31 +112,24 @@ public class Vertice {
 
 	public void zerarDistancia() {
 		this.distancia = Double.POSITIVE_INFINITY;
+		this.distanciaEuristica = Double.POSITIVE_INFINITY;
 	}
 
 	public void definirDistancia(double distancia) {
 		this.distancia = distancia;
 	}
-	
-	public void definirDistanciaHeuristica(double distanciaEuristica) {
-        this.distanciaHeuristica = distanciaEuristica;
-    }
-
-	public void definirTempoFinal(int tempoFinal) {
-		this.tempoFinal = tempoFinal;
-	}
-
-	public int obterTempoFinal() {
-		return this.tempoFinal;
-	}
 
 	public double obterDistancia() {
 		return this.distancia;
 	}
-	
-	public double obterDistanciaHeuristica() {
-        return this.distanciaHeuristica;
-    }
+
+	public void definirDistanciaEuristica(double distanciaEuristica) {
+		this.distanciaEuristica = distanciaEuristica;
+	}
+
+	public double obterDistanciaEuristica() {
+		return this.distanciaEuristica;
+	}
 
 	public int getnArvore() {
 		return nArvore;
@@ -148,19 +140,15 @@ public class Vertice {
 	}
 
 	public String getCaminho() {
-		return caminho + " , " + this.rotulo;
+		if (caminho == null || caminho.equals("")) {
+			return this.rotulo;
+		}
+		String nome[] = this.rotulo.split(" / ");
+		return caminho + " / " + nome[0].trim();
 	}
 
 	public void setCaminho(String caminho) {
 		this.caminho = caminho;
-	}
-
-	public int getLimite() {
-		return limite;
-	}
-
-	public void setLimite(int limite) {
-		this.limite = limite;
 	}
 
 	private ArrayList<Arco> caminhoLista;
@@ -171,7 +159,7 @@ public class Vertice {
 	 * @return the value of caminhoLista
 	 */
 	public ArrayList<Arco> getCaminhoLista() {
-		return new ArrayList<>(this.caminhoLista);
+		return new ArrayList(this.caminhoLista);
 	}
 
 	/**
@@ -181,9 +169,9 @@ public class Vertice {
 	 */
 	public void setCaminhoLista(ArrayList<Arco> caminhoLista) {
 		if (caminhoLista == null) {
-			this.caminhoLista = new ArrayList<>();
+			this.caminhoLista = new ArrayList();
 		} else {
-			this.caminhoLista = new ArrayList<>(caminhoLista);
+			this.caminhoLista = new ArrayList(caminhoLista);
 		}
 	}
 
