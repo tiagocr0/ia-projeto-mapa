@@ -11,6 +11,7 @@ import ifsc.edu.br.eurotour.model.grafo.Grafo;
 import ifsc.edu.br.eurotour.model.grafo.Vertice;
 import ifsc.edu.br.eurotour.model.mapeamento.CaminhoParaATela;
 import ifsc.edu.br.eurotour.model.mapeamento.DistanciaEntre2Paises;
+import ifsc.edu.br.eurotour.model.mapeamento.Pais;
 
 /**
  * Nesta classe devem ser implementados todos os métodos de grafos de forma
@@ -19,7 +20,7 @@ import ifsc.edu.br.eurotour.model.mapeamento.DistanciaEntre2Paises;
  * @author vilson.junior Criando os métodos de busca
  * @author wilson.junior
  */
-public class CustoUniforme {
+public class BuscaDeCustoUniforme {
 
 	public static final int MENOR_DISTANCIA = 0;
 
@@ -79,9 +80,10 @@ public class CustoUniforme {
 		CaminhoParaATela lCaminho = new CaminhoParaATela(lDistanciaMinima);
 		for (int indice = 0; indice < lNomes.length; indice++) {
 			if ((indice + 1) != lNomes.length) {
-				Vertice lOrigem = aGrafo.pesquisaVertice(lNomes[indice].trim());
-				Vertice lVerticeDestino = aGrafo.pesquisaVertice(lNomes[indice + 1].trim());
-				  lCaminho.getCaminho().add(new DistanciaEntre2Paises(lOrigem, lDestino, lVerticeDestino.obterDistancia()));
+				Pais lOrigem = Pais.convertVerticeParaPais(aGrafo.pesquisaVertice(lNomes[indice].trim()));
+                Vertice lVerticeDestino = aGrafo.pesquisaVertice(lNomes[indice+1].trim());
+                Pais lDestino = Pais.convertVerticeParaPais(lVerticeDestino);
+				lCaminho.getCaminho().add(new DistanciaEntre2Paises(lOrigem, lDestino, lVerticeDestino.obterDistancia()));
 			}
 		}
 		return lCaminho;

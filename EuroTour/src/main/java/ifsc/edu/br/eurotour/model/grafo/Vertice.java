@@ -4,6 +4,7 @@
  */
 package ifsc.edu.br.eurotour.model.grafo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
