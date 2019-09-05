@@ -1,8 +1,10 @@
 package ifsc.edu.br.eurotour.repository;
 
-import org.springframework.stereotype.Repository;
+import java.net.URISyntaxException;
 
-@Repository
-public interface DataRoutesRepository{
+import ifsc.edu.br.eurotour.model.grafo.Grafo;
 
+public interface DataRoutesRepository {
+
+	public Grafo pegarArquivo() throws URISyntaxException;
 }
