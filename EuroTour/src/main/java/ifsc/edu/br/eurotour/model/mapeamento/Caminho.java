@@ -29,12 +29,13 @@ public class Caminho {
 		this.caminho = caminho;
 	}
 
-	public Double getDistaciaTotal() {
+
+	public Double getDistanciaTotal() {
 		return distanciaTotal;
 	}
 
-	public void setDistaciaTotal(Double distaciaTotal) {
-		this.distanciaTotal = distaciaTotal;
+	public void setDistanciaTotal(Double distanciaTotal) {
+		this.distanciaTotal = distanciaTotal;
 	}
 
 	public static Caminho converter(Grafo aGrafo, Vertice aFinal, Double lDistanciaMinima) {
