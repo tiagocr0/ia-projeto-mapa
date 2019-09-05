@@ -17,7 +17,7 @@ import ifsc.edu.br.eurotour.model.mapeamento.Caminho;
  */
 public class BuscaDeCustoUniforme {
 
-	public static Caminho calcular(Grafo aGrafo, Vertice aInicial, Vertice aFinal) {
+	public Caminho calcular(Grafo aGrafo, Vertice aInicial, Vertice aFinal) {
 		List<Vertice> lVerticesAbertos = new ArrayList<>();
 		reiniciarGrafo(aGrafo);
 		aInicial.definirDistancia(0);
