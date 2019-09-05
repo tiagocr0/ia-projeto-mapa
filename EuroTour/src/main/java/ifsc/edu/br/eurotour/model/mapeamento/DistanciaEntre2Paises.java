@@ -1,32 +1,32 @@
 package ifsc.edu.br.eurotour.model.mapeamento;
 
 public class DistanciaEntre2Paises {
-	private Pais origem;
-	private Pais destino;
+	private String origem;
+	private String destino;
 	private Double distancia;
 
 	public DistanciaEntre2Paises() {
 	}
 
-	public DistanciaEntre2Paises(Pais origem, Pais destino, Double distancia) {
+	public DistanciaEntre2Paises(String origem, String destino, Double distancia) {
 		this.origem = origem;
 		this.destino = destino;
 		this.distancia = distancia;
 	}
 
-	public Pais getOrigem() {
+	public String getOrigem() {
 		return origem;
 	}
 
-	public void setOrigem(Pais origem) {
+	public void setOrigem(String origem) {
 		this.origem = origem;
 	}
 
-	public Pais getDestino() {
+	public String getDestino() {
 		return destino;
 	}
 
-	public void setDestino(Pais destino) {
+	public void setDestino(String destino) {
 		this.destino = destino;
 	}
 

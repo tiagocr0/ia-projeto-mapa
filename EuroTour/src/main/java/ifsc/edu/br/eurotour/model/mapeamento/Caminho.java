@@ -42,11 +42,10 @@ public class Caminho {
 		Caminho lCaminho = new Caminho(lDistanciaMinima);
 		for (int indice = 0; indice < lNomes.length; indice++) {
 			if ((indice + 1) != lNomes.length) {
-				Pais lOrigem = Pais.convertVerticeParaPais(aGrafo.pesquisaVertice(lNomes[indice].trim()));
+				Vertice lVerticeOrigem = aGrafo.pesquisaVertice(lNomes[indice].trim());
 				Vertice lVerticeDestino = aGrafo.pesquisaVertice(lNomes[indice + 1].trim());
-				Pais lDestino = Pais.convertVerticeParaPais(lVerticeDestino);
 				lCaminho.getCaminho()
-						.add(new DistanciaEntre2Paises(lOrigem, lDestino, lVerticeDestino.obterDistancia()));
+						.add(new DistanciaEntre2Paises(lVerticeOrigem.toString(), lVerticeDestino.toString(), lVerticeDestino.obterDistancia()));
 			}
 		}
 		return lCaminho;
