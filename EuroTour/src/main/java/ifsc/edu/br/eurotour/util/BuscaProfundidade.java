@@ -7,6 +7,7 @@ import ifsc.edu.br.eurotour.model.grafo.Arco;
 import ifsc.edu.br.eurotour.model.grafo.Grafo;
 import ifsc.edu.br.eurotour.model.grafo.Vertice;
 import ifsc.edu.br.eurotour.model.mapeamento.Caminho;
+import ifsc.edu.br.eurotour.repository.BuscaProfundidadeRepository;
 
 /**
  * Classe que representa uma busca em profundidade
@@ -14,7 +15,7 @@ import ifsc.edu.br.eurotour.model.mapeamento.Caminho;
  * @author Osmar
  *
  */
-public class BuscaProfundidade {
+public class BuscaProfundidade implements BuscaProfundidadeRepository {
 
 	/**
 	 * Realiza a busca em profundidade de um certo grafo, a partir de um vertice
@@ -24,6 +25,7 @@ public class BuscaProfundidade {
 	 * @param inicial Vertice inicial (raiz) a começar a busca
 	 * @return A lista com os vertices que podem ser alcançados
 	 */
+	@Override
 	public Caminho buscaProfundidade(Grafo g, Vertice inicial, Vertice destino) {
 		// Lista com todos os vertices do grafo
 		ArrayList<Vertice> vertices_grafo = g.obterVertices();

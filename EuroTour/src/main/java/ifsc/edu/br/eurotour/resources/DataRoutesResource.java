@@ -15,32 +15,43 @@ import ifsc.edu.br.eurotour.model.grafo.Grafo;
 import ifsc.edu.br.eurotour.model.grafo.Vertice;
 import ifsc.edu.br.eurotour.model.mapeamento.Caminho;
 import ifsc.edu.br.eurotour.model.mapeamento.Front;
+import ifsc.edu.br.eurotour.services.BuscaAprofundamentoIterativoService;
+import ifsc.edu.br.eurotour.services.BuscaBidirecionalService;
+import ifsc.edu.br.eurotour.services.BuscaCustoUniformeService;
+import ifsc.edu.br.eurotour.services.BuscaProfundidadeService;
 import ifsc.edu.br.eurotour.services.DataRoutesService;
-import ifsc.edu.br.eurotour.util.BuscaAprofundamentoIterativo;
-import ifsc.edu.br.eurotour.util.BuscaBidirecional;
-import ifsc.edu.br.eurotour.util.BuscaDeCustoUniforme;
-import ifsc.edu.br.eurotour.util.BuscaProfundidade;
 
 @RestController
 @RequestMapping(value = "/busca")
 public class DataRoutesResource {
 
-	private BuscaAprofundamentoIterativo aprofundamentoIterativo = new BuscaAprofundamentoIterativo();
-	private BuscaBidirecional bidirecional = new BuscaBidirecional();
-	private BuscaDeCustoUniforme custoUniforme = new BuscaDeCustoUniforme();
-	private BuscaProfundidade profundidade = new BuscaProfundidade();
+	private BuscaAprofundamentoIterativoService aprofundamentoIterativo = new BuscaAprofundamentoIterativoService();
+	private BuscaBidirecionalService bidirecional = new BuscaBidirecionalService();
+	private BuscaCustoUniformeService custoUniforme = new BuscaCustoUniformeService();
+	private BuscaProfundidadeService profundidade = new BuscaProfundidadeService();
 	private Caminho caminho;
 
 	private Grafo grafo = new Grafo();
 
 	private DataRoutesService dataRoutes;
 
+	public DataRoutesResource() {
+		dataRoutes = new DataRoutesService();
+		try {
+			grafo = dataRoutes.pegarArquivo();
+		} catch (URISyntaxException e) {
+			System.err.print("Erro ao tentar ler o arquivo");
+			e.printStackTrace();
+			System.exit(1);
+		}
+	}
+
 	/*
 	 * Método que recebe um objeto Front como parâmetro e irá retornar o caminho
 	 */
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Caminho> busca(@Valid @RequestBody Front front) {
-		grafo = lerArquivo();
+
 		int algoritmo = front.getFront().getAlgoritmo();
 		Vertice origem = grafo.pesquisaVertice(front.getFront().getOrigem());
 		Vertice destino = grafo.pesquisaVertice(front.getFront().getDestino());
@@ -60,7 +71,7 @@ public class DataRoutesResource {
 			break;
 		case 3:
 			// Realiza a busca de Custo Uniforme
-			caminho = custoUniforme.calcular(grafo, origem, destino);
+			caminho = custoUniforme.buscaCustoUniforme(grafo, origem, destino);
 			return new ResponseEntity<Caminho>(caminho, HttpStatus.OK);
 		case 4:
 			// Realiza a busca de A*
@@ -72,19 +83,6 @@ public class DataRoutesResource {
 		}
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
-	}
-
-	public Grafo lerArquivo() {
-		dataRoutes = new DataRoutesService();
-		Grafo g;
-		try {
-			g = dataRoutes.pegarArquivo();
-			return g;
-		} catch (URISyntaxException e) {
-			System.out.println("Erro ao ler o arquivo");
-			e.printStackTrace();
-			return null;
-		}
 	}
 
 }

@@ -7,12 +7,14 @@ import ifsc.edu.br.eurotour.model.grafo.Arco;
 import ifsc.edu.br.eurotour.model.grafo.Grafo;
 import ifsc.edu.br.eurotour.model.grafo.Vertice;
 import ifsc.edu.br.eurotour.model.mapeamento.Caminho;
+import ifsc.edu.br.eurotour.repository.BuscaAprofundamentoIterativoRepository;
 
-public class BuscaAprofundamentoIterativo {
+public class BuscaAprofundamentoIterativo implements BuscaAprofundamentoIterativoRepository {
 
 	// Variável de controle para caso o destino seja encontrado
 	boolean encontrou_caminho = false;
 
+	@Override
 	public Caminho buscaAprofundamentoIterativo(Grafo g, Vertice inicial, Vertice destino) {
 		// Lista de Vertices resultantes da busca
 		Vertice vertice_final = new Vertice();
@@ -41,7 +43,7 @@ public class BuscaAprofundamentoIterativo {
 	 * @return A lista com os vertices que podem ser alcançados
 	 */
 
-	public Vertice buscaProfundidadeLimitada(Grafo g, Vertice inicial, Vertice destino, int limite) {
+	private Vertice buscaProfundidadeLimitada(Grafo g, Vertice inicial, Vertice destino, int limite) {
 
 		// Lista com todos os vertices do grafo
 		ArrayList<Vertice> vertices_grafo = g.obterVertices();

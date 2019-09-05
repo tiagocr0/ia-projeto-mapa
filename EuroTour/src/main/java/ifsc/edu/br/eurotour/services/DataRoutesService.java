@@ -9,7 +9,7 @@ import ifsc.edu.br.eurotour.repository.DataRoutesRepository;
 public class DataRoutesService {
 
 	private DataRoutesRepository rep;
-	
+
 	public DataRoutesService() {
 		rep = new DataRoutesDataAccess();
 	}
@@ -17,5 +17,4 @@ public class DataRoutesService {
 	public Grafo pegarArquivo() throws URISyntaxException {
 		return rep.pegarArquivo();
 	}
-
 }

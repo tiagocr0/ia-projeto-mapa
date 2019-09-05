@@ -1,7 +1,3 @@
-/*
-    Arquivo versão 4.0
-    Contempla o uso de buscas, árvores geradoras mínimas, caminho mínimo e fluxo máximo.
- */
 package ifsc.edu.br.eurotour.model.grafo;
 
 import java.io.Serializable;
@@ -22,8 +18,6 @@ public class Vertice implements Serializable {
 	// Lista de arcos que saem do vértice
 	private final ArrayList<Arco> arcos = new ArrayList<>();
 
-	private final ArrayList<Arco> arcosEuristica = new ArrayList<>();
-
 	// Rótulo do vértice: serve para identificação
 	private final String rotulo;
 
@@ -41,17 +35,10 @@ public class Vertice implements Serializable {
 	// definirDistancia(), zerarDistancia() e obterDistancia() devem ser usados.
 	private double distancia = Double.POSITIVE_INFINITY;
 
-	private double distanciaEuristica = Double.POSITIVE_INFINITY;
-
 	// Algoritmos de caminhos podem precisar da informação de qual caminho foi
 	// utilizado para se obter a distância informada. O caminho é uma String
 	// Contendo os rótulos dos vértices utilizados para chegar até o vértice
 	private String caminho = "";
-
-	// Algoritmos de árvores geradoras mínimas podem precisar diferenciar a árvore
-	// da qual cada vértice do grafo faz parte, durante a execução, para detectar
-	// ciclos.
-	private int nArvore;
 
 	public Vertice(String rotulo) {
 		this.rotulo = rotulo;
@@ -65,36 +52,8 @@ public class Vertice implements Serializable {
 		this.arcos.add(new Arco(this, destino, peso));
 	}
 
-	public boolean removerConexao(Vertice destino) {
-		for (Arco arcoAtual : arcos) {
-			if (arcoAtual.getDestino() == destino) {
-				this.arcos.remove(arcoAtual);
-				return true;
-			}
-		}
-		return false;
-	}
-
 	public ArrayList<Arco> obterArcos() {
 		return this.arcos;
-	}
-
-	public void adicionarArcoEuristica(Vertice destino, double peso) {
-		this.arcosEuristica.add(new Arco(this, destino, peso));
-	}
-
-	public ArrayList<Arco> obterArcosEuristica() {
-		return this.arcosEuristica;
-	}
-
-	@Override
-	public String toString() {
-		return this.rotulo;
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		return o.toString().equals(this.rotulo);
 	}
 
 	public String obterLinhaArquivo() {
@@ -103,10 +62,6 @@ public class Vertice implements Serializable {
 			linha += "\t" + arcoAtual.toString();
 		}
 		return linha;
-	}
-
-	public int obterGrau() {
-		return this.arcos.size();
 	}
 
 	public void visitar() {
@@ -123,7 +78,6 @@ public class Vertice implements Serializable {
 
 	public void zerarDistancia() {
 		this.distancia = Double.POSITIVE_INFINITY;
-		this.distanciaEuristica = Double.POSITIVE_INFINITY;
 	}
 
 	public void definirDistancia(double distancia) {
@@ -132,22 +86,6 @@ public class Vertice implements Serializable {
 
 	public double obterDistancia() {
 		return this.distancia;
-	}
-
-	public void definirDistanciaEuristica(double distanciaEuristica) {
-		this.distanciaEuristica = distanciaEuristica;
-	}
-
-	public double obterDistanciaEuristica() {
-		return this.distanciaEuristica;
-	}
-
-	public int getnArvore() {
-		return nArvore;
-	}
-
-	public void setnArvore(int nArvore) {
-		this.nArvore = nArvore;
 	}
 
 	public String getCaminho() {
@@ -162,28 +100,14 @@ public class Vertice implements Serializable {
 		this.caminho = caminho;
 	}
 
-	private ArrayList<Arco> caminhoLista;
-
-	/**
-	 * Get the value of caminhoLista
-	 *
-	 * @return the value of caminhoLista
-	 */
-	public ArrayList<Arco> getCaminhoLista() {
-		return new ArrayList(this.caminhoLista);
+	@Override
+	public String toString() {
+		return this.rotulo;
 	}
 
-	/**
-	 * Set the value of caminhoLista
-	 *
-	 * @param caminhoLista new value of caminhoLista
-	 */
-	public void setCaminhoLista(ArrayList<Arco> caminhoLista) {
-		if (caminhoLista == null) {
-			this.caminhoLista = new ArrayList();
-		} else {
-			this.caminhoLista = new ArrayList(caminhoLista);
-		}
+	@Override
+	public boolean equals(Object o) {
+		return o.toString().equals(this.rotulo);
 	}
 
 }

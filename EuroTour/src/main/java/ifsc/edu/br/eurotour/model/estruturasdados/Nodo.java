@@ -2,6 +2,12 @@ package ifsc.edu.br.eurotour.model.estruturasdados;
 
 import ifsc.edu.br.eurotour.model.grafo.Vertice;
 
+/**
+ * Classe que representa um Nodo, no qual é um {@link Vertice}
+ * 
+ * @author Osmar
+ *
+ */
 public class Nodo {
 
 	private Vertice info;

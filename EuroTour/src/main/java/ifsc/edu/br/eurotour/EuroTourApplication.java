@@ -10,16 +10,18 @@ public class EuroTourApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(EuroTourApplication.class, args);
+
 		/*
-		 * BuscaAprofundamentoIterativo b = new BuscaAprofundamentoIterativo();
-		 * DataRoutesResource dt = new DataRoutesResource();
+		 * DataRoutesService service = new DataRoutesService(); Grafo g = null; try { g
+		 * = service.pegarArquivo(); } catch (URISyntaxException e) {
+		 * System.out.println("erro ao pegar arquivo"); e.printStackTrace(); }
 		 * 
-		 * grafo = dt.lerArquivo();
+		 * BuscaProfundidadeService alg_service = new BuscaProfundidadeService();
 		 * 
-		 * Vertice vi = grafo.pesquisaVertice("Espanha – Madrid"); Vertice vd =
-		 * grafo.pesquisaVertice("Polônia – Varsóvia");
+		 * Vertice vi = g.pesquisaVertice("Espanha – Madrid"); Vertice vd =
+		 * g.pesquisaVertice("Polônia – Varsóvia");
 		 * 
-		 * Caminho caminho_destino = b.buscaAprofundamentoIterativo(grafo, vi, vd);
+		 * Caminho caminho_destino = alg_service.buscaProfundidade(g, vi, vd);
 		 * 
 		 * System.out.println(caminho_destino.toString());
 		 */

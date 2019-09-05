@@ -7,6 +7,7 @@ import ifsc.edu.br.eurotour.model.grafo.Arco;
 import ifsc.edu.br.eurotour.model.grafo.Grafo;
 import ifsc.edu.br.eurotour.model.grafo.Vertice;
 import ifsc.edu.br.eurotour.model.mapeamento.Caminho;
+import ifsc.edu.br.eurotour.repository.BuscaCustoUniformeRepository;
 
 /**
  * Nesta classe devem ser implementados todos os métodos de grafos de forma
@@ -15,17 +16,18 @@ import ifsc.edu.br.eurotour.model.mapeamento.Caminho;
  * @author vilson.junior Criando os métodos de busca
  * @author wilson.junior
  */
-public class BuscaDeCustoUniforme {
+public class BuscaDeCustoUniforme implements BuscaCustoUniformeRepository {
 
-	public static Caminho calcular(Grafo aGrafo, Vertice aInicial, Vertice aFinal) {
+	@Override
+	public Caminho buscaCustoUniforme(Grafo g, Vertice inicial, Vertice destino) {
 		List<Vertice> lVerticesAbertos = new ArrayList<>();
-		reiniciarGrafo(aGrafo);
-		aInicial.definirDistancia(0);
-		lVerticesAbertos.add(aInicial);
+		reiniciarGrafo(g);
+		inicial.definirDistancia(0);
+		lVerticesAbertos.add(inicial);
 		double lMenorDistancia = 0.0;
 		Vertice lVerticeOrigem = new Vertice();
 
-		lVerticesAbertos.addAll(aGrafo.obterVertices());
+		lVerticesAbertos.addAll(g.obterVertices());
 		while (lVerticesAbertos.size() > 0) {
 			lMenorDistancia = lVerticesAbertos.get(0).obterDistancia();
 			int indice = 0;
@@ -38,7 +40,7 @@ public class BuscaDeCustoUniforme {
 
 			lVerticeOrigem = lVerticesAbertos.remove(indice);
 
-			if (!lVerticeOrigem.equals(aFinal)) {
+			if (!lVerticeOrigem.equals(destino)) {
 				for (Arco lArco : lVerticeOrigem.obterArcos()) {
 					Vertice lVerticeDestino = lArco.getDestino();
 					double lDistanciaPorPeso = lArco.getPeso();
@@ -48,10 +50,10 @@ public class BuscaDeCustoUniforme {
 					}
 				}
 			} else {
-				return Caminho.converter(aGrafo, aFinal, lVerticeOrigem.obterDistancia());
+				return Caminho.converter(g, destino, lVerticeOrigem.obterDistancia());
 			}
 		}
-		return Caminho.converter(aGrafo, aFinal, lVerticeOrigem.obterDistancia());
+		return Caminho.converter(g, destino, lVerticeOrigem.obterDistancia());
 	}
 
 	private static void reiniciarGrafo(Grafo aGrafo) {
