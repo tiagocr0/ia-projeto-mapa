@@ -38,4 +38,9 @@ public class DistanciaEntre2Paises {
 		this.distancia = distancia;
 	}
 
+	@Override
+	public String toString() {
+		return "\n{\n\torigem = " + origem + "\n\tdestino = " + destino + "\n\tdistancia = " + distancia + "\n}\n";
+	}
+
 }

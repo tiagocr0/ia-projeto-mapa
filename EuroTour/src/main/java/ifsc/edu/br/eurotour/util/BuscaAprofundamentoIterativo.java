@@ -6,15 +6,16 @@ import ifsc.edu.br.eurotour.model.estruturasdados.Fila;
 import ifsc.edu.br.eurotour.model.grafo.Arco;
 import ifsc.edu.br.eurotour.model.grafo.Grafo;
 import ifsc.edu.br.eurotour.model.grafo.Vertice;
+import ifsc.edu.br.eurotour.model.mapeamento.Caminho;
 
 public class BuscaAprofundamentoIterativo {
 
 	// Variável de controle para caso o destino seja encontrado
 	boolean encontrou_caminho = false;
 
-	public ArrayList<Vertice> buscaAprofundamentoIterativo(Grafo g, Vertice inicial, Vertice destino) {
+	public Caminho buscaAprofundamentoIterativo(Grafo g, Vertice inicial, Vertice destino) {
 		// Lista de Vertices resultantes da busca
-		ArrayList<Vertice> vertice_final = new ArrayList<>();
+		Vertice vertice_final = new Vertice();
 
 		// Variável para controlar o limite da busca
 		int limite = 0;
@@ -27,7 +28,8 @@ public class BuscaAprofundamentoIterativo {
 			// Limite é incrementado para caso o caminho não seja encontrado na iteração
 			limite++;
 		}
-		return vertice_final;
+
+		return Caminho.converter(g, destino, vertice_final.obterDistancia());
 	}
 
 	/**
@@ -39,16 +41,13 @@ public class BuscaAprofundamentoIterativo {
 	 * @return A lista com os vertices que podem ser alcançados
 	 */
 
-	public ArrayList<Vertice> buscaProfundidadeLimitada(Grafo g, Vertice inicial, Vertice destino, int limite) {
+	public Vertice buscaProfundidadeLimitada(Grafo g, Vertice inicial, Vertice destino, int limite) {
 
 		// Lista com todos os vertices do grafo
 		ArrayList<Vertice> vertices_grafo = g.obterVertices();
 
 		// Variável contadora para comparar com o limite
 		int cont = 0;
-
-		// Lista que vai listar todos os vertices ja visitados
-		ArrayList<Vertice> lista_visitados = new ArrayList<>();
 
 		// inicializa todos os vertices do grafo com 0 visitas,
 		// 0 distancia, e sem um caminho (vertices anteriores)
@@ -82,7 +81,7 @@ public class BuscaAprofundamentoIterativo {
 				// Verifica se o atual é igual ao destino
 				if (atual.equals(destino)) {
 					encontrou_caminho = true;
-					return lista_visitados;
+					return atual;
 				} else {
 
 					// Recebe todos os caminhos possíveis(arcos) do vértice da iteração atual
@@ -104,18 +103,16 @@ public class BuscaAprofundamentoIterativo {
 							filho.definirDistancia(atual.obterDistancia() + arco.getPeso());
 
 							// diz que para chegar nesse vértice filho, é a partir de seu anterior (pai)
-							filho.setCaminho(atual.toString());
+
+							filho.setCaminho(atual.getCaminho());
 
 							// insere o vértice filho a fila
 							fila.push(filho);
 
-							// adiciona o vértice na lista de visitados
-							lista_visitados.add(filho);
-
 							// Verifica se o filho é igual ao destino
 							if (filho.equals(destino)) {
 								encontrou_caminho = true;
-								return lista_visitados;
+								return filho;
 							}
 						}
 
@@ -127,7 +124,7 @@ public class BuscaAprofundamentoIterativo {
 			// Incrementa o cont para ir para próximo nível da arvore
 			cont++;
 		}
-		return lista_visitados;
+		return destino;
 	}
 
 }

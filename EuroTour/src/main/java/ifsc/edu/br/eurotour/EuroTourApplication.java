@@ -5,13 +5,13 @@ import java.io.FileInputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.ArrayList;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import ifsc.edu.br.eurotour.model.grafo.Grafo;
 import ifsc.edu.br.eurotour.model.grafo.Vertice;
+import ifsc.edu.br.eurotour.model.mapeamento.Caminho;
 import ifsc.edu.br.eurotour.util.BuscaAprofundamentoIterativo;
 
 @SpringBootApplication
@@ -34,11 +34,9 @@ public class EuroTourApplication {
 		Vertice vi = grafo.pesquisaVertice("Espanha – Madrid");
 		Vertice vd = grafo.pesquisaVertice("Polônia – Varsóvia");
 
-		ArrayList<Vertice> vertices_grafo = b.buscaAprofundamentoIterativo(grafo, vi, vd);
+		Caminho caminho_destino = b.buscaAprofundamentoIterativo(grafo, vi, vd);
 
-		for (Vertice vertice : vertices_grafo) {
-			System.out.println("Caminho:" + vertice.getCaminho());
-		}
+		System.out.println(caminho_destino.toString());
 
 	}
 

@@ -1,17 +1,12 @@
 package ifsc.edu.br.eurotour.util;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import ifsc.edu.br.eurotour.model.grafo.Arco;
-import ifsc.edu.br.eurotour.model.grafo.Caminho;
 import ifsc.edu.br.eurotour.model.grafo.Grafo;
 import ifsc.edu.br.eurotour.model.grafo.Vertice;
-import ifsc.edu.br.eurotour.model.mapeamento.CaminhoParaATela;
-import ifsc.edu.br.eurotour.model.mapeamento.DistanciaEntre2Paises;
-import ifsc.edu.br.eurotour.model.mapeamento.Pais;
+import ifsc.edu.br.eurotour.model.mapeamento.Caminho;
 
 /**
  * Nesta classe devem ser implementados todos os métodos de grafos de forma
@@ -22,73 +17,43 @@ import ifsc.edu.br.eurotour.model.mapeamento.Pais;
  */
 public class BuscaDeCustoUniforme {
 
-	public static final int MENOR_DISTANCIA = 0;
-
-	public static List<Vertice> custoUniforme(Grafo aGrafo, Vertice aInicial, Vertice aFinal) {
+	public static Caminho calcular(Grafo aGrafo, Vertice aInicial, Vertice aFinal) {
 		List<Vertice> lVerticesAbertos = new ArrayList<>();
-		List<Vertice> lVerticesExpandidos = new ArrayList<>();
 		reiniciarGrafo(aGrafo);
 		aInicial.definirDistancia(0);
-		aInicial.visitar();
 		lVerticesAbertos.add(aInicial);
-		double lMenorDistancia = 0;
-		Caminho lCaminho;
-		CaminhoParaATela lCaminho2;
+		double lMenorDistancia = 0.0;
+		Vertice lVerticeOrigem = new Vertice();
+
+		lVerticesAbertos.addAll(aGrafo.obterVertices());
 		while (lVerticesAbertos.size() > 0) {
-			Vertice lVerticeOrigem = lVerticesAbertos.get(MENOR_DISTANCIA);
-			for (Arco lArco : lVerticeOrigem.obterArcos()) {
-				Vertice lVerticeDestino = lArco.getDestino();
-				Double lDistanciaPorPeso = lArco.getPeso();
-				if (lVerticeDestino.obterVisitado() == 0) {
-					lVerticeDestino.visitar();
-					lVerticeDestino.setCaminho(lVerticeOrigem.getCaminho());
-					lVerticeDestino.definirDistancia(lVerticeOrigem.obterDistancia() + lDistanciaPorPeso);
-					lVerticesAbertos.add(lArco.getDestino());
-				}
-
-				if (lVerticeDestino.equals(aFinal)) {
-					lMenorDistancia = lVerticeOrigem.obterDistancia() + lDistanciaPorPeso;
+			lMenorDistancia = lVerticesAbertos.get(0).obterDistancia();
+			int indice = 0;
+			for (Vertice v : lVerticesAbertos) {
+				if (v.obterDistancia() < lMenorDistancia) {
+					lMenorDistancia = v.obterDistancia();
+					indice = lVerticesAbertos.indexOf(v);
 				}
 			}
-			lVerticesAbertos.remove(lVerticeOrigem);
-			lVerticesExpandidos.add(lVerticeOrigem);
-			ordernar(lVerticesAbertos);
-			if (lVerticeOrigem.equals(aFinal)) {
-				lCaminho = montarCaminho(aGrafo, aFinal, lMenorDistancia);
-				lCaminho2 = montarCaminhoTela(aGrafo, aFinal, lMenorDistancia);
-				return lVerticesExpandidos;
-			}
-		}
-		return lVerticesExpandidos;
-	}
 
-	private static Caminho montarCaminho(Grafo aGrafo, Vertice aFinal, Double lDistanciaMinima) {
-		String[] lNomes = aFinal.getCaminho().split("/");
-		Caminho lCaminho = new Caminho(lDistanciaMinima);
-		for (int indice = 0; indice < lNomes.length; indice++) {
-			if ((indice + 1) != lNomes.length) {
-				Vertice lOrigem = aGrafo.pesquisaVertice(lNomes[indice].trim());
-				Vertice lVerticeDestino = aGrafo.pesquisaVertice(lNomes[indice + 1].trim());
-				lCaminho.getCaminho().add(new Arco(lOrigem, lVerticeDestino, lVerticeDestino.obterDistancia()));
-			}
-		}
-		return lCaminho;
-	}
-	
-	private static CaminhoParaATela montarCaminhoTela(Grafo aGrafo, Vertice aFinal, Double lDistanciaMinima) {
-		String[] lNomes = aFinal.getCaminho().split("/");
-		CaminhoParaATela lCaminho = new CaminhoParaATela(lDistanciaMinima);
-		for (int indice = 0; indice < lNomes.length; indice++) {
-			if ((indice + 1) != lNomes.length) {
-				Pais lOrigem = Pais.convertVerticeParaPais(aGrafo.pesquisaVertice(lNomes[indice].trim()));
-                Vertice lVerticeDestino = aGrafo.pesquisaVertice(lNomes[indice+1].trim());
-                Pais lDestino = Pais.convertVerticeParaPais(lVerticeDestino);
-				lCaminho.getCaminho().add(new DistanciaEntre2Paises(lOrigem, lDestino, lVerticeDestino.obterDistancia()));
-			}
-		}
-		return lCaminho;
-	}
+			lVerticeOrigem = lVerticesAbertos.remove(indice);
 
+			if (!lVerticeOrigem.equals(aFinal)) {
+				for (Arco lArco : lVerticeOrigem.obterArcos()) {
+					Vertice lVerticeDestino = lArco.getDestino();
+					double lDistanciaPorPeso = lArco.getPeso();
+					if (lVerticeDestino.obterDistancia() > lVerticeOrigem.obterDistancia() + lDistanciaPorPeso) {
+						lVerticeDestino.definirDistancia(lDistanciaPorPeso + lVerticeOrigem.obterDistancia());
+						lVerticeDestino.setCaminho(lVerticeOrigem.getCaminho());
+					}
+				}
+			} else {
+
+				return Caminho.converter(aGrafo, aFinal, lVerticeOrigem.obterDistancia());
+			}
+		}
+		return Caminho.converter(aGrafo, aFinal, lVerticeOrigem.obterDistancia());
+	}
 
 	private static void reiniciarGrafo(Grafo aGrafo) {
 		for (Vertice lVertice : aGrafo.obterVertices()) {
@@ -96,22 +61,5 @@ public class BuscaDeCustoUniforme {
 			lVertice.zerarDistancia();
 			lVertice.setCaminho("");
 		}
-	}
-
-	// Ordena a lista de arcos em onderm crecsente
-	private static void ordernar(List<Vertice> aArcos) {
-		Collections.sort(aArcos, new CustomComparatorVertice());
-	}
-
-	// Ordenação dos arcos por distancia.
-	private static class CustomComparatorVertice implements Comparator<Vertice> {
-
-		@Override
-		public int compare(Vertice aVertice, Vertice aVertice2) {
-			Double peso1 = aVertice.obterDistancia();
-			Double peso2 = aVertice2.obterDistancia();
-			return peso1.compareTo(peso2);
-		}
-
 	}
 }

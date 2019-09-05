@@ -11,12 +11,18 @@ import java.util.ArrayList;
  * Classe para abstrair vértices de grafos direcionados IFSC - Lages Prof.
  * Vilson Heck Junior
  */
+
 public class Vertice implements Serializable {
 
-	// Lista de arcos que saem do vértice
-	private final ArrayList<Arco> arcos = new ArrayList();
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
-	private final ArrayList<Arco> arcosEuristica = new ArrayList();
+	// Lista de arcos que saem do vértice
+	private final ArrayList<Arco> arcos = new ArrayList<>();
+
+	private final ArrayList<Arco> arcosEuristica = new ArrayList<>();
 
 	// Rótulo do vértice: serve para identificação
 	private final String rotulo;
@@ -49,6 +55,10 @@ public class Vertice implements Serializable {
 
 	public Vertice(String rotulo) {
 		this.rotulo = rotulo;
+	}
+
+	public Vertice() {
+		this.rotulo = "";
 	}
 
 	public void adicionarArco(Vertice destino, double peso) {
