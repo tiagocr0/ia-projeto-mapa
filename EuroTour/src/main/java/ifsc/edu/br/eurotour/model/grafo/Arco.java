@@ -29,16 +29,6 @@ public class Arco implements Comparable<Arco> {
 		return peso;
 	}
 
-	private boolean seguro;
-
-	public boolean isSeguro() {
-		return seguro;
-	}
-
-	public void setSeguro(boolean seguro) {
-		this.seguro = seguro;
-	}
-
 	@Override
 	public String toString() {
 		return this.destino.toString() + "," + this.peso;
@@ -53,26 +43,6 @@ public class Arco implements Comparable<Arco> {
 			return 1;
 		}
 		return 0;
-	}
-
-	private double fluxo = 0;
-
-	/**
-	 * Obter o valor de fluxo
-	 *
-	 * @return the value of fluxo
-	 */
-	public double getFluxo() {
-		return fluxo;
-	}
-
-	/**
-	 * Definir o valor de fluxo
-	 *
-	 * @param fluxo new value of fluxo
-	 */
-	public void setFluxo(double fluxo) {
-		this.fluxo = fluxo;
 	}
 
 }

@@ -34,10 +34,6 @@ public class Grafo {
 
 	}
 
-	public Grafo(File arquivo) throws IOException {
-		this.lerArquivo(arquivo);
-	}
-
 	public void adicionarVertice(String rotulo) {
 		Vertice novo = new Vertice(rotulo);
 		vertices.add(novo);

@@ -1,16 +1,19 @@
-/*
-    Arquivo versão 4.0
-    Contempla o uso de buscas, árvores geradoras mínimas, caminho mínimo e fluxo máximo.
- */
 package ifsc.edu.br.eurotour.model.grafo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Classe para abstrair vértices de grafos direcionados IFSC - Lages Prof.
  * Vilson Heck Junior
  */
-public class Vertice {
+
+public class Vertice implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	// Lista de arcos que saem do vértice
 	private final ArrayList<Arco> arcos = new ArrayList<>();
@@ -20,6 +23,7 @@ public class Vertice {
 	private final String rotulo;
 
 //Os quatro próximos atributos são utilizados pelos algoritmos de grafos.
+
 	// Quando o valor de visitado for 0 (zero) significa que o vértice ainda
 	// não foi visitado pelo algoritmo. Em cada nova visita o método deve invocar
 	// o método visitar() para incrementar este valor. O método zerarVisitas()
@@ -38,17 +42,12 @@ public class Vertice {
 	// Contendo os rótulos dos vértices utilizados para chegar até o vértice
 	private String caminho = "";
 
-	// Algoritmos de árvores geradoras mínimas podem precisar diferenciar a árvore
-	// da qual cada vértice do grafo faz parte, durante a execução, para detectar
-	// ciclos.
-	private int nArvore;
-
-	private int limite;
-
-	private int tempoFinal = 0;
-
 	public Vertice(String rotulo) {
 		this.rotulo = rotulo;
+	}
+
+	public Vertice() {
+		this.rotulo = "";
 	}
 
 	public void adicionarArco(Vertice destino, double peso) {
@@ -59,33 +58,13 @@ public class Vertice {
         this.arcosHeuristica.add(new Arco(this, destino, peso));
     }
 
-	public boolean removerConexao(Vertice destino) {
-		for (Arco arcoAtual : arcos) {
-			if (arcoAtual.getDestino() == destino) {
-				this.arcos.remove(arcoAtual);
-				return true;
-			}
-		}
-		return false;
-	}
-
 	public ArrayList<Arco> obterArcos() {
 		return this.arcos;
 	}
-    
-    public ArrayList<Arco> obterArcosHeuristica() {
+	
+	public ArrayList<Arco> obterArcosHeuristica() {
         return this.arcosHeuristica;
     }
-
-	@Override
-	public String toString() {
-		return this.rotulo;
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		return o.toString().equals(this.rotulo);
-	}
 
 	public String obterLinhaArquivo() {
 		String linha = this.rotulo;
@@ -93,10 +72,6 @@ public class Vertice {
 			linha += "\t" + arcoAtual.toString();
 		}
 		return linha;
-	}
-
-	public int obterGrau() {
-		return this.arcos.size();
 	}
 
 	public void visitar() {
@@ -123,68 +98,39 @@ public class Vertice {
         this.distanciaHeuristica = distanciaEuristica;
     }
 
-	public void definirTempoFinal(int tempoFinal) {
-		this.tempoFinal = tempoFinal;
-	}
-
-	public int obterTempoFinal() {
-		return this.tempoFinal;
-	}
-
 	public double obterDistancia() {
 		return this.distancia;
 	}
 	
-	public double obterDistanciaHeuristica() {
+	public double obterDistanciaHeuristica(Vertice final_) {
+        for (Arco arco : arcosHeuristica) {
+            if(arco.getDestino().equals(final_)){
+                return arco.getPeso();
+            }
+        }
         return this.distanciaHeuristica;
     }
 
-	public int getnArvore() {
-		return nArvore;
-	}
-
-	public void setnArvore(int nArvore) {
-		this.nArvore = nArvore;
-	}
-
 	public String getCaminho() {
-		return caminho + " , " + this.rotulo;
+		if (caminho == null || caminho.equals("")) {
+			return this.rotulo;
+		}
+		String nome[] = this.rotulo.split(" / ");
+		return caminho + " / " + nome[0].trim();
 	}
 
 	public void setCaminho(String caminho) {
 		this.caminho = caminho;
 	}
 
-	public int getLimite() {
-		return limite;
+	@Override
+	public String toString() {
+		return this.rotulo;
 	}
 
-	public void setLimite(int limite) {
-		this.limite = limite;
-	}
-
-	private ArrayList<Arco> caminhoLista;
-
-	/**
-	 * Get the value of caminhoLista
-	 *
-	 * @return the value of caminhoLista
-	 */
-	public ArrayList<Arco> getCaminhoLista() {
-		return new ArrayList<>(this.caminhoLista);
-	}
-
-	/**
-	 * Set the value of caminhoLista
-	 *
-	 * @param caminhoLista new value of caminhoLista
-	 */
-	public void setCaminhoLista(ArrayList<Arco> caminhoLista) {
-		if (caminhoLista == null) {
-			this.caminhoLista = new ArrayList<>();
-		} else {
-			this.caminhoLista = new ArrayList<>(caminhoLista);
-		}
+	@Override
+	public boolean equals(Object o) {
+		return o.toString().equals(this.rotulo);
 	}
 
 }
