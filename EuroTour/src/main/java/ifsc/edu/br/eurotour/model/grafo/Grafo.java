@@ -101,6 +101,7 @@ public class Grafo {
 		XSSFSheet planilha = wb.getSheetAt(0);
 		XSSFRow linha;
 		XSSFCell celula;
+		Vertice conecta;
 
 		Iterator<Row> linhas = planilha.rowIterator();
 
@@ -110,7 +111,7 @@ public class Grafo {
 			if (linha.getRowNum() > 1) {
 
 				Iterator<Cell> celulas = linha.cellIterator();
-				Vertice conecta = null;
+				conecta = null;
 
 				while (celulas.hasNext()) {
 					celula = (XSSFCell) celulas.next();
@@ -132,7 +133,7 @@ public class Grafo {
 			if (linha.getRowNum() > 1) {
 
 				Iterator<Cell> celulas = linha.cellIterator();
-				Vertice conecta = null;
+				conecta = null;
 
 				while (celulas.hasNext()) {
 					celula = (XSSFCell) celulas.next();
@@ -160,7 +161,7 @@ public class Grafo {
 			if (linha.getRowNum() > 1) {
 
 				Iterator<Cell> celulas = linha.cellIterator();
-				Vertice conecta = null;
+				conecta = null;
 
 				while (celulas.hasNext()) {
 					celula = (XSSFCell) celulas.next();
@@ -170,8 +171,8 @@ public class Grafo {
 					} else {
 						if (celula.getCellType().equals("NUMERIC")) {
 							double peso = celula.getNumericCellValue();
-							// this.pesquisaVertice(sheet.getRow(1).getCell(cell.getColumnIndex()).getStringCellValue()).adicionarArcoEuristica(conecta,
-							// peso);
+							this.pesquisaVertice(planilha.getRow(1).getCell(celula.getColumnIndex()).getStringCellValue()).adicionarArcoHeuristica(conecta,
+							 peso);
 						}
 					}
 				}
