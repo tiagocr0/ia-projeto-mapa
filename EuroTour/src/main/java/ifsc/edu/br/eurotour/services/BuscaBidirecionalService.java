@@ -14,7 +14,7 @@ public class BuscaBidirecionalService {
 		rep = new BuscaBidirecional();
 	}
 
-	public Caminho buscaAEstrela(Grafo g, Vertice inicial, Vertice destino) {
+	public Caminho buscaBidirecional(Grafo g, Vertice inicial, Vertice destino) {
 		return rep.buscaBidirecional(g, inicial, destino);
 	}
 }

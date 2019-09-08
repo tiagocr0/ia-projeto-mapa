@@ -56,5 +56,19 @@ public class Caminho {
 	public String toString() {
 		return "Caminho=" + caminho + "\ndistanciaTotal=" + distanciaTotal;
 	}
+	
+	  public static Caminho converter(Grafo aGrafo, String aVertices, Double lDistanciaMinima) {
+	        String[] lNomes = aVertices.split(" / ");
+	        Caminho lCaminho = new Caminho(lDistanciaMinima);
+	        for (int indice = 0; indice < lNomes.length; indice++) {
+	                if ((indice + 1) != lNomes.length) {
+	                	Vertice lVerticeOrigem = aGrafo.pesquisaVertice(lNomes[indice].trim());
+	    				Vertice lVerticeDestino = aGrafo.pesquisaVertice(lNomes[indice + 1].trim());
+	    				lCaminho.getCaminho()
+	    						.add(new DistanciaEntre2Paises(lVerticeOrigem.toString(), lVerticeDestino.toString(), lVerticeDestino.obterDistancia()));
+	                }
+	        }
+	        return lCaminho;
+	    }
 
 }

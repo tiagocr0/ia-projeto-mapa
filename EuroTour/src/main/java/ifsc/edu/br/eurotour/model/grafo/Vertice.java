@@ -41,6 +41,7 @@ public class Vertice implements Serializable {
 	// utilizado para se obter a distância informada. O caminho é uma String
 	// Contendo os rótulos dos vértices utilizados para chegar até o vértice
 	private String caminho = "";
+	private String caminhoInverso = "";
 
 	public Vertice(String rotulo) {
 		this.rotulo = rotulo;
@@ -122,6 +123,18 @@ public class Vertice implements Serializable {
 	public void setCaminho(String caminho) {
 		this.caminho = caminho;
 	}
+	
+	public String getCaminhoInverso() {
+        if(caminhoInverso == null || caminhoInverso.equals("")) {
+            return this.rotulo;
+        }
+        return caminhoInverso + " / " + this.rotulo;
+    }
+    
+    
+	public void setCaminhoInverso(String caminhoInverso) {
+        this.caminhoInverso = caminhoInverso;
+    }
 
 	@Override
 	public String toString() {

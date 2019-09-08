@@ -67,8 +67,8 @@ public class DataRoutesResource {
 			return new ResponseEntity<Caminho>(caminho, HttpStatus.OK);
 		case 2:
 			// Realiza a busca de Bidirecional
-			// Implementação
-			break;
+			caminho = bidirecional.buscaBidirecional(grafo, origem, destino);
+			return new ResponseEntity<Caminho>(caminho, HttpStatus.OK);
 		case 3:
 			// Realiza a busca de Custo Uniforme
 			caminho = custoUniforme.buscaCustoUniforme(grafo, origem, destino);
