@@ -3,8 +3,6 @@ package ifsc.edu.br.eurotour.util;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
-
 import ifsc.edu.br.eurotour.model.grafo.Arco;
 import ifsc.edu.br.eurotour.model.grafo.Grafo;
 import ifsc.edu.br.eurotour.model.grafo.Vertice;
@@ -13,12 +11,16 @@ import ifsc.edu.br.eurotour.repository.BuscaBidirecionalRepository;
 
 public class BuscaBidirecional implements BuscaBidirecionalRepository {
 
+
+	public static final int VERTICE_COM_MENOR_DISTANCIA = 0;
 	
 	@Override
 	public Caminho buscaBidirecional(Grafo aGrafo, Vertice aInicial, Vertice aFinal) {
-        Queue<Vertice> queueA = new LinkedList<>();
-        Queue<Vertice> queueB = new LinkedList<>();
-        Grafo.reiniciarGrafo(aGrafo);
+		Grafo.reiniciarGrafo(aGrafo);
+		
+		List<Vertice> aVerticesAbertorA = new LinkedList<>();
+		List<Vertice> aVerticesAbertorB = new LinkedList<>();
+        
         List<Vertice> visitedA = new ArrayList<>();
         List<Vertice> visitedB = new ArrayList<>();
         
@@ -30,16 +32,16 @@ public class BuscaBidirecional implements BuscaBidirecionalRepository {
         aFinal.definirDistancia(0);
         visitedB.add(aFinal);
         
-        queueA.add(aInicial);
-        queueB.add(aFinal);
+        aVerticesAbertorA.add(aInicial);
+        aVerticesAbertorB.add(aFinal);
         
-        while (!queueA.isEmpty() || !queueB.isEmpty()) {
-            Vertice lVerticeAAB = existeCaminho(queueA, visitedA, visitedB);
+        while (!aVerticesAbertorB.isEmpty() || !aVerticesAbertorB.isEmpty()) {
+            Vertice lVerticeAAB = existeCaminho(aVerticesAbertorA, visitedA, visitedB);
             if (lVerticeAAB != null) {
                 String lCaminho = gerarCaminho(aGrafo,lVerticeAAB);
                 return Caminho.converter(aGrafo, lCaminho, lVerticeAAB.obterDistancia());
             }
-            Vertice lVerticeBBA = existeCaminho(queueB, visitedB, visitedA);
+            Vertice lVerticeBBA = existeCaminho(aVerticesAbertorB, visitedB, visitedA);
             if (lVerticeBBA != null) {
                 String lCaminho = gerarCaminho(aGrafo,lVerticeBBA);
                 return Caminho.converter(aGrafo, lCaminho, lVerticeBBA.obterDistancia());
@@ -48,23 +50,24 @@ public class BuscaBidirecional implements BuscaBidirecionalRepository {
         return Caminho.converter(aGrafo, aFinal, aFinal.obterDistancia());
     }
     
-    private Vertice existeCaminho(Queue<Vertice> queue, List<Vertice> visitedFromThisSide, List<Vertice> visitedFromThatSide) {
-        if (!queue.isEmpty()) {
-            Vertice next = queue.remove();
+    private Vertice existeCaminho(List<Vertice> aVerticesAbertos, List<Vertice> verticesVisitadosA, List<Vertice> verticesVisitadosB) {
+        if (!aVerticesAbertos.isEmpty()) {
+            Vertice next = aVerticesAbertos.remove(VERTICE_COM_MENOR_DISTANCIA);
             List<Arco> adjacentNodes = next.obterArcos();
             for (Arco arcosAdjacent : adjacentNodes) {
                 Vertice adjacent = arcosAdjacent.getDestino();
                 double lDistanciaPorPeso = arcosAdjacent.getPeso();
-                if (visitedFromThatSide.contains(adjacent)) {
+                if (verticesVisitadosB.contains(adjacent)) {
                     adjacent.setCaminhoInverso(next.getCaminho());
                     double totalDistancia = lDistanciaPorPeso + adjacent.obterDistancia() + next.obterDistancia();
                     adjacent.definirDistancia(totalDistancia);
                     return adjacent;
-                } else if(!visitedFromThisSide.contains(adjacent)) {
-                    visitedFromThisSide.add(adjacent);
+                } else if(!verticesVisitadosA.contains(adjacent)) {
                     adjacent.definirDistancia(lDistanciaPorPeso + next.obterDistancia());
                     adjacent.setCaminho(next.getCaminho());
-                    queue.add(adjacent);
+                    verticesVisitadosA.add(adjacent);
+                    aVerticesAbertos.add(adjacent);
+                   
                 }
             }
         }
@@ -91,5 +94,4 @@ public class BuscaBidirecional implements BuscaBidirecionalRepository {
         } 
         return novo;
     }
-
 }

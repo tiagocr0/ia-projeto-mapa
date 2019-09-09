@@ -22,7 +22,7 @@ public class BuscaDeCustoUniforme implements BuscaCustoUniformeRepository {
 
 	
 	
-public static final int VERTICE_COM_MENOR_DISTANCIA = 0;
+	public static final int VERTICE_COM_MENOR_DISTANCIA = 0;
     
 	private List<Vertice> lVerticesAbertos = new ArrayList<>();
 	private List<Vertice> lVerticesExpandidos = new ArrayList<>();
