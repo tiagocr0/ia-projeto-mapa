@@ -77,7 +77,7 @@ public class DataRoutesResource {
 			return new ResponseEntity<Caminho>(caminho, HttpStatus.OK);
 		case 4:
 			// Realiza a busca de A*
-			caminho = aEstrela.buscaAEstrela(grafo, origem, origem);
+			caminho = aEstrela.buscaAEstrela(grafo, origem, destino);
 			return new ResponseEntity<Caminho>(caminho, HttpStatus.OK);
 		default:
 			System.out.println("Algoritmo incorreto");
