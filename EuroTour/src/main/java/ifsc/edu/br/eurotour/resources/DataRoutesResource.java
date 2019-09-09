@@ -15,6 +15,7 @@ import ifsc.edu.br.eurotour.model.grafo.Grafo;
 import ifsc.edu.br.eurotour.model.grafo.Vertice;
 import ifsc.edu.br.eurotour.model.mapeamento.Caminho;
 import ifsc.edu.br.eurotour.model.mapeamento.Front;
+import ifsc.edu.br.eurotour.services.BuscaAEstrelaService;
 import ifsc.edu.br.eurotour.services.BuscaAprofundamentoIterativoService;
 import ifsc.edu.br.eurotour.services.BuscaBidirecionalService;
 import ifsc.edu.br.eurotour.services.BuscaCustoUniformeService;
@@ -29,6 +30,7 @@ public class DataRoutesResource {
 	private BuscaBidirecionalService bidirecional = new BuscaBidirecionalService();
 	private BuscaCustoUniformeService custoUniforme = new BuscaCustoUniformeService();
 	private BuscaProfundidadeService profundidade = new BuscaProfundidadeService();
+	private BuscaAEstrelaService aEstrela = new BuscaAEstrelaService();
 	private Caminho caminho;
 
 	private Grafo grafo = new Grafo();
@@ -75,13 +77,12 @@ public class DataRoutesResource {
 			return new ResponseEntity<Caminho>(caminho, HttpStatus.OK);
 		case 4:
 			// Realiza a busca de A*
-			// Implementação
-			break;
+			caminho = aEstrela.buscaAEstrela(grafo, origem, origem);
+			return new ResponseEntity<Caminho>(caminho, HttpStatus.OK);
 		default:
 			System.out.println("Algoritmo incorreto");
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
 	}
 
