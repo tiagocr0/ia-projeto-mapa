@@ -18,30 +18,30 @@ public class BuscaBidirecional implements BuscaBidirecionalRepository {
 	public Caminho buscaBidirecional(Grafo aGrafo, Vertice aInicial, Vertice aFinal) {
 		Grafo.reiniciarGrafo(aGrafo);
 		
-		List<Vertice> aVerticesAbertorA = new LinkedList<>();
-		List<Vertice> aVerticesAbertorB = new LinkedList<>();
+		List<Vertice> lVerticesAbertorA = new ArrayList<>();
+		List<Vertice> lVerticesAbertorB = new ArrayList<>();
         
-        List<Vertice> visitedA = new ArrayList<>();
-        List<Vertice> visitedB = new ArrayList<>();
+        List<Vertice> lVerticesExpandidosA = new ArrayList<>();
+        List<Vertice> lVerticesExpandidosB = new ArrayList<>();
         
         aInicial.visitar();
         aInicial.definirDistancia(0);
-        visitedA.add(aInicial);
+        lVerticesExpandidosA.add(aInicial);
         
         aFinal.visitar();
         aFinal.definirDistancia(0);
-        visitedB.add(aFinal);
+        lVerticesExpandidosB.add(aFinal);
         
-        aVerticesAbertorA.add(aInicial);
-        aVerticesAbertorB.add(aFinal);
+        lVerticesAbertorA.add(aInicial);
+        lVerticesAbertorB.add(aFinal);
         
-        while (!aVerticesAbertorB.isEmpty() || !aVerticesAbertorB.isEmpty()) {
-            Vertice lVerticeAAB = existeCaminho(aVerticesAbertorA, visitedA, visitedB);
+        while (!lVerticesAbertorB.isEmpty() || !lVerticesAbertorB.isEmpty()) {
+            Vertice lVerticeAAB = existeCaminho(lVerticesAbertorA, lVerticesExpandidosA, lVerticesExpandidosB);
             if (lVerticeAAB != null) {
                 String lCaminho = gerarCaminho(aGrafo,lVerticeAAB);
                 return Caminho.converter(aGrafo, lCaminho, lVerticeAAB.obterDistancia());
             }
-            Vertice lVerticeBBA = existeCaminho(aVerticesAbertorB, visitedB, visitedA);
+            Vertice lVerticeBBA = existeCaminho(lVerticesAbertorB, lVerticesExpandidosB, lVerticesExpandidosA);
             if (lVerticeBBA != null) {
                 String lCaminho = gerarCaminho(aGrafo,lVerticeBBA);
                 return Caminho.converter(aGrafo, lCaminho, lVerticeBBA.obterDistancia());
@@ -50,22 +50,24 @@ public class BuscaBidirecional implements BuscaBidirecionalRepository {
         return Caminho.converter(aGrafo, aFinal, aFinal.obterDistancia());
     }
     
-    private Vertice existeCaminho(List<Vertice> aVerticesAbertos, List<Vertice> verticesVisitadosA, List<Vertice> verticesVisitadosB) {
+    private Vertice existeCaminho(List<Vertice> aVerticesAbertos,
+    		List<Vertice> aVerticesExpandidosA, List<Vertice> aVerticesExpandidosB) {
+    	
         if (!aVerticesAbertos.isEmpty()) {
             Vertice next = aVerticesAbertos.remove(VERTICE_COM_MENOR_DISTANCIA);
             List<Arco> adjacentNodes = next.obterArcos();
             for (Arco arcosAdjacent : adjacentNodes) {
                 Vertice adjacent = arcosAdjacent.getDestino();
                 double lDistanciaPorPeso = arcosAdjacent.getPeso();
-                if (verticesVisitadosB.contains(adjacent)) {
+                if (aVerticesExpandidosB.contains(adjacent)) {
                     adjacent.setCaminhoInverso(next.getCaminho());
                     double totalDistancia = lDistanciaPorPeso + adjacent.obterDistancia() + next.obterDistancia();
                     adjacent.definirDistancia(totalDistancia);
                     return adjacent;
-                } else if(!verticesVisitadosA.contains(adjacent)) {
+                } else if(!aVerticesExpandidosA.contains(adjacent)) {
                     adjacent.definirDistancia(lDistanciaPorPeso + next.obterDistancia());
                     adjacent.setCaminho(next.getCaminho());
-                    verticesVisitadosA.add(adjacent);
+                    aVerticesExpandidosA.add(adjacent);
                     aVerticesAbertos.add(adjacent);
                    
                 }
