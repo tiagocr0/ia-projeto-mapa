@@ -29,7 +29,7 @@ public static final int VERTICE_COM_MENOR_DISTANCIA = 0;
 
 	@Override
     public Caminho buscaCustoUniforme(Grafo aGrafo, Vertice aInicial, Vertice aFinal) {
-        reiniciarGrafo(aGrafo);
+		Grafo.reiniciarGrafo(aGrafo);
         aInicial.definirDistancia(0);
         lVerticesAbertos.add(aInicial);
    
@@ -74,13 +74,4 @@ public static final int VERTICE_COM_MENOR_DISTANCIA = 0;
         }
 
     }
-	
-//	Zera as informações dos vertices do gráfico.
-	private static void reiniciarGrafo(Grafo aGrafo) {
-		for (Vertice lVertice : aGrafo.obterVertices()) {
-			lVertice.zerarVisitas();
-			lVertice.zerarDistancia();
-			lVertice.setCaminho("");
-		}
-	}
 }

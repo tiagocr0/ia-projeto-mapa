@@ -184,4 +184,12 @@ public class Grafo {
 		}
 		return resultado;
 	}
+	
+	 public static void reiniciarGrafo(Grafo aGrafo) {
+	        for (Vertice lVertice : aGrafo.obterVertices()) {
+	            lVertice.zerarVisitas();
+	            lVertice.zerarDistancia();
+	            lVertice.setCaminho("");
+	        }
+	    }
 }

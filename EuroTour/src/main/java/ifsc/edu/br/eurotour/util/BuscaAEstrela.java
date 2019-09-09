@@ -20,7 +20,7 @@ public class BuscaAEstrela implements BuscaAEstrelaRepository {
 		final_ = aFinal;
 		List<Vertice> lVerticesAbertos = new ArrayList<>();
 		List<Vertice> lVerticesExpandidos = new ArrayList<>();
-		reiniciarGrafo(aGrafo);
+		Grafo.reiniciarGrafo(aGrafo);
 		aInicial.definirDistancia(0);
 		aInicial.visitar();
 		lVerticesAbertos.add(aInicial);
@@ -51,14 +51,6 @@ public class BuscaAEstrela implements BuscaAEstrelaRepository {
 			}
 		}
 		return Caminho.converter(aGrafo, aFinal, aFinal.obterDistancia());
-	}
-
-	private static void reiniciarGrafo(Grafo aGrafo) {
-		for (Vertice lVertice : aGrafo.obterVertices()) {
-			lVertice.zerarVisitas();
-			lVertice.zerarDistancia();
-			lVertice.setCaminho("");
-		}
 	}
 
 	// Ordena a lista de arcos em ordem crescente

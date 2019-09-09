@@ -18,13 +18,14 @@ public class BuscaBidirecional implements BuscaBidirecionalRepository {
 	public Caminho buscaBidirecional(Grafo aGrafo, Vertice aInicial, Vertice aFinal) {
         Queue<Vertice> queueA = new LinkedList<>();
         Queue<Vertice> queueB = new LinkedList<>();
-        reiniciarGrafo(aGrafo);
+        Grafo.reiniciarGrafo(aGrafo);
         List<Vertice> visitedA = new ArrayList<>();
         List<Vertice> visitedB = new ArrayList<>();
         
         aInicial.visitar();
         aInicial.definirDistancia(0);
         visitedA.add(aInicial);
+        
         aFinal.visitar();
         aFinal.definirDistancia(0);
         visitedB.add(aFinal);
@@ -69,15 +70,6 @@ public class BuscaBidirecional implements BuscaBidirecionalRepository {
         }
         return null;
     }
-    
-    private static void reiniciarGrafo(Grafo aGrafo) {
-        for (Vertice lVertice : aGrafo.obterVertices()) {
-            lVertice.zerarVisitas();
-            lVertice.zerarDistancia();
-            lVertice.setCaminho("");
-        }
-    }
-	
     
     private static String gerarCaminho(Grafo lGrafo,Vertice lVerticeCentral) {
         String lTextCaminhoI = lVerticeCentral.getCaminho().replace(" / " + lVerticeCentral.toString(), "");
