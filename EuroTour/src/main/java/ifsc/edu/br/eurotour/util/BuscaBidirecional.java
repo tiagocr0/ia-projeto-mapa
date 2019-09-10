@@ -11,9 +11,6 @@ import ifsc.edu.br.eurotour.repository.BuscaBidirecionalRepository;
 
 public class BuscaBidirecional implements BuscaBidirecionalRepository {
 
-
-	public static final int VERTICE_COM_MENOR_DISTANCIA = 0;
-	
 	@Override
 	public Caminho buscaBidirecional(Grafo aGrafo, Vertice aInicial, Vertice aFinal) {
 		Grafo.reiniciarGrafo(aGrafo);
@@ -35,7 +32,7 @@ public class BuscaBidirecional implements BuscaBidirecionalRepository {
         lVerticesAbertorA.add(aInicial);
         lVerticesAbertorB.add(aFinal);
         
-        while (!lVerticesAbertorB.isEmpty() || !lVerticesAbertorB.isEmpty()) {
+        while (!lVerticesAbertorA.isEmpty() || !lVerticesAbertorB.isEmpty()) {
             Vertice lVerticeAAB = existeCaminho(lVerticesAbertorA, lVerticesExpandidosA, lVerticesExpandidosB);
             if (lVerticeAAB != null) {
                 String lCaminho = gerarCaminho(aGrafo,lVerticeAAB);
@@ -54,7 +51,7 @@ public class BuscaBidirecional implements BuscaBidirecionalRepository {
     		List<Vertice> aVerticesExpandidosA, List<Vertice> aVerticesExpandidosB) {
     	
         if (!aVerticesAbertos.isEmpty()) {
-            Vertice next = aVerticesAbertos.remove(VERTICE_COM_MENOR_DISTANCIA);
+            Vertice next = aVerticesAbertos.remove(0);
             List<Arco> adjacentNodes = next.obterArcos();
             for (Arco arcosAdjacent : adjacentNodes) {
                 Vertice adjacent = arcosAdjacent.getDestino();
