@@ -18,18 +18,38 @@ public class Nodo {
 		this.proximo = null;
 	}
 
+	/**
+	 * Retorna o {@link Vertice} do Nodo
+	 * 
+	 * @return rótudo do Nodo
+	 */
 	public Vertice getInfo() {
 		return info;
 	}
 
+	/**
+	 * Adiciona um {@link Vertice} novo ao Nodo
+	 * 
+	 * @param x novo {@link Vertice} a ser substituído
+	 */
 	public void setInfo(Vertice x) {
 		this.info = x;
 	}
 
+	/**
+	 * Retorna o valor relativo ao próximo Nodo que este aponta
+	 * 
+	 * @return {@link Nodo} do próximo
+	 */
 	public Nodo getProximo() {
 		return proximo;
 	}
 
+	/**
+	 * Adiciona um {@link Nodo} novo ao próximo
+	 * 
+	 * @param proximo novo {@link Nodo} a ser substituído
+	 */
 	public void setProximo(Nodo proximo) {
 		this.proximo = proximo;
 	}

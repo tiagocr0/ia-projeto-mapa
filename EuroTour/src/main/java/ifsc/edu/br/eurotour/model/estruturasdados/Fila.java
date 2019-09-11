@@ -20,10 +20,20 @@ public class Fila {
 		this.aux = null;
 	}
 
+	/**
+	 * Verifica se a Fila está vazia
+	 * 
+	 * @return true se a fila estiver vazia, e false caso contrário
+	 */
 	public boolean estaVazia() {
 		return this.inicio == null;
 	}
 
+	/**
+	 * Retorna o valor contido no inicio da fila
+	 * 
+	 * @return valor do início da fila
+	 */
 	public Nodo getInicio() {
 		return inicio;
 	}

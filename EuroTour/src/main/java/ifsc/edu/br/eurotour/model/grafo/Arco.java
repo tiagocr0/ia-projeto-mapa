@@ -5,6 +5,12 @@
 
 package ifsc.edu.br.eurotour.model.grafo;
 
+/**
+ * Classe que representa uma aresta de um {@link Vertice}
+ * 
+ * @author Osmar
+ *
+ */
 public class Arco implements Comparable<Arco> {
 
 	private Vertice destino;
@@ -17,14 +23,29 @@ public class Arco implements Comparable<Arco> {
 		this.peso = peso;
 	}
 
+	/**
+	 * Retorna o valor que representa a origem do Arco
+	 * 
+	 * @return {@link Vertice} de origem do arco
+	 */
 	public Vertice getOrigem() {
 		return origem;
 	}
 
+	/**
+	 * Retorna o valor que representa o destino do Arco
+	 * 
+	 * @return {@link Vertice} de destino do arco
+	 */
 	public Vertice getDestino() {
 		return destino;
 	}
 
+	/**
+	 * Retorna o valor que representa o peso do Arco
+	 * 
+	 * @return valor do peso do arco
+	 */
 	public double getPeso() {
 		return peso;
 	}

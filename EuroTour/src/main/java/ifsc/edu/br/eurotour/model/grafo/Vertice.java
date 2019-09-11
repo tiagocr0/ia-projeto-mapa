@@ -51,67 +51,127 @@ public class Vertice implements Serializable {
 		this.rotulo = "";
 	}
 
+	/**
+	 * Adiciona um {@link Arco} a esse vértice, dado um {@link Vertice} de destino e
+	 * seu peso
+	 * 
+	 * @param destino {@link Vertice} de destino do {@link Arco}
+	 * @param peso    valor em ponto flutuante do peso do {@link Arco}
+	 */
 	public void adicionarArco(Vertice destino, double peso) {
 		this.arcos.add(new Arco(this, destino, peso));
 	}
-	
-	public void adicionarArcoHeuristica(Vertice destino, double peso) {
-        this.arcosHeuristica.add(new Arco(this, destino, peso));
-    }
 
+	/**
+	 * Adiciona um {@link Arco} a esse vértice , dado um {@link Vertice} de destino
+	 * e seu peso baseado em um valor Heurístico (teórico)
+	 * 
+	 * @param destino {@link Vertice} de destino do {@link Arco}
+	 * @param peso    valor em ponto flutuante do peso heurístico do {@link Arco}
+	 */
+	public void adicionarArcoHeuristica(Vertice destino, double peso) {
+		this.arcosHeuristica.add(new Arco(this, destino, peso));
+	}
+
+	/**
+	 * Retorna todos os {@link Arco}s do {@link Vertice}
+	 * 
+	 * @return {@link ArrayList} de {@link Arco} do Vértice
+	 */
 	public ArrayList<Arco> obterArcos() {
 		return this.arcos;
 	}
-	
-	public ArrayList<Arco> obterArcosHeuristica() {
-        return this.arcosHeuristica;
-    }
 
-	public String obterLinhaArquivo() {
-		String linha = this.rotulo;
-		for (Arco arcoAtual : arcos) {
-			linha += "\t" + arcoAtual.toString();
-		}
-		return linha;
+	/**
+	 * Retorna todos os {@link Arco}s que tem valores Heurísticos do {@link Vertice}
+	 * 
+	 * @return {@link ArrayList} de {@link Arco} do Vértice
+	 */
+	public ArrayList<Arco> obterArcosHeuristica() {
+		return this.arcosHeuristica;
 	}
 
+	/**
+	 * Simboliza que o {@link Vertice} já foi visitado
+	 */
 	public void visitar() {
 		this.visitado++;
 	}
 
+	/**
+	 * Retorna o valor relativo a quantas visitas foram realizadas a partir desse
+	 * {@link Vertice}
+	 * 
+	 * @return número de vezes que foi visitado
+	 */
 	public int obterVisitado() {
 		return this.visitado;
 	}
 
+	/**
+	 * Limpa e zera o valor relacionado a se o {@link Vertice} foi visitado
+	 */
 	public void zerarVisitas() {
 		this.visitado = 0;
 	}
 
+	/**
+	 * Adiciona um valor infinito a distancia para "zerá-la"
+	 */
 	public void zerarDistancia() {
 		this.distancia = Double.POSITIVE_INFINITY;
 	}
 
+	/**
+	 * Define o valor da distância do {@link Vertice}
+	 * 
+	 * @param distancia número que representa a distância do vértice da raiz
+	 */
 	public void definirDistancia(double distancia) {
 		this.distancia = distancia;
 	}
-	
-	public void definirDistanciaHeuristica(double distanciaEuristica) {
-        this.distanciaHeuristica = distanciaEuristica;
-    }
 
+	/**
+	 * Define o valor da distância heurística do {@link Vertice}
+	 * 
+	 * @param distancia número que representa a distância heurística do vértice da
+	 *                  raiz
+	 */
+	public void definirDistanciaHeuristica(double distanciaEuristica) {
+		this.distanciaHeuristica = distanciaEuristica;
+	}
+
+	/**
+	 * Retorna o valor que representa a distância da raiz até este {@link Vertice}
+	 * 
+	 * @return distância total da raiz até este {@link Vertice}
+	 */
 	public double obterDistancia() {
 		return this.distancia;
 	}
-	
-	public double obterDistanciaHeuristica(Vertice final_) {
-        for (Arco arco : arcosHeuristica) {
-            if(arco.getDestino().equals(final_)){
-                return arco.getPeso();
-            }
-        }
-        return this.distanciaHeuristica;
-    }
 
+	/**
+	 * Retorna o valor que representa a distância heurística da raiz até este
+	 * {@link Vertice}
+	 * 
+	 * @return distância heurística total da raiz até este {@link Vertice}
+	 */
+	public double obterDistanciaHeuristica(Vertice final_) {
+		for (Arco arco : arcosHeuristica) {
+			if (arco.getDestino().equals(final_)) {
+				return arco.getPeso();
+			}
+		}
+		return this.distanciaHeuristica;
+	}
+
+	/**
+	 * Retorna qual o caminho percorrido (pais, avós, bisavos,etc.) deste
+	 * {@link Vertice}
+	 * 
+	 * @return {@link String} contendo todo o caminho para chegar a este
+	 *         {@link Vertice}
+	 */
 	public String getCaminho() {
 		if (caminho == null || caminho.equals("")) {
 			return this.rotulo;
@@ -120,21 +180,38 @@ public class Vertice implements Serializable {
 		return caminho + " / " + nome[0].trim();
 	}
 
+	/**
+	 * Atribui o rótulo ao caminho deste vértice
+	 * 
+	 * @param caminho {@link String} com o caminho para chegar a este
+	 *                {@link Vertice}
+	 */
 	public void setCaminho(String caminho) {
 		this.caminho = caminho;
 	}
-	
+
+	/**
+	 * Retorna o valor do caminho inverso do {@link Vertice} (Destino até a Origem).
+	 * É utilizado para a busca heurística A*
+	 * 
+	 * @return {@link String} com o caminho inverso do {@link Vertice}
+	 */
 	public String getCaminhoInverso() {
-        if(caminhoInverso == null || caminhoInverso.equals("")) {
-            return this.rotulo;
-        }
-        return caminhoInverso + " / " + this.rotulo;
-    }
-    
-    
+		if (caminhoInverso == null || caminhoInverso.equals("")) {
+			return this.rotulo;
+		}
+		return caminhoInverso + " / " + this.rotulo;
+	}
+
+	/**
+	 * Atribui o valor ao caminho inverso do {@link Vertice} (Destino até a Origem).
+	 * É utilizado para a busca heurística A*
+	 * 
+	 * @param caminhoInverso rótulo que contém o caminho inverso do {@link Vertice}
+	 */
 	public void setCaminhoInverso(String caminhoInverso) {
-        this.caminhoInverso = caminhoInverso;
-    }
+		this.caminhoInverso = caminhoInverso;
+	}
 
 	@Override
 	public String toString() {

@@ -10,20 +10,35 @@ import ifsc.edu.br.eurotour.model.grafo.Vertice;
  */
 public class Pilha {
 
+	private Nodo topo;
+
 	public Pilha() {
 		this.topo = null;
 	}
 
-	private Nodo topo;
-
+	/**
+	 * Retorna o valor do topo da pilha
+	 * 
+	 * @return {@link Nodo} presente no topo da pilha
+	 */
 	public Nodo getTopo() {
 		return topo;
 	}
 
+	/**
+	 * Adiciona num novo {@link Nodo} ao topo da pilha
+	 * 
+	 * @param topo {@link Nodo} a ser adicionado a pilha
+	 */
 	public void setTopo(Nodo topo) {
 		this.topo = topo;
 	}
 
+	/**
+	 * Verifica se a Pilha está vazia
+	 * 
+	 * @return true se a pilha estiver vazia, e false caso contrário
+	 */
 	public boolean estaVazia() {
 		return this.topo == null;
 	}

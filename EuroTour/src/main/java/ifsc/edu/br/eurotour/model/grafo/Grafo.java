@@ -5,26 +5,13 @@
 
 package ifsc.edu.br.eurotour.model.grafo;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
-
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.xssf.usermodel.XSSFCell;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
  * Classe para abstrair grafos direcionados. A classe utiliza representação por
  * lista de adjacência. IFSC - Lages Prof. Vilson Heck Junior
+ * 
+ * Modificado por @author Osmar para simplificar a classe e seu uso
  */
 public class Grafo {
 
@@ -34,149 +21,42 @@ public class Grafo {
 
 	}
 
+	/**
+	 * Adiciona um {@link Vertice} ao grafo com o rótulo desejado
+	 * 
+	 * @param rotulo Rótulo do {@link Vertice} a ser adicionado ao grafo
+	 */
 	public void adicionarVertice(String rotulo) {
 		Vertice novo = new Vertice(rotulo);
 		vertices.add(novo);
 	}
 
+	/**
+	 * Retorna todos os {@link Vertice}s presentes no Grafo
+	 * 
+	 * @return {@link ArrayList} de todos os {@link Vertice}s do Grafo
+	 */
 	public ArrayList<Vertice> obterVertices() {
 		return this.vertices;
 	}
 
+	/**
+	 * Obtém dado {@link Vertice} a partir de seu rótulo, caso houver dentro do
+	 * Grafo
+	 * 
+	 * @param rotulo Rótulo do {@link Vertice} a ser buscado
+	 * @return {@link Vertice} caso encontrar este no Grafo, ou null caso contrário
+	 */
 	public Vertice pesquisaVertice(String rotulo) {
 		int indice = vertices.indexOf(new Vertice(rotulo));
 		return (indice >= 0) ? vertices.get(indice) : null;
 	}
 
-	public void gravarArquivo(File arquivo) throws IOException {
-		BufferedWriter escritor = new BufferedWriter(new FileWriter(arquivo));
-		for (Vertice vertice : vertices) {
-			escritor.write(vertice.obterLinhaArquivo() + "\n");
-		}
-		escritor.close();
-	}
-
 	/**
-	 * Esta função lê um arquivo texto contendo o grafo representado em lista de
-	 * adjacência. O arquivo deve conter uma linha para vértice, tendo como a
-	 * primeira informação linha o nome do vértice e, separados por tabulação, os
-	 * nomes e pesos dos demais vértices com os quais existem arcos. Ex.: A B,2 C,4
-	 * B A,1.3 C B,2.5 Não devem haver caracteres de espaço. Os pesos podem ser
-	 * inteiros ou reais.
+	 * Retorna todos os {@link Arco} presentes no Grafo
 	 * 
-	 * @param arquivo Objeto da classe File para o arquivo a ser lido.
-	 * @throws IOException
+	 * @return {@link ArrayList} contendo todos os {@link Arco}s do Grafo
 	 */
-	public void lerArquivo(File arquivo) throws IOException {
-		BufferedReader leitor = new BufferedReader(new FileReader(arquivo));
-		ArrayList<String[]> linhas = new ArrayList<>();
-		String linhaAtual = leitor.readLine();
-		while (linhaAtual != null) {
-			String[] valores = linhaAtual.split("\t");
-			linhas.add(valores);
-			this.adicionarVertice(valores[0]);
-			linhaAtual = leitor.readLine();
-		}
-
-		for (String[] linha : linhas) {
-			for (int i = 1; i < linha.length; i++) {
-				String[] termos = linha[i].split(",");
-				Vertice conecta = this.pesquisaVertice(termos[0]);
-				double peso = Double.parseDouble(termos[1]);
-				this.pesquisaVertice(linha[0]).adicionarArco(conecta, peso);
-				// System.out.println(linha[0] + " com " + termos[0] + " peso " + peso);
-			}
-		}
-		leitor.close();
-	}
-
-	public void lerArquivoExcel(FileInputStream arquivo) throws IOException {
-		// InputStream excelFileToRead = new FileInputStream(arquivo);
-		XSSFWorkbook wb = new XSSFWorkbook(arquivo);
-
-		XSSFSheet planilha = wb.getSheetAt(0);
-		XSSFRow linha;
-		XSSFCell celula;
-		Vertice conecta;
-
-		Iterator<Row> linhas = planilha.rowIterator();
-
-		while (linhas.hasNext()) {
-			linha = (XSSFRow) linhas.next();
-
-			if (linha.getRowNum() > 1) {
-
-				Iterator<Cell> celulas = linha.cellIterator();
-				conecta = null;
-
-				while (celulas.hasNext()) {
-					celula = (XSSFCell) celulas.next();
-
-					if (celula.getColumnIndex() == 0) {
-						adicionarVertice(celula.getStringCellValue());
-					} else {
-						break;
-					}
-				}
-			}
-		}
-
-		linhas = planilha.rowIterator();
-
-		while (linhas.hasNext()) {
-			linha = (XSSFRow) linhas.next();
-
-			if (linha.getRowNum() > 1) {
-
-				Iterator<Cell> celulas = linha.cellIterator();
-				conecta = null;
-
-				while (celulas.hasNext()) {
-					celula = (XSSFCell) celulas.next();
-
-					if (celula.getColumnIndex() == 0) {
-						conecta = this.pesquisaVertice(celula.getStringCellValue());
-					} else {
-						if (celula.getCellType().toString().equals("NUMERIC")) {
-							double peso = celula.getNumericCellValue();
-							this.pesquisaVertice(
-									planilha.getRow(1).getCell(celula.getColumnIndex()).getStringCellValue())
-									.adicionarArco(conecta, peso);
-						}
-					}
-				}
-			}
-		}
-
-		planilha = wb.getSheetAt(1);
-		linhas = planilha.rowIterator();
-
-		while (linhas.hasNext()) {
-			linha = (XSSFRow) linhas.next();
-
-			if (linha.getRowNum() > 1) {
-
-				Iterator<Cell> celulas = linha.cellIterator();
-				conecta = null;
-
-				while (celulas.hasNext()) {
-					celula = (XSSFCell) celulas.next();
-
-					if (celula.getColumnIndex() == 0) {
-						conecta = this.pesquisaVertice(celula.getStringCellValue());
-					} else {
-						if (celula.getCellType().equals("NUMERIC")) {
-							double peso = celula.getNumericCellValue();
-							this.pesquisaVertice(planilha.getRow(1).getCell(celula.getColumnIndex()).getStringCellValue()).adicionarArcoHeuristica(conecta,
-							 peso);
-						}
-					}
-				}
-			}
-		}
-		wb.close();
-	}
-
 	public ArrayList<Arco> obterTodosOsArcos() {
 		ArrayList<Arco> resultado = new ArrayList<>();
 		for (Vertice vertice : vertices) {
@@ -184,12 +64,18 @@ public class Grafo {
 		}
 		return resultado;
 	}
-	
-	 public static void reiniciarGrafo(Grafo aGrafo) {
-	        for (Vertice lVertice : aGrafo.obterVertices()) {
-	            lVertice.zerarVisitas();
-	            lVertice.zerarDistancia();
-	            lVertice.setCaminho("");
-	        }
-	    }
+
+	/**
+	 * Para cada um dos {@link Vertice}s presentes no Grafo, zera sua distância, se
+	 * já foi visitado e seus pais, avôs, etc.
+	 * 
+	 * @param aGrafo
+	 */
+	public static void reiniciarGrafo(Grafo aGrafo) {
+		for (Vertice lVertice : aGrafo.obterVertices()) {
+			lVertice.zerarVisitas();
+			lVertice.zerarDistancia();
+			lVertice.setCaminho("");
+		}
+	}
 }
