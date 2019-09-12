@@ -63,6 +63,12 @@ public class DataRoutesDataAccess implements DataRoutesRepository {
 		wb.close();
 	}
 
+	/**
+	 * A partir da planilha, adiciona todos os {@link Vertice}s e seus {@link Arco}s
+	 * respectivos, e finalmente, adiciona ao {@link Grafo}
+	 * 
+	 * @param planilha Página da planilha a ser extraído os dados
+	 */
 	private void adicionaVerticesDaTabela(XSSFSheet planilha) {
 		// iterador de cada linha
 		Iterator<Row> linhas = planilha.rowIterator();

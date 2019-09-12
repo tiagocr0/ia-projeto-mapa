@@ -10,7 +10,7 @@ import ifsc.edu.br.eurotour.model.mapeamento.Caminho;
 import ifsc.edu.br.eurotour.repository.BuscaProfundidadeRepository;
 
 /**
- * Classe que representa uma busca em profundidade
+ * Classe que representa uma busca em profundidade em um {@link Grafo}.
  * 
  * @author Osmar
  *

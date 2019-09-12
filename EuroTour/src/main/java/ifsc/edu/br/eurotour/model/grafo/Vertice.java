@@ -5,7 +5,8 @@ import java.util.ArrayList;
 
 /**
  * Classe para abstrair vértices de grafos direcionados IFSC - Lages Prof.
- * Vilson Heck Junior
+ * Vilson Heck Junior. <br>
+ * Modificado por Osmar para simplificar a classe e seu uso.
  */
 
 public class Vertice implements Serializable {

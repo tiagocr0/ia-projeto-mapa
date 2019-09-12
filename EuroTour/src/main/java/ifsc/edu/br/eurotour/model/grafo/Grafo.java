@@ -9,9 +9,8 @@ import java.util.ArrayList;
 
 /**
  * Classe para abstrair grafos direcionados. A classe utiliza representação por
- * lista de adjacência. IFSC - Lages Prof. Vilson Heck Junior
- * 
- * Modificado por @author Osmar para simplificar a classe e seu uso
+ * lista de adjacência. IFSC - Lages Prof. Vilson Heck Junior. <br>
+ * Modificado por Osmar para simplificar a classe e seu uso.
  */
 public class Grafo {
 
