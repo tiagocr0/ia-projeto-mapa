@@ -74,7 +74,8 @@ public class BuscaBidirecional implements BuscaBidirecionalRepository {
     }
     
     private static String gerarCaminho(Grafo lGrafo,Vertice lVerticeCentral) {
-        String lTextCaminhoI = lVerticeCentral.getCaminho().replace(" / " + lVerticeCentral.toString(), "");
+    	String lCaminhoComAtual = lVerticeCentral.getCaminho();
+        String lTextCaminhoI = lVerticeCentral.getCaminho().replace(" / " + lVerticeCentral.toString(), "").replace(lVerticeCentral.toString(), "");;
         String lTextCaminhoII = lVerticeCentral.getCaminhoInverso();
         
         String [] lCaminho = revertArray(lTextCaminhoI.split(" / "));
