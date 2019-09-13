@@ -50,64 +50,87 @@ public class DataRoutesDataAccess implements DataRoutesRepository {
 	private void lerArquivoExcel(FileInputStream arquivo) throws IOException {
 		XSSFWorkbook wb = new XSSFWorkbook(arquivo);
 
-		// Para ler os dados da primeira folha da planilha
 		XSSFSheet planilha = wb.getSheetAt(0);
+		XSSFRow linha;
+		XSSFCell celula;
+		Vertice conecta;
 
-		adicionaVerticesDaTabela(planilha);
-
-		// Para ler os dados da segunda folha da planilha
-		planilha = wb.getSheetAt(1);
-
-		adicionaVerticesDaTabela(planilha);
-
-		wb.close();
-	}
-
-	/**
-	 * A partir da planilha, adiciona todos os {@link Vertice}s e seus {@link Arco}s
-	 * respectivos, e finalmente, adiciona ao {@link Grafo}
-	 * 
-	 * @param planilha Página da planilha a ser extraído os dados
-	 */
-	private void adicionaVerticesDaTabela(XSSFSheet planilha) {
-		// iterador de cada linha
 		Iterator<Row> linhas = planilha.rowIterator();
 
-		XSSFRow linha;
-
-		XSSFCell celula;
-
-		// irá se repetir euquanto tiver linhas da planílha a serem lidas
 		while (linhas.hasNext()) {
 			linha = (XSSFRow) linhas.next();
 
 			if (linha.getRowNum() > 1) {
+
 				Iterator<Cell> celulas = linha.cellIterator();
-				Vertice conecta = null;
+
 				while (celulas.hasNext()) {
 					celula = (XSSFCell) celulas.next();
 
-					// caso seja a primeira coluna, que contém somente os rótulos dos países,
-					// um vertice com esse rótulo é criado e adicionado a variável conecta,
-					// para que caso caia no else if, adicione o arco ao vértice correto
 					if (celula.getColumnIndex() == 0) {
 						grafo.adicionarVertice(celula.getStringCellValue());
-						conecta = grafo.pesquisaVertice(celula.getStringCellValue());
-
-					} else if (celula.getCellType().toString().equals("NUMERIC")) {
-
-						if (conecta != null) {
-							double peso = celula.getNumericCellValue();
-							grafo.pesquisaVertice(
-									planilha.getRow(1).getCell(celula.getColumnIndex()).getStringCellValue())
-									.adicionarArco(conecta, peso);
-						}
-
 					} else {
 						break;
 					}
 				}
 			}
 		}
+
+		linhas = planilha.rowIterator();
+
+		while (linhas.hasNext()) {
+			linha = (XSSFRow) linhas.next();
+
+			if (linha.getRowNum() > 1) {
+
+				Iterator<Cell> celulas = linha.cellIterator();
+				conecta = null;
+
+				while (celulas.hasNext()) {
+					celula = (XSSFCell) celulas.next();
+
+					if (celula.getColumnIndex() == 0) {
+						conecta = grafo.pesquisaVertice(celula.getStringCellValue());
+					} else {
+						if (celula.getCellType().toString().equals("NUMERIC")) {
+							double peso = celula.getNumericCellValue();
+							grafo.pesquisaVertice(
+									planilha.getRow(1).getCell(celula.getColumnIndex()).getStringCellValue())
+									.adicionarArco(conecta, peso);
+						}
+					}
+				}
+			}
+		}
+
+		planilha = wb.getSheetAt(1);
+		linhas = planilha.rowIterator();
+
+		while (linhas.hasNext()) {
+			linha = (XSSFRow) linhas.next();
+
+			if (linha.getRowNum() > 1) {
+
+				Iterator<Cell> celulas = linha.cellIterator();
+				conecta = null;
+
+				while (celulas.hasNext()) {
+					celula = (XSSFCell) celulas.next();
+
+					if (celula.getColumnIndex() == 0) {
+						conecta = grafo.pesquisaVertice(celula.getStringCellValue());
+					} else {
+						if (celula.getCellType().equals("NUMERIC")) {
+							double peso = celula.getNumericCellValue();
+							grafo.pesquisaVertice(
+									planilha.getRow(1).getCell(celula.getColumnIndex()).getStringCellValue())
+									.adicionarArcoHeuristica(conecta, peso);
+						}
+					}
+				}
+			}
+		}
+		wb.close();
 	}
+
 }
