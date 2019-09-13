@@ -13,40 +13,42 @@ public class BuscaBidirecional implements BuscaBidirecionalRepository {
 
 	@Override
 	public Caminho buscaBidirecional(Grafo aGrafo, Vertice aInicial, Vertice aFinal) {
-		Grafo.reiniciarGrafo(aGrafo);
-		
-		List<Vertice> lVerticesAbertorA = new ArrayList<>();
-		List<Vertice> lVerticesAbertorB = new ArrayList<>();
-        
-        List<Vertice> lVerticesExpandidosA = new ArrayList<>();
-        List<Vertice> lVerticesExpandidosB = new ArrayList<>();
-        
-        aInicial.visitar();
-        aInicial.definirDistancia(0);
-        lVerticesExpandidosA.add(aInicial);
-        
-        aFinal.visitar();
-        aFinal.definirDistancia(0);
-        lVerticesExpandidosB.add(aFinal);
-        
-        lVerticesAbertorA.add(aInicial);
-        lVerticesAbertorB.add(aFinal);
-        
-        while (!lVerticesAbertorA.isEmpty() || !lVerticesAbertorB.isEmpty()) {
-            Vertice lVerticeAAB = existeCaminho(lVerticesAbertorA, lVerticesExpandidosA, lVerticesExpandidosB);
-            if (lVerticeAAB != null) {
-                String lCaminho = gerarCaminho(aGrafo,lVerticeAAB);
-                return Caminho.converter(aGrafo, lCaminho, lVerticeAAB.obterDistancia());
-            }
-            Vertice lVerticeBBA = existeCaminho(lVerticesAbertorB, lVerticesExpandidosB, lVerticesExpandidosA);
-            if (lVerticeBBA != null) {
-                String lCaminho = gerarCaminho(aGrafo,lVerticeBBA);
-                return Caminho.converter(aGrafo, lCaminho, lVerticeBBA.obterDistancia());
-            }
-        }
+		if(!aInicial.equals(aFinal)) {
+			Grafo.reiniciarGrafo(aGrafo);
+			
+			List<Vertice> lVerticesAbertorA = new ArrayList<>();
+			List<Vertice> lVerticesAbertorB = new ArrayList<>();
+	        
+	        List<Vertice> lVerticesExpandidosA = new ArrayList<>();
+	        List<Vertice> lVerticesExpandidosB = new ArrayList<>();
+	        
+	        aInicial.visitar();
+	        aInicial.definirDistancia(0);
+	        lVerticesExpandidosA.add(aInicial);
+	        
+	        aFinal.visitar();
+	        aFinal.definirDistancia(0);
+	        lVerticesExpandidosB.add(aFinal);
+	        
+	        lVerticesAbertorA.add(aInicial);
+	        lVerticesAbertorB.add(aFinal);
+	        
+	        while (!lVerticesAbertorA.isEmpty() || !lVerticesAbertorB.isEmpty()) {
+	            Vertice lVerticeAAB = existeCaminho(lVerticesAbertorA, lVerticesExpandidosA, lVerticesExpandidosB);
+	            if (lVerticeAAB != null) {
+	                String lCaminho = gerarCaminho(aGrafo,lVerticeAAB);
+	                return Caminho.converter(aGrafo, lCaminho, lVerticeAAB.obterDistancia());
+	            }
+	            Vertice lVerticeBBA = existeCaminho(lVerticesAbertorB, lVerticesExpandidosB, lVerticesExpandidosA);
+	            if (lVerticeBBA != null) {
+	                String lCaminho = gerarCaminho(aGrafo,lVerticeBBA);
+	                return Caminho.converter(aGrafo, lCaminho, lVerticeBBA.obterDistancia());
+	            }
+	        }
+		}
         return Caminho.converter(aGrafo, aFinal, aFinal.obterDistancia());
-    }
-    
+	}
+	
     private Vertice existeCaminho(List<Vertice> aVerticesAbertos,
     		List<Vertice> aVerticesExpandidosA, List<Vertice> aVerticesExpandidosB) {
     	
