@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import ifsc.edu.br.eurotour.model.grafo.Arco;
 import ifsc.edu.br.eurotour.model.grafo.Grafo;
 import ifsc.edu.br.eurotour.model.grafo.Vertice;
 import ifsc.edu.br.eurotour.model.mapeamento.Caminho;
@@ -22,6 +23,14 @@ import ifsc.edu.br.eurotour.services.BuscaBidirecionalService;
 import ifsc.edu.br.eurotour.services.BuscaCustoUniformeService;
 import ifsc.edu.br.eurotour.services.BuscaProfundidadeService;
 import ifsc.edu.br.eurotour.services.DataRoutesService;
+
+/**
+ * Camada que provê funções para comunicação com o front-end que é chamado
+ * através da requisição http://localhost:8081/busca
+ * 
+ * @author Tiago
+ *
+ */
 
 @RestController
 @RequestMapping(value = "/busca")
@@ -38,6 +47,14 @@ public class DataRoutesResource {
 
 	private DataRoutesService dataRoutes;
 
+	/**
+	 * Realiza a leitura do arquivo Planilha de Países-Capitais Ordenada.xlsx e
+	 * chama método {@link DataRoutesService#pegarArquivo} para pegar o arquivo
+	 * 
+	 * @return {@link Grafo} que contém os {@link Vertice}s e os {@link Arco}s
+	 * @throws Exceção no caso de erro de leitura do arquivo
+	 */
+
 	public DataRoutesResource() {
 		dataRoutes = new DataRoutesService();
 		try {
@@ -49,8 +66,14 @@ public class DataRoutesResource {
 		}
 	}
 
-	/*
-	 * Método que recebe um objeto Front como parâmetro e irá retornar o caminho
+	/**
+	 * Realiza a comunicação com o front-end recebendo como parâmetro um objeto no
+	 * formato {@link Front} e realizando o tratamento de qual busca será realizada
+	 * 
+	 * @param front {@link Front} que é o formato que será mandado pelo front
+	 * @return {@link Caminho} que contém o caminho que deve ser percorrido para
+	 *         chegar de {@link Vertice} origem até um {@link Vertice} destino
+	 * @throws Exceção no caso de algoritmo inválido
 	 */
 	@CrossOrigin
 	@RequestMapping(method = RequestMethod.POST)
@@ -62,7 +85,7 @@ public class DataRoutesResource {
 
 		switch (algoritmo) {
 		case 0:
-			// Realiza a busca de Profundidade
+			// Realiza a busca de buscaProfundidade
 			caminho = profundidade.buscaProfundidade(grafo, origem, destino);
 			return new ResponseEntity<Caminho>(caminho, HttpStatus.OK);
 		case 1:
