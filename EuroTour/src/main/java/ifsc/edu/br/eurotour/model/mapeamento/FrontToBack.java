@@ -1,5 +1,13 @@
 package ifsc.edu.br.eurotour.model.mapeamento;
 
+/**
+ * Classe que recebe o tipo do algoritmo que será usado, a origem e o destino do
+ * front-end
+ * 
+ * @author Tiago
+ *
+ */
+
 public class FrontToBack {
 
 	private int algoritmo;
