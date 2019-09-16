@@ -37,7 +37,7 @@ public class BuscaDeCustoUniforme implements BuscaCustoUniformeRepository, Compa
 	 * 
 	 * */
 	@Override
-	public Caminho calcular(Grafo aGrafo, Vertice aInicial, Vertice aFinal) {
+	public Caminho buscaCustoUniforme(Grafo aGrafo, Vertice aInicial, Vertice aFinal) {
 		Grafo.reiniciarGrafo(aGrafo);
 		aInicial.definirDistancia(0);
 		lVerticesAbertos.add(aInicial);

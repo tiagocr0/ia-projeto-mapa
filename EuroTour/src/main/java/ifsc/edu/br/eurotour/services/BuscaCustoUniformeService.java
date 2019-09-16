@@ -33,7 +33,7 @@ public class BuscaCustoUniformeService {
 	 * @param destino {@link Vertice} que representa o destino da busca
 	 * @return {@link Caminho} que deve ser percorrido
 	 */
-	public Caminho calcular(Grafo g, Vertice inicial, Vertice destino) {
-		return rep.calcular(g, inicial, destino);
+	public Caminho buscaCustoUniforme(Grafo g, Vertice inicial, Vertice destino) {
+		return rep.buscaCustoUniforme(g, inicial, destino);
 	}
 }

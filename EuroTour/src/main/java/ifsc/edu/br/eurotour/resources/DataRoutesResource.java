@@ -98,7 +98,7 @@ public class DataRoutesResource {
 			return new ResponseEntity<Caminho>(caminho, HttpStatus.OK);
 		case 3:
 			// Realiza a busca de Custo Uniforme
-			caminho = custoUniforme.calcular(grafo, origem, destino);
+			caminho = custoUniforme.buscaCustoUniforme(grafo, origem, destino);
 			return new ResponseEntity<Caminho>(caminho, HttpStatus.OK);
 		case 4:
 			// Realiza a busca de A*
