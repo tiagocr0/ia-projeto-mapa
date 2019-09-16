@@ -1,54 +1,86 @@
 package ifsc.edu.br.eurotour.util;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
+
 import ifsc.edu.br.eurotour.model.grafo.Arco;
 import ifsc.edu.br.eurotour.model.grafo.Grafo;
 import ifsc.edu.br.eurotour.model.grafo.Vertice;
 import ifsc.edu.br.eurotour.model.mapeamento.Caminho;
 import ifsc.edu.br.eurotour.repository.BuscaBidirecionalRepository;
-
+/**
+ * 
+ * 
+ * @author equipe.mapa
+ * 
+ * */
 public class BuscaBidirecional implements BuscaBidirecionalRepository {
 
+	
+	/**
+	 * 
+	 * Através do caminho do vertice inicial e do vertice final, monta um possível caminho entre eles.
+	 * 
+	 * @param aGrafo - Parametro utilizado para rezetar as informações do grafo.
+	 * @param aInicial - Ponto inicial, vertice que inicia a busca pelo ponto de partida. 
+	 * @param aFinal - Objetivo, vertice que inicia a busca pelo objetivo.
+	 * 
+	 * @param Caminho para ser exibido na parte gráfica.
+	 * 
+	 * */
 	@Override
 	public Caminho buscaBidirecional(Grafo aGrafo, Vertice aInicial, Vertice aFinal) {
 		if(!aInicial.equals(aFinal)) {
 			Grafo.reiniciarGrafo(aGrafo);
 			
+//			Listas de vertices que guardarão os vertices que serão explorados.
 			List<Vertice> lVerticesAbertorA = new ArrayList<>();
 			List<Vertice> lVerticesAbertorB = new ArrayList<>();
-	        
+			
+			
+//	        Vertices que serão resposavel por verificar se existe um caminho.
 	        List<Vertice> lVerticesExpandidosA = new ArrayList<>();
 	        List<Vertice> lVerticesExpandidosB = new ArrayList<>();
 	        
-	        aInicial.visitar();
+//	        Adicionando pontos de partida para realizar as buscas.
 	        aInicial.definirDistancia(0);
 	        lVerticesExpandidosA.add(aInicial);
 	        
-	        aFinal.visitar();
 	        aFinal.definirDistancia(0);
 	        lVerticesExpandidosB.add(aFinal);
 	        
 	        lVerticesAbertorA.add(aInicial);
 	        lVerticesAbertorB.add(aFinal);
 	        
+//	        Realiza as verificações para ver se existe um caminho entre o vertice final com o vertice inicial.
 	        while (!lVerticesAbertorA.isEmpty() || !lVerticesAbertorB.isEmpty()) {
 	            Vertice lVerticeAAB = existeCaminho(lVerticesAbertorA, lVerticesExpandidosA, lVerticesExpandidosB);
 	            if (lVerticeAAB != null) {
-	                String lCaminho = gerarCaminho(aGrafo,lVerticeAAB);
-	                return Caminho.converter(aGrafo, lCaminho, lVerticeAAB.obterDistancia());
+	                return Caminho.converter(aGrafo, gerarCaminho(lVerticeAAB), lVerticeAAB.obterDistancia());
 	            }
 	            Vertice lVerticeBBA = existeCaminho(lVerticesAbertorB, lVerticesExpandidosB, lVerticesExpandidosA);
 	            if (lVerticeBBA != null) {
-	                String lCaminho = gerarCaminho(aGrafo,lVerticeBBA);
-	                return Caminho.converter(aGrafo, lCaminho, lVerticeBBA.obterDistancia());
+	                return Caminho.converter(aGrafo, gerarCaminho(lVerticeBBA), lVerticeBBA.obterDistancia());
 	            }
 	        }
 		}
         return Caminho.converter(aGrafo, aFinal, aFinal.obterDistancia());
 	}
 	
+	
+	
+	/**
+     * 
+     * Verifica se existe um caminho entre, caso exista uma interseção retorna o vertice central para criar o caminho
+     * e mostrar na tela.
+     * 
+     * @param aVerticesAbertos - Lista de vertices que ainda vão ser explorados.
+     * @param aVerticesExpandidosA - Lista de vertices já explorados do caminho A ou B.
+     * @param aVerticesExpandidosB - Lista de vertices já explorados do caminho A ou B.
+     * 
+     * @return Vertice que faz interseção entre os dois caminhos. 
+     * 
+     * */
     private Vertice existeCaminho(List<Vertice> aVerticesAbertos,
     		List<Vertice> aVerticesExpandidosA, List<Vertice> aVerticesExpandidosB) {
     	
@@ -75,10 +107,19 @@ public class BuscaBidirecional implements BuscaBidirecionalRepository {
         return null;
     }
     
-    private static String gerarCaminho(Grafo lGrafo,Vertice lVerticeCentral) {
-    	String lCaminhoComAtual = lVerticeCentral.getCaminho();
-        String lTextCaminhoI = lVerticeCentral.getCaminho().replace(" / " + lVerticeCentral.toString(), "").replace(lVerticeCentral.toString(), "");;
-        String lTextCaminhoII = lVerticeCentral.getCaminhoInverso();
+    
+    /**
+     * 
+     * Cria o caminho através do vertice central em que os dois caminhos se encontraram
+     * 
+     * @param lVerticeCentral - Vertice em que os caminhos se encontram.
+     * 
+     * @return Caminho formatado para gerar o objeto que será enviado para a tela
+     * 
+     * */
+    private static String gerarCaminho(Vertice aVerticeCentral) {
+        String lTextCaminhoI = aVerticeCentral.getCaminho().replace(" / " + aVerticeCentral.toString(), "").replace(aVerticeCentral.toString(), "");;
+        String lTextCaminhoII = aVerticeCentral.getCaminhoInverso();
         
         String [] lCaminho = revertArray(lTextCaminhoI.split(" / "));
         for(int indice = 0; indice < lCaminho.length; indice++) {
@@ -87,11 +128,23 @@ public class BuscaBidirecional implements BuscaBidirecionalRepository {
         return lTextCaminhoII;
     }
     
-    private static String[] revertArray(String[] caminho) {
-        String[] novo = new String[caminho.length]; 
-        int j = caminho.length; 
-        for (int i = 0; i < caminho.length; i++) { 
-            novo[j - 1] = caminho[i]; 
+    
+    /**
+     * 
+     * Invernte um vetor do tipo String, deixando os itens da últimas posições nas primeira e os primeiros nas últimas.
+     * 
+     * ARRAY[0] = últimoItem, ARRAY[1] = penúltimoItem, ARRAY[2] = antepenúltimoItem ...
+     * 
+     * @param caminho - caminho para ser invertido.
+     * 
+     * @return Array com os itens invertidos.
+     * 
+     * */
+    private static String[] revertArray(String[] aCaminho) {
+        String[] novo = new String[aCaminho.length]; 
+        int j = aCaminho.length; 
+        for (int i = 0; i < aCaminho.length; i++) { 
+            novo[j - 1] = aCaminho[i]; 
             j = j - 1; 
         } 
         return novo;
