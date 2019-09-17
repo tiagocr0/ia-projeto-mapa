@@ -9,6 +9,12 @@ import ifsc.edu.br.eurotour.model.grafo.Vertice;
 import ifsc.edu.br.eurotour.model.mapeamento.Caminho;
 import ifsc.edu.br.eurotour.repository.BuscaAprofundamentoIterativoRepository;
 
+/**
+ * Realiza a Busca de Aprofundamento Iterativo através do método de mesmo nome
+ * 
+ * @author equipe.mapa
+ *
+ */
 public class BuscaAprofundamentoIterativo implements BuscaAprofundamentoIterativoRepository {
 
 	// Variável de controle para caso o destino seja encontrado

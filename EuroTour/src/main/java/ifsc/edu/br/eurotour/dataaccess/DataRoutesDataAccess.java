@@ -19,6 +19,13 @@ import ifsc.edu.br.eurotour.model.grafo.Grafo;
 import ifsc.edu.br.eurotour.model.grafo.Vertice;
 import ifsc.edu.br.eurotour.repository.DataRoutesRepository;
 
+/**
+ * Classe que representa o acesso concreto aos dados. Neste caso, serão feitas
+ * operações sobre uma planilha Excel
+ * 
+ * @author Osmar
+ *
+ */
 public class DataRoutesDataAccess implements DataRoutesRepository {
 
 	private Grafo grafo = new Grafo();

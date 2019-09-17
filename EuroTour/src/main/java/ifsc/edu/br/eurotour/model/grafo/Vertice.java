@@ -8,12 +8,8 @@ import java.util.ArrayList;
  * Vilson Heck Junior. <br>
  * Modificado por Osmar para simplificar a classe e seu uso.
  */
-
 public class Vertice implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	// Lista de arcos que saem do vértice

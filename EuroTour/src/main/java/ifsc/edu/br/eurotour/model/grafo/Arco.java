@@ -6,7 +6,8 @@
 package ifsc.edu.br.eurotour.model.grafo;
 
 /**
- * Classe que representa uma aresta de um {@link Vertice}
+ * Classe que representa uma aresta de um {@link Vertice} de origem, e outro de
+ * destino, além de conter o peso da distância entre os dois.
  * 
  * @author Osmar
  *

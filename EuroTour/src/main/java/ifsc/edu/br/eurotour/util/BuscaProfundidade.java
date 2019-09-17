@@ -12,7 +12,7 @@ import ifsc.edu.br.eurotour.repository.BuscaProfundidadeRepository;
 /**
  * Classe que representa uma busca em profundidade em um {@link Grafo}.
  * 
- * @author Osmar
+ * @author equipe.mapa
  *
  */
 public class BuscaProfundidade implements BuscaProfundidadeRepository {
