@@ -29,7 +29,7 @@ public class BuscaDeCustoUniforme implements BuscaCustoUniformeRepository, Compa
 	 * 
 	 * Cria o caminho com o menor custo partindo do vertice inicial.
 	 * 
-	 * @param aGrafo - Parametro utilizado para rezetar as informações do grafo.
+	 * @param aGrafo - Parametro utilizado para reiniciar as informações do grafo.
 	 * @param aInicial - Ponto de partida para a busca de custo uniforme 
 	 * @param aFinal - Objetivo, utilizado para verificar se já chegamos ao destino.
 	 * 

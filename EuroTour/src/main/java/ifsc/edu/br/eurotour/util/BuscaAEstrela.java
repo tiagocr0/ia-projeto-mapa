@@ -10,12 +10,30 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * Realiza a busca A* ao chamar o método buscaAEstrela
+ * 
+ * 
+ * @author equipe.mapa
+ *
+ */
 public class BuscaAEstrela implements BuscaAEstrelaRepository {
 
 	public static final int MENOR_DISTANCIA = 0;
 
 	private static Vertice final_;
 
+	/**
+	 * 
+	 * Cria o caminho com o menor custo partindo do vertice inicial baseado em uma heuristica.
+	 * 
+	 * @param aGrafo - Parametro utilizado para reiniciar as informações do grafo.
+	 * @param aInicial - Ponto de partida para a busca de custo uniforme 
+	 * @param aFinal - Objetivo, utilizado para verificar se já chegamos ao destino.
+	 * 
+	 * @param Caminho para ser exibido na parte gráfica.
+	 * 
+	 * */
 	public Caminho buscaAEstrela(Grafo aGrafo, Vertice aInicial, Vertice aFinal) {
 		final_ = aFinal;
 		List<Vertice> lVerticesAbertos = new ArrayList<>();
@@ -53,14 +71,29 @@ public class BuscaAEstrela implements BuscaAEstrelaRepository {
 		return Caminho.converter(aGrafo, aFinal, aFinal.obterDistancia());
 	}
 
-	// Ordena a lista de arcos em ordem crescente
+	/** 
+	 * Chama a collections e o método sort para realizar a ordenação conforme nossa implementação do compare.
+	 * 
+	 * @param aArcos - Lista que deseja ordenar.
+	 * 
+	 * */
+	
 	private static void ordernar(List<Vertice> aArcos) {
+		// Ordena a lista de arcos em ordem crescente
 		Collections.sort(aArcos, new CustomComparatorVertice());
 	}
 
-	// Ordenação dos arcos por distancia + distancia heuristica.
+	
 	private static class CustomComparatorVertice implements Comparator<Vertice> {
-
+		
+		/** 
+		 * Faz comparações e realiza as ordenações dos arcos por distancia + distancia heuristica.
+		 * 
+		 * @param aVerticeI - vertice que será comparado com o VerticeII.
+		 * @param aVerticeII - vertice que será comparado com o VerticeI
+		 * 
+		 * */
+		// Ordenação dos arcos por distancia + distancia heuristica.
 		@Override
 		public int compare(Vertice aVertice, Vertice aVertice2) {
 			Double peso1 = aVertice.obterDistancia() + aVertice.obterDistanciaHeuristica(final_);
