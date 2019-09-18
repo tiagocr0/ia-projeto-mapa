@@ -18,28 +18,32 @@ public class FrontToBack {
 
 	}
 
+	/**
+	 * Retorna o identificador do algoritmo que deverá ser usado para realizar a
+	 * busca
+	 * 
+	 * @return um inteiro que será o número do algoritmo da busca
+	 */
 	public int getAlgoritmo() {
 		return algoritmo;
 	}
 
-	public void setAlgoritmo(int algoritmo) {
-		this.algoritmo = algoritmo;
-	}
-
+	/**
+	 * Retorna o país de origem da busca que deverá ser realizada
+	 * 
+	 * @return uma String com o rótulo do país de origem
+	 */
 	public String getOrigem() {
 		return origem;
 	}
 
-	public void setOrigem(String origem) {
-		this.origem = origem;
-	}
-
+	/**
+	 * Retorna o país de destino da busca que deverá ser realizada
+	 * 
+	 * @return uma String com o rótulo do país de destino
+	 */
 	public String getDestino() {
 		return destino;
-	}
-
-	public void setDestino(String destino) {
-		this.destino = destino;
 	}
 
 	@Override
