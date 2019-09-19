@@ -60,7 +60,7 @@ public class DataRoutesDataAccess implements DataRoutesRepository {
 		XSSFSheet planilha = wb.getSheetAt(0);
 		XSSFRow linha;
 		XSSFCell celula;
-		Vertice conecta;
+		Vertice conecta = null;
 
 		Iterator<Row> linhas = planilha.rowIterator();
 
@@ -127,7 +127,7 @@ public class DataRoutesDataAccess implements DataRoutesRepository {
 					if (celula.getColumnIndex() == 0) {
 						conecta = grafo.pesquisaVertice(celula.getStringCellValue());
 					} else {
-						if (celula.getCellType().equals("NUMERIC")) {
+						if (celula.getCellType().toString().equals("NUMERIC")) {
 							double peso = celula.getNumericCellValue();
 							grafo.pesquisaVertice(
 									planilha.getRow(1).getCell(celula.getColumnIndex()).getStringCellValue())
