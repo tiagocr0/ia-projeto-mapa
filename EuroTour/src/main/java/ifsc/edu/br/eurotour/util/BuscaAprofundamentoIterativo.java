@@ -53,7 +53,7 @@ public class BuscaAprofundamentoIterativo implements BuscaAprofundamentoIterativ
 	private Vertice buscaProfundidadeLimitada(Grafo g, Vertice inicial, Vertice destino, int limite) {
 		// Variável contadora para comparar com o limite
 		int cont = 0;
-		// Método utilizdo para reiniciar as informações do grafo, em todos o métodos e não ficar repetindo código.		
+		// Método utilizdo para reiniciar as informações do grafo (Vertices - distancia, visitas e caminho), em todos o métodos e não ficar repetindo código.		
 		Grafo.reiniciarGrafo(g);
 		
 		// faz a primeira visita a partir do vertice escolhido como o inicial
