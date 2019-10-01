@@ -18,10 +18,15 @@ public class Caminho {
 
 	private List<DistanciaEntre2Paises> caminho;
 	private Double distanciaTotal;
+	private List<Vertice> nosGerados;
+	private List<Vertice> nosExpandidos;
+	private long tempoProcessamento;
 
 	public Caminho(Double distanciaTotal) {
 		this.caminho = new ArrayList<>();
 		this.distanciaTotal = distanciaTotal;
+		this.nosGerados = new ArrayList<>();
+		this.nosExpandidos = new ArrayList<>();
 	}
 
 	public Caminho(List<DistanciaEntre2Paises> caminho, Double distanciaTotal) {
@@ -67,6 +72,63 @@ public class Caminho {
 	 */
 	public void setDistanciaTotal(Double distanciaTotal) {
 		this.distanciaTotal = distanciaTotal;
+	}
+
+	/**
+	 * Retorna a lista que contém os {@link Vertice} gerados para chegar ao destino
+	 * 
+	 * @return {@link List} de {@link Vertice} que representam os vertices gerados
+	 */
+	public List<Vertice> getNosGerados() {
+		return nosGerados;
+	}
+
+	/**
+	 * Atribui um novo valor a Lista de nós gerados
+	 * 
+	 * @param nosGerados nova {@link List} de {@link Vertices} a ser atribuída
+	 */
+	public void setNosGerados(List<Vertice> nosGerados) {
+		this.nosGerados = nosGerados;
+	}
+
+	/**
+	 * Retorna a lista que contém os {@link Vertice} expandidos para chegar ao
+	 * destino
+	 * 
+	 * @return {@link List} de {@link Vertice} que representam os vertices
+	 *         expandidos
+	 */
+	public List<Vertice> getNosExpandidos() {
+		return nosExpandidos;
+	}
+
+	/**
+	 * Atribui um novo valor a Lista de nós expandidos
+	 * 
+	 * @param nosExpandidos nova {@link List} de {@link Vertices} a ser atribuída
+	 */
+	public void setNosExpandidos(List<Vertice> nosExpandidos) {
+		this.nosExpandidos = nosExpandidos;
+	}
+
+	/**
+	 * Retorna o tempo de processamento que irá levar para concluir cada busca
+	 * 
+	 * @return tempo de processsamento
+	 * 
+	 */
+	public long getTempoProcessamento() {
+		return tempoProcessamento;
+	}
+
+	/**
+	 * Atribui um novo valor ao tempo de processamento
+	 * 
+	 * @param tempoProcessamento que foi gasto para realizar a busca
+	 */
+	public void setTempoProcessamento(long tempoProcessamento) {
+		this.tempoProcessamento = tempoProcessamento;
 	}
 
 	/**
