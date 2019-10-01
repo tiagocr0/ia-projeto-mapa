@@ -84,7 +84,7 @@ public class Caminho {
 	/**
 	 * Atribui um novo valor a quantidade de nós gerados
 	 * 
-	 * @param nosGerados nova quantidade de {@link Vertices} a ser atribuída
+	 * @param nosGerados nova quantidade de {@link Vertices} que foram gerados
 	 */
 	public void setNosGerados(int nosGerados) {
 		this.nosGerados = nosGerados;
@@ -102,7 +102,7 @@ public class Caminho {
 	/**
 	 * Atribui um novo valor a quantidade de nós expandidos
 	 * 
-	 * @param nosExpandidos nova quantidade de {@link Vertices} a ser atribuída
+	 * @param nosExpandidos nova quantidade de {@link Vertices} que foram expandidos
 	 */
 	public void setNosExpandidos(int nosExpandidos) {
 		this.nosExpandidos = nosExpandidos;
