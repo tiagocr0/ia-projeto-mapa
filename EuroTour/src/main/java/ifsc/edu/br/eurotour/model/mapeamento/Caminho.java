@@ -18,15 +18,13 @@ public class Caminho {
 
 	private List<DistanciaEntre2Paises> caminho;
 	private Double distanciaTotal;
-	private List<Vertice> nosGerados;
-	private List<Vertice> nosExpandidos;
+	private int nosGerados;
+	private int nosExpandidos;
 	private long tempoProcessamento;
 
 	public Caminho(Double distanciaTotal) {
 		this.caminho = new ArrayList<>();
 		this.distanciaTotal = distanciaTotal;
-		this.nosGerados = new ArrayList<>();
-		this.nosExpandidos = new ArrayList<>();
 	}
 
 	public Caminho(List<DistanciaEntre2Paises> caminho, Double distanciaTotal) {
@@ -75,40 +73,38 @@ public class Caminho {
 	}
 
 	/**
-	 * Retorna a lista que contém os {@link Vertice} gerados para chegar ao destino
+	 * Retorna a quantidade de {@link Vertice} gerados para chegar ao destino
 	 * 
-	 * @return {@link List} de {@link Vertice} que representam os vertices gerados
+	 * @return quantidade de {@link Vertice} que foram gerados
 	 */
-	public List<Vertice> getNosGerados() {
+	public int getNosGerados() {
 		return nosGerados;
 	}
 
 	/**
-	 * Atribui um novo valor a Lista de nós gerados
+	 * Atribui um novo valor a quantidade de nós gerados
 	 * 
-	 * @param nosGerados nova {@link List} de {@link Vertices} a ser atribuída
+	 * @param nosGerados nova quantidade de {@link Vertices} a ser atribuída
 	 */
-	public void setNosGerados(List<Vertice> nosGerados) {
+	public void setNosGerados(int nosGerados) {
 		this.nosGerados = nosGerados;
 	}
 
 	/**
-	 * Retorna a lista que contém os {@link Vertice} expandidos para chegar ao
-	 * destino
+	 * Retorna a quantidade de {@link Vertice} expandidos para chegar ao destino
 	 * 
-	 * @return {@link List} de {@link Vertice} que representam os vertices
-	 *         expandidos
+	 * @return quantidade de {@link Vertice} que foram expandidos
 	 */
-	public List<Vertice> getNosExpandidos() {
+	public int getNosExpandidos() {
 		return nosExpandidos;
 	}
 
 	/**
-	 * Atribui um novo valor a Lista de nós expandidos
+	 * Atribui um novo valor a quantidade de nós expandidos
 	 * 
-	 * @param nosExpandidos nova {@link List} de {@link Vertices} a ser atribuída
+	 * @param nosExpandidos nova quantidade de {@link Vertices} a ser atribuída
 	 */
-	public void setNosExpandidos(List<Vertice> nosExpandidos) {
+	public void setNosExpandidos(int nosExpandidos) {
 		this.nosExpandidos = nosExpandidos;
 	}
 
