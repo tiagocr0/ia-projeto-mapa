@@ -75,6 +75,8 @@ public class Grafo {
 			lVertice.zerarVisitas();
 			lVertice.zerarDistancia();
 			lVertice.setCaminho("");
+			lVertice.zerarDistanciaHeuristica();
+			lVertice.setCaminhoInverso("");
 		}
 	}
 }

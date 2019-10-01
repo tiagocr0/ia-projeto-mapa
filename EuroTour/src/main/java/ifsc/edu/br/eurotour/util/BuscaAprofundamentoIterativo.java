@@ -23,6 +23,7 @@ public class BuscaAprofundamentoIterativo implements BuscaAprofundamentoIterativ
 	@Override
 	public Caminho buscaAprofundamentoIterativo(Grafo g, Vertice inicial, Vertice destino) {
 		// Lista de Vertices resultantes da busca
+		encontrou_caminho = false;
 		Vertice vertice_final = new Vertice();
 
 		// Variável para controlar o limite da busca
@@ -50,21 +51,11 @@ public class BuscaAprofundamentoIterativo implements BuscaAprofundamentoIterativ
 	 */
 
 	private Vertice buscaProfundidadeLimitada(Grafo g, Vertice inicial, Vertice destino, int limite) {
-
-		// Lista com todos os vertices do grafo
-		ArrayList<Vertice> vertices_grafo = g.obterVertices();
-
 		// Variável contadora para comparar com o limite
 		int cont = 0;
-
-		// inicializa todos os vertices do grafo com 0 visitas,
-		// 0 distancia, e sem um caminho (vertices anteriores)
-		for (int i = 0; i < vertices_grafo.size(); i++) {
-			vertices_grafo.get(i).zerarVisitas();
-			vertices_grafo.get(i).zerarDistancia();
-			vertices_grafo.get(i).setCaminho(null);
-		}
-
+		// Método utilizdo para reiniciar as informações do grafo, em todos o métodos e não ficar repetindo código.		
+		Grafo.reiniciarGrafo(g);
+		
 		// faz a primeira visita a partir do vertice escolhido como o inicial
 		inicial.visitar();
 		inicial.definirDistancia(0);

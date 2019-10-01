@@ -118,6 +118,13 @@ public class Vertice implements Serializable {
 	public void zerarDistancia() {
 		this.distancia = Double.POSITIVE_INFINITY;
 	}
+	
+	/**
+	 * Adiciona um valor infinito a distancia para "zerá-la"
+	 */
+	public void zerarDistanciaHeuristica() {
+		this.distanciaHeuristica = Double.POSITIVE_INFINITY;
+	}
 
 	/**
 	 * Define o valor da distância do {@link Vertice}
