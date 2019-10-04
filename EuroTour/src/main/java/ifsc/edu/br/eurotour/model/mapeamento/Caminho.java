@@ -36,6 +36,7 @@ public class Caminho {
 	public Caminho(Double distanciaTotal, int nosGerados, int nosExpandidos,
 			long tempoProcessamento) {
 		super();
+		this.caminho = new ArrayList<>();
 		this.distanciaTotal = distanciaTotal;
 		this.nosGerados = nosGerados;
 		this.nosExpandidos = nosExpandidos;
