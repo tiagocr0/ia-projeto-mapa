@@ -17,7 +17,7 @@ import java.util.List;
  * @author equipe.mapa
  *
  */
-public class BuscaAEstrela implements BuscaAEstrelaRepository {
+public class BuscaAEstrela implements BuscaAEstrelaRepository, Comparator<Vertice> {
 
 	public static final int MENOR_DISTANCIA = 0;
 
@@ -84,27 +84,22 @@ public class BuscaAEstrela implements BuscaAEstrelaRepository {
 	
 	private static void ordernar(List<Vertice> aArcos) {
 		// Ordena a lista de arcos em ordem crescente
-		Collections.sort(aArcos, new CustomComparatorVertice());
+		Collections.sort(aArcos, new BuscaAEstrela());
 	}
 
-	
-	private static class CustomComparatorVertice implements Comparator<Vertice> {
-		
-		/** 
-		 * Faz comparações e realiza as ordenações dos arcos por distancia + distancia heuristica.
-		 * 
-		 * @param aVerticeI - vertice que será comparado com o VerticeII.
-		 * @param aVerticeII - vertice que será comparado com o VerticeI
-		 * 
-		 * */
-		// Ordenação dos arcos por distancia + distancia heuristica.
-		@Override
-		public int compare(Vertice aVertice, Vertice aVertice2) {
-			Double peso1 = aVertice.obterDistancia() + aVertice.obterDistanciaHeuristica(final_);
-			Double peso2 = aVertice2.obterDistancia() + aVertice2.obterDistanciaHeuristica(final_);
-			return peso1.compareTo(peso2);
-		}
-
+	/** 
+	 * Faz comparações e realiza as ordenações dos arcos por distancia + distancia heuristica.
+	 * 
+	 * @param aVerticeI - vertice que será comparado com o VerticeII.
+	 * @param aVerticeII - vertice que será comparado com o VerticeI
+	 * 
+	 * */
+	// Ordenação dos arcos por distancia + distancia heuristica.
+	@Override
+	public int compare(Vertice aVertice, Vertice aVertice2) {
+		Double peso1 = aVertice.obterDistancia() + aVertice.obterDistanciaHeuristica(final_);
+		Double peso2 = aVertice2.obterDistancia() + aVertice2.obterDistanciaHeuristica(final_);
+		return peso1.compareTo(peso2);
 	}
 
 }
