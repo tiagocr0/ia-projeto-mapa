@@ -22,8 +22,8 @@ public class BuscaDeCustoUniforme implements BuscaCustoUniformeRepository, Compa
 
 	public static final int VERTICE_COM_MENOR_DISTANCIA = 0;
 
-	private List<Vertice> lVerticesAbertos = new ArrayList<>();
-	private List<Vertice> lVerticesExpandidos = new ArrayList<>();
+	private List<Vertice> lVerticesAbertos;
+	private List<Vertice> lVerticesExpandidos;
 
 	/**
 	 * 
@@ -38,9 +38,15 @@ public class BuscaDeCustoUniforme implements BuscaCustoUniformeRepository, Compa
 	 * */
 	@Override
 	public Caminho buscaCustoUniforme(Grafo aGrafo, Vertice aInicial, Vertice aFinal) {
+		lVerticesAbertos = new ArrayList<>();
+		lVerticesExpandidos = new ArrayList<>();
+	
 		Grafo.reiniciarGrafo(aGrafo);
 		aInicial.definirDistancia(0);
 		lVerticesAbertos.add(aInicial);
+		
+		int lGerados = 0;
+		int lExplorados = 0;
 
 		lVerticesAbertos.addAll(aGrafo.obterVertices());
 		while (lVerticesAbertos.size() > 0) {
@@ -60,13 +66,15 @@ public class BuscaDeCustoUniforme implements BuscaCustoUniformeRepository, Compa
 					if (lVerticeDestino.obterDistancia() > lVerticeOrigem.obterDistancia() + lDistanciaPorPeso) {
 						lVerticeDestino.definirDistancia(lDistanciaPorPeso + lVerticeOrigem.obterDistancia());
 						lVerticeDestino.setCaminho(lVerticeOrigem.getCaminho());
+						lGerados++;
 					}
 				}
 			} else {
-				return Caminho.converter(aGrafo, aFinal, lVerticeOrigem.obterDistancia());
+				lExplorados = lVerticesExpandidos.size();
+				return Caminho.converter(aGrafo, aFinal, lVerticeOrigem.obterDistancia(), lGerados, lExplorados, 0);
 			}
 		}
-		return Caminho.converter(aGrafo, aFinal, aFinal.obterDistancia());
+		return Caminho.converter(aGrafo, aFinal, aFinal.obterDistancia(), lGerados, lExplorados, 0);
 	}
 
 	/** 
@@ -92,4 +100,5 @@ public class BuscaDeCustoUniforme implements BuscaCustoUniformeRepository, Compa
 		Double pesoII = aVerticeII.obterDistancia();
 		return pesoI.compareTo(pesoII);
 	}
+	
 }

@@ -16,6 +16,9 @@ import ifsc.edu.br.eurotour.repository.BuscaBidirecionalRepository;
  * 
  */
 public class BuscaBidirecional implements BuscaBidirecionalRepository {
+	
+	private int lGerados = 0;
+	private int lExplorados = 0;
 
 	/**
 	 * 
@@ -34,6 +37,9 @@ public class BuscaBidirecional implements BuscaBidirecionalRepository {
 	public Caminho buscaBidirecional(Grafo aGrafo, Vertice aInicial, Vertice aFinal) {
 		if (!aInicial.equals(aFinal)) {
 			Grafo.reiniciarGrafo(aGrafo);
+			
+			lGerados = 0;
+			lExplorados = 0;
 
 //			Listas de vertices que guardarão os vertices que serão explorados.
 			List<Vertice> lVerticesAbertorA = new ArrayList<>();
@@ -52,20 +58,24 @@ public class BuscaBidirecional implements BuscaBidirecionalRepository {
 
 			lVerticesAbertorA.add(aInicial);
 			lVerticesAbertorB.add(aFinal);
+			
+			
 
 //	        Realiza as verificações para ver se existe um caminho entre o vertice final com o vertice inicial.
 			while (!lVerticesAbertorA.isEmpty() || !lVerticesAbertorB.isEmpty()) {
 				Vertice lVerticeAAB = existeCaminho(lVerticesAbertorA, lVerticesExpandidosA, lVerticesExpandidosB);
 				if (lVerticeAAB != null) {
-					return Caminho.converter(aGrafo, gerarCaminho(lVerticeAAB), lVerticeAAB.obterDistancia());
+					lExplorados = lVerticesExpandidosA.size() + lVerticesExpandidosB.size();
+					return Caminho.converter(aGrafo, gerarCaminho(lVerticeAAB), lVerticeAAB.obterDistancia(),lGerados, lExplorados, 0);
 				}
 				Vertice lVerticeBBA = existeCaminho(lVerticesAbertorB, lVerticesExpandidosB, lVerticesExpandidosA);
 				if (lVerticeBBA != null) {
-					return Caminho.converter(aGrafo, gerarCaminho(lVerticeBBA), lVerticeBBA.obterDistancia());
+					lExplorados = lVerticesExpandidosA.size() + lVerticesExpandidosB.size();
+					return Caminho.converter(aGrafo, gerarCaminho(lVerticeBBA), lVerticeBBA.obterDistancia(), lGerados, lExplorados, 0);
 				}
 			}
 		}
-		return Caminho.converter(aGrafo, aFinal, aFinal.obterDistancia());
+		return Caminho.converter(aGrafo, aFinal, aFinal.obterDistancia(), lGerados, lExplorados, 0l);
 	}
 
 	/**
@@ -101,13 +111,13 @@ public class BuscaBidirecional implements BuscaBidirecionalRepository {
 					adjacent.setCaminho(next.getCaminho());
 					aVerticesExpandidosA.add(adjacent);
 					aVerticesAbertos.add(adjacent);
-
+					lGerados++; 
 				}
 			}
 		}
 		return null;
 	}
-
+	
 	/**
 	 * 
 	 * Cria o caminho através do vertice central em que os dois caminhos se

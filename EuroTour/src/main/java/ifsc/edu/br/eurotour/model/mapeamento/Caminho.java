@@ -31,6 +31,16 @@ public class Caminho {
 		this.caminho = caminho;
 		this.distanciaTotal = distanciaTotal;
 	}
+	
+ 
+	public Caminho(Double distanciaTotal, int nosGerados, int nosExpandidos,
+			long tempoProcessamento) {
+		super();
+		this.distanciaTotal = distanciaTotal;
+		this.nosGerados = nosGerados;
+		this.nosExpandidos = nosExpandidos;
+		this.tempoProcessamento = tempoProcessamento;
+	}
 
 	/**
 	 * Retorna a lista que contém os caminhos percorridos para chegar ao destino
@@ -137,6 +147,7 @@ public class Caminho {
 	 *                         percorrida
 	 * @return
 	 */
+	@Deprecated
 	public static Caminho converter(Grafo aGrafo, Vertice aFinal, Double lDistanciaMinima) {
 		String[] lNomes = aFinal.getCaminho().split("/");
 		Caminho lCaminho = new Caminho(lDistanciaMinima);
@@ -166,9 +177,58 @@ public class Caminho {
 	 *                         percorrida
 	 * @return
 	 */
+	@Deprecated
 	public static Caminho converter(Grafo aGrafo, String aVertices, Double lDistanciaMinima) {
 		String[] lNomes = aVertices.split(" / ");
 		Caminho lCaminho = new Caminho(lDistanciaMinima);
+		for (int indice = 0; indice < lNomes.length; indice++) {
+			if ((indice + 1) != lNomes.length) {
+				Vertice lVerticeOrigem = aGrafo.pesquisaVertice(lNomes[indice].trim());
+				Vertice lVerticeDestino = aGrafo.pesquisaVertice(lNomes[indice + 1].trim());
+				lCaminho.getCaminho().add(new DistanciaEntre2Paises(lVerticeOrigem.toString(),
+						lVerticeDestino.toString(), lVerticeDestino.obterDistancia()));
+			}
+		}
+		return lCaminho;
+	}
+	
+	/**
+	 * Converte o {@link Grafo}, para um {@link Caminho} a partir de um
+	 * {@link String} que representa o {@link Vertice}
+	 * 
+	 * @param aGrafo           {@link Grafo} a ser convertido
+	 * @param aVertices        {@link String} que representa os {@link Vertices}
+	 * @param lDistanciaMinima {@link Double} que representa a distância total
+	 *                         percorrida
+	 * @return
+	 */
+	public static Caminho converter(Grafo aGrafo, String aVertices, Double lDistanciaMinima, int nosGerados, int nosExpandidos, long tempoProcessamento) {
+		String[] lNomes = aVertices.split(" / ");
+		Caminho lCaminho = new Caminho(lDistanciaMinima, nosGerados, nosExpandidos, tempoProcessamento);
+		for (int indice = 0; indice < lNomes.length; indice++) {
+			if ((indice + 1) != lNomes.length) {
+				Vertice lVerticeOrigem = aGrafo.pesquisaVertice(lNomes[indice].trim());
+				Vertice lVerticeDestino = aGrafo.pesquisaVertice(lNomes[indice + 1].trim());
+				lCaminho.getCaminho().add(new DistanciaEntre2Paises(lVerticeOrigem.toString(),
+						lVerticeDestino.toString(), lVerticeDestino.obterDistancia()));
+			}
+		}
+		return lCaminho;
+	}
+	
+	/**
+	 * Converte o {@link Grafo}, para um {@link Caminho} a partir de um
+	 * {@link Vertice} final
+	 * 
+	 * @param aGrafo           {@link Grafo} a ser convertido
+	 * @param aFinal           {@link Vertice} de destino da busca
+	 * @param lDistanciaMinima {@link Double} que representa a distância total a ser
+	 *                         percorrida
+	 * @return
+	 */
+	public static Caminho converter(Grafo aGrafo, Vertice aFinal, Double lDistanciaMinima, int nosGerados, int nosExpandidos, long tempoProcessamento) {
+		String[] lNomes = aFinal.getCaminho().split("/");
+		Caminho lCaminho = new Caminho(lDistanciaMinima, nosGerados, nosExpandidos, tempoProcessamento);
 		for (int indice = 0; indice < lNomes.length; indice++) {
 			if ((indice + 1) != lNomes.length) {
 				Vertice lVerticeOrigem = aGrafo.pesquisaVertice(lNomes[indice].trim());
