@@ -20,8 +20,13 @@ public class BuscaAprofundamentoIterativo implements BuscaAprofundamentoIterativ
 	// Variável de controle para caso o destino seja encontrado
 	boolean encontrou_caminho = false;
 
+	ArrayList<Arco> lista_filhos = new ArrayList<>();
+	int nosExpandidos;
+
 	@Override
 	public Caminho buscaAprofundamentoIterativo(Grafo g, Vertice inicial, Vertice destino) {
+		// Variável de tempo de início do método
+		long tempoInicio = System.nanoTime();
 		// Lista de Vertices resultantes da busca
 		encontrou_caminho = false;
 		Vertice vertice_final = new Vertice();
@@ -32,13 +37,20 @@ public class BuscaAprofundamentoIterativo implements BuscaAprofundamentoIterativ
 		// Caso o encontrou_caminho seja true,significa que foi encontrado o vertice
 		// de destino,e retornará o vertice_final
 		while (!encontrou_caminho) {
+			nosExpandidos = 0;
 			vertice_final = buscaProfundidadeLimitada(g, inicial, destino, limite);
-
 			// Limite é incrementado para caso o caminho não seja encontrado na iteração
 			limite++;
 		}
 
-		return Caminho.converter(g, destino, vertice_final.obterDistancia());
+		// Variável de tempo de final do método
+		long tempoFinal = System.nanoTime();
+		// Variável para calcular o tempo de demora do método, converte nanosegundos em
+		// milisegundos e depois em segundos
+		long tempoProcessamento = ((tempoFinal - tempoInicio) / 1000) / 1000;
+
+		return Caminho.converter(g, destino, vertice_final.obterDistancia(), lista_filhos.size(), nosExpandidos,
+				tempoProcessamento);
 	}
 
 	/**
@@ -51,11 +63,13 @@ public class BuscaAprofundamentoIterativo implements BuscaAprofundamentoIterativ
 	 */
 
 	private Vertice buscaProfundidadeLimitada(Grafo g, Vertice inicial, Vertice destino, int limite) {
+
 		// Variável contadora para comparar com o limite
 		int cont = 0;
-		// Método utilizdo para reiniciar as informações do grafo (Vertices - distancia, visitas e caminho), em todos o métodos e não ficar repetindo código.		
+		// Método utilizdo para reiniciar as informações do grafo (Vertices - distancia,
+		// visitas e caminho), em todos o métodos e não ficar repetindo código.
 		Grafo.reiniciarGrafo(g);
-		
+
 		// faz a primeira visita a partir do vertice escolhido como o inicial
 		inicial.visitar();
 		inicial.definirDistancia(0);
@@ -84,7 +98,7 @@ public class BuscaAprofundamentoIterativo implements BuscaAprofundamentoIterativ
 				} else {
 
 					// Recebe todos os caminhos possíveis(arcos) do vértice da iteração atual
-					ArrayList<Arco> lista_filhos = atual.obterArcos();
+					lista_filhos = atual.obterArcos();
 
 					// Para cada arco do vértice atual
 					for (Arco arco : lista_filhos) {
@@ -107,6 +121,7 @@ public class BuscaAprofundamentoIterativo implements BuscaAprofundamentoIterativ
 
 							// insere o vértice filho a fila
 							fila.push(filho);
+							nosExpandidos++;
 
 							// Verifica se o filho é igual ao destino
 							if (filho.equals(destino)) {
