@@ -18,10 +18,11 @@ import ifsc.edu.br.eurotour.repository.BuscaAprofundamentoIterativoRepository;
 public class BuscaAprofundamentoIterativo implements BuscaAprofundamentoIterativoRepository {
 
 	// Variável de controle para caso o destino seja encontrado
-	boolean encontrou_caminho = false;
+	private boolean encontrou_caminho = false;
 
-	ArrayList<Arco> lista_filhos = new ArrayList<>();
-	int nosExpandidos;
+	private ArrayList<Arco> lista_filhos = new ArrayList<>();
+	private int nosExpandidos;
+	private int nosGerados;
 
 	@Override
 	public Caminho buscaAprofundamentoIterativo(Grafo g, Vertice inicial, Vertice destino) {
@@ -37,20 +38,15 @@ public class BuscaAprofundamentoIterativo implements BuscaAprofundamentoIterativ
 		// Caso o encontrou_caminho seja true,significa que foi encontrado o vertice
 		// de destino,e retornará o vertice_final
 		while (!encontrou_caminho) {
+			nosGerados = 0;
 			nosExpandidos = 0;
 			vertice_final = buscaProfundidadeLimitada(g, inicial, destino, limite);
 			// Limite é incrementado para caso o caminho não seja encontrado na iteração
 			limite++;
 		}
 
-		// Variável de tempo de final do método
-		long tempoFinal = System.nanoTime();
-		// Variável para calcular o tempo de demora do método, converte nanosegundos em
-		// milisegundos e depois em segundos
-		long tempoProcessamento = ((tempoFinal - tempoInicio) / 1000) / 1000;
-
-		return Caminho.converter(g, destino, vertice_final.obterDistancia(), lista_filhos.size(), nosExpandidos,
-				tempoProcessamento);
+		return Caminho.converter(g, destino, vertice_final.obterDistancia(), nosGerados, nosExpandidos,
+				Caminho.gerarTempoProcessamento(tempoInicio));
 	}
 
 	/**
@@ -74,69 +70,72 @@ public class BuscaAprofundamentoIterativo implements BuscaAprofundamentoIterativ
 		inicial.visitar();
 		inicial.definirDistancia(0);
 		inicial.setCaminho(null);
-
+		
 		// cria e adiciona o vértice inicial a fila
 		Fila fila = new Fila();
 		fila.push(inicial);
+		try {
+			// o laço irá se repetir até não ter mais vértices a serem analisados
+			while (!fila.estaVazia()) {
 
-		// o laço irá se repetir até não ter mais vértices a serem analisados
-		while (!fila.estaVazia()) {
+				// Recebe o vertice da iteração atual, presente no inicio da fila
+				Vertice atual = fila.getInicio().getInfo();
 
-			// Recebe o vertice da iteração atual, presente no inicio da fila
-			Vertice atual = fila.getInicio().getInfo();
+				// retira um vértice da fila
+				fila.pop();
+				nosExpandidos++;
+				// Verifica se a busca está sendo feita até o limite
+				if (cont <= limite) {
 
-			// retira um vértice da fila
-			fila.pop();
+					// Verifica se o atual é igual ao destino
+					if (atual.equals(destino)) {
+						encontrou_caminho = true;
+						return atual;
+					} else {
 
-			// Verifica se a busca está sendo feita até o limite
-			if (cont <= limite) {
+						// Recebe todos os caminhos possíveis(arcos) do vértice da iteração atual
+						lista_filhos = atual.obterArcos();
 
-				// Verifica se o atual é igual ao destino
-				if (atual.equals(destino)) {
-					encontrou_caminho = true;
-					return atual;
-				} else {
+						// Para cada arco do vértice atual
+						for (Arco arco : lista_filhos) {
 
-					// Recebe todos os caminhos possíveis(arcos) do vértice da iteração atual
-					lista_filhos = atual.obterArcos();
+							// Recebe o vértice de destino do arco (filho)
+							Vertice filho = arco.getDestino();
 
-					// Para cada arco do vértice atual
-					for (Arco arco : lista_filhos) {
+							// entra no if se o vértice filho não foi visitado ainda
+							if (filho.obterVisitado() == 0) {
 
-						// Recebe o vértice de destino do arco (filho)
-						Vertice filho = arco.getDestino();
+								// marca que o vértice filho foi visitado
+								filho.visitar();
 
-						// entra no if se o vértice filho não foi visitado ainda
-						if (filho.obterVisitado() == 0) {
+								// reajusta a distância do vértice filho
+								filho.definirDistancia(atual.obterDistancia() + arco.getPeso());
 
-							// marca que o vértice filho foi visitado
-							filho.visitar();
+								// diz que para chegar nesse vértice filho, é a partir de seu anterior (pai)
 
-							// reajusta a distância do vértice filho
-							filho.definirDistancia(atual.obterDistancia() + arco.getPeso());
+								filho.setCaminho(atual.getCaminho());
 
-							// diz que para chegar nesse vértice filho, é a partir de seu anterior (pai)
+								// insere o vértice filho a fila
+								fila.push(filho);
+								nosGerados++;
 
-							filho.setCaminho(atual.getCaminho());
-
-							// insere o vértice filho a fila
-							fila.push(filho);
-							nosExpandidos++;
-
-							// Verifica se o filho é igual ao destino
-							if (filho.equals(destino)) {
-								encontrou_caminho = true;
-								return filho;
+								// Verifica se o filho é igual ao destino
+								if (filho.equals(destino)) {
+									encontrou_caminho = true;
+									return filho;
+								}
 							}
-						}
 
-						// visita o vértice atual (pai)
-						atual.visitar();
+							// visita o vértice atual (pai)
+							atual.visitar();
+						}
 					}
 				}
+				// Incrementa o cont para ir para próximo nível da arvore
+				cont++;
 			}
-			// Incrementa o cont para ir para próximo nível da arvore
-			cont++;
+		} catch (Exception e) {
+			// TODO: handle exception
 		}
 		return destino;
 	}

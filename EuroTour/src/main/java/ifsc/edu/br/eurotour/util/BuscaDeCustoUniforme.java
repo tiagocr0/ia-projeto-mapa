@@ -38,6 +38,7 @@ public class BuscaDeCustoUniforme implements BuscaCustoUniformeRepository, Compa
 	 * */
 	@Override
 	public Caminho buscaCustoUniforme(Grafo aGrafo, Vertice aInicial, Vertice aFinal) {
+		long lTempoInicio = System.nanoTime();
 		lVerticesAbertos = new ArrayList<>();
 		lVerticesExpandidos = new ArrayList<>();
 	
@@ -57,7 +58,8 @@ public class BuscaDeCustoUniforme implements BuscaCustoUniformeRepository, Compa
 //			usando as as ferramentas que o próprio java nos fornece.
 			Vertice lVerticeOrigem = lVerticesAbertos.remove(VERTICE_COM_MENOR_DISTANCIA);
 //          Adiconar o vertice na lista dos vertices expandidos
-			lVerticesExpandidos.add(lVerticeOrigem);
+			if(!lVerticesExpandidos.contains(lVerticeOrigem))
+				lVerticesExpandidos.add(lVerticeOrigem);
 
 			if (!lVerticeOrigem.equals(aFinal)) {
 				for (Arco lArco : lVerticeOrigem.obterArcos()) {
@@ -71,11 +73,12 @@ public class BuscaDeCustoUniforme implements BuscaCustoUniformeRepository, Compa
 				}
 			} else {
 				lExplorados = lVerticesExpandidos.size();
-				return Caminho.converter(aGrafo, aFinal, lVerticeOrigem.obterDistancia(), lGerados, lExplorados, 0);
+				return Caminho.converter(aGrafo, aFinal, lVerticeOrigem.obterDistancia(), lGerados, lExplorados, Caminho.gerarTempoProcessamento(lTempoInicio));
 			}
 		}
-		return Caminho.converter(aGrafo, aFinal, aFinal.obterDistancia(), lGerados, lExplorados, 0);
+		return Caminho.converter(aGrafo, aFinal, aFinal.obterDistancia(), lGerados, lExplorados,  Caminho.gerarTempoProcessamento(lTempoInicio));
 	}
+	
 
 	/** 
 	 * Chama a collections e o método sort para realizar a ordenação conforme nossa implementação do compare.

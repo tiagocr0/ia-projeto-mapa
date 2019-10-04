@@ -35,6 +35,7 @@ public class BuscaBidirecional implements BuscaBidirecionalRepository {
 	 */
 	@Override
 	public Caminho buscaBidirecional(Grafo aGrafo, Vertice aInicial, Vertice aFinal) {
+		long lTempoInicio = System.nanoTime();
 		if (!aInicial.equals(aFinal)) {
 			Grafo.reiniciarGrafo(aGrafo);
 			
@@ -66,16 +67,16 @@ public class BuscaBidirecional implements BuscaBidirecionalRepository {
 				Vertice lVerticeAAB = existeCaminho(lVerticesAbertorA, lVerticesExpandidosA, lVerticesExpandidosB);
 				if (lVerticeAAB != null) {
 					lExplorados = lVerticesExpandidosA.size() + lVerticesExpandidosB.size();
-					return Caminho.converter(aGrafo, gerarCaminho(lVerticeAAB), lVerticeAAB.obterDistancia(),lGerados, lExplorados, 0);
+					return Caminho.converter(aGrafo, gerarCaminho(lVerticeAAB), lVerticeAAB.obterDistancia(),lGerados, lExplorados, Caminho.gerarTempoProcessamento(lTempoInicio));
 				}
 				Vertice lVerticeBBA = existeCaminho(lVerticesAbertorB, lVerticesExpandidosB, lVerticesExpandidosA);
 				if (lVerticeBBA != null) {
 					lExplorados = lVerticesExpandidosA.size() + lVerticesExpandidosB.size();
-					return Caminho.converter(aGrafo, gerarCaminho(lVerticeBBA), lVerticeBBA.obterDistancia(), lGerados, lExplorados, 0);
+					return Caminho.converter(aGrafo, gerarCaminho(lVerticeBBA), lVerticeBBA.obterDistancia(), lGerados, lExplorados,  Caminho.gerarTempoProcessamento(lTempoInicio));
 				}
 			}
 		}
-		return Caminho.converter(aGrafo, aFinal, aFinal.obterDistancia(), lGerados, lExplorados, 0l);
+		return Caminho.converter(aGrafo, aFinal, aFinal.obterDistancia(), lGerados, lExplorados, Caminho.gerarTempoProcessamento(lTempoInicio));
 	}
 
 	/**

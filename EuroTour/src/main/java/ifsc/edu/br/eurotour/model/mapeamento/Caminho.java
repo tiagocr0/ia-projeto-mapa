@@ -241,4 +241,17 @@ public class Caminho {
 		return lCaminho;
 	}
 
+	/**
+	 * Gera o tempo de processamento em millisegundos apartir do tempo inicial
+	 * 
+	 * @param aTempoInicio tempo em nanosegundos
+	 */
+	public static long gerarTempoProcessamento(long aTempoInicio) {
+		// Variável de tempo de final do método
+		long lTempoFinal = System.nanoTime();
+		// Variável para calcular o tempo de demora do método, converte nanosegundos em
+		// milisegundos e depois em segundos
+		long lTempoProcessamento = ((lTempoFinal - aTempoInicio) / 1000) / 1000;
+		return lTempoProcessamento;
+	}
 }

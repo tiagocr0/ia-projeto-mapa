@@ -35,6 +35,9 @@ public class BuscaAEstrela implements BuscaAEstrelaRepository {
 	 * 
 	 * */
 	public Caminho buscaAEstrela(Grafo aGrafo, Vertice aInicial, Vertice aFinal) {
+		long lTempoInicio = System.nanoTime();
+		int lGerados = 0;
+		int lExplorados = 0;
 		final_ = aFinal;
 		List<Vertice> lVerticesAbertos = new ArrayList<>();
 		List<Vertice> lVerticesExpandidos = new ArrayList<>();
@@ -59,16 +62,17 @@ public class BuscaAEstrela implements BuscaAEstrelaRepository {
 					lVerticeDestino.definirDistancia(lVerticeOrigem.obterDistancia() + lDistanciaPorPeso);
 					lVerticesAbertos.add(lArco.getDestino());
 				}
-
+				lGerados++;
 			}
 			lVerticesAbertos.remove(lVerticeOrigem);
 			lVerticesExpandidos.add(lVerticeOrigem);
 			ordernar(lVerticesAbertos);
 			if (lVerticeOrigem.equals(aFinal)) {
-				return Caminho.converter(aGrafo, aFinal, lVerticeOrigem.obterDistancia());
+				lExplorados = lVerticesExpandidos.size();
+				return Caminho.converter(aGrafo, aFinal, lVerticeOrigem.obterDistancia(), lGerados, lExplorados, Caminho.gerarTempoProcessamento(lTempoInicio));
 			}
 		}
-		return Caminho.converter(aGrafo, aFinal, aFinal.obterDistancia());
+		return Caminho.converter(aGrafo, aFinal, aFinal.obterDistancia(), lGerados, lExplorados, Caminho.gerarTempoProcessamento(lTempoInicio));
 	}
 
 	/** 
