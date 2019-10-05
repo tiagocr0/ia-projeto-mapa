@@ -17,6 +17,9 @@ import ifsc.edu.br.eurotour.repository.BuscaProfundidadeRepository;
  */
 public class BuscaProfundidade implements BuscaProfundidadeRepository {
 
+	private int nosGerados = 0;
+	private int nosExplorados = 0;
+
 	/**
 	 * Realiza a busca em profundidade de um certo grafo, a partir de um vertice
 	 * inicial
@@ -27,6 +30,8 @@ public class BuscaProfundidade implements BuscaProfundidadeRepository {
 	 */
 	@Override
 	public Caminho buscaProfundidade(Grafo g, Vertice inicial, Vertice destino) {
+		// Variável de tempo de início do método
+		long tempoInicio = System.nanoTime();
 		// Lista com todos os vertices do grafo
 		ArrayList<Vertice> vertices_grafo = g.obterVertices();
 
@@ -54,10 +59,11 @@ public class BuscaProfundidade implements BuscaProfundidadeRepository {
 
 			// retira um vértice da pilha
 			pilha.pop();
-
+			nosExplorados++;
 			// Verifica se o atual é igual ao destino
 			if (atual.equals(destino)) {
-				return Caminho.converter(g, destino, atual.obterDistancia());
+				return Caminho.converter(g, destino, atual.obterDistancia(), nosGerados, nosExplorados,
+						Caminho.gerarTempoProcessamento(tempoInicio));
 			} else {
 
 				// Recebe todos os caminhos possíveis(arcos) do vértice da iteração atual
@@ -83,10 +89,12 @@ public class BuscaProfundidade implements BuscaProfundidadeRepository {
 
 						// insere o vértice filho a pilha
 						pilha.push(filho);
+						nosGerados++;
 
 						// Verifica se o filho é igual ao destino
 						if (filho.equals(destino)) {
-							return Caminho.converter(g, destino, filho.obterDistancia());
+							return Caminho.converter(g, destino, filho.obterDistancia(), nosGerados, nosExplorados,
+									Caminho.gerarTempoProcessamento(tempoInicio));
 						}
 					}
 
@@ -95,6 +103,7 @@ public class BuscaProfundidade implements BuscaProfundidadeRepository {
 				}
 			}
 		}
-		return Caminho.converter(g, destino, 0d);
+		return Caminho.converter(g, destino, 0d, nosGerados, nosExplorados,
+				Caminho.gerarTempoProcessamento(tempoInicio));
 	}
 }

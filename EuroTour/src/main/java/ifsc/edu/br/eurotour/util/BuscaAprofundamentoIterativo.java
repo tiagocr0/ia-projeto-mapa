@@ -21,7 +21,7 @@ public class BuscaAprofundamentoIterativo implements BuscaAprofundamentoIterativ
 	private boolean encontrou_caminho = false;
 
 	private ArrayList<Arco> lista_filhos = new ArrayList<>();
-	private int nosExpandidos;
+	private int nosExplorados;
 	private int nosGerados;
 
 	@Override
@@ -39,13 +39,13 @@ public class BuscaAprofundamentoIterativo implements BuscaAprofundamentoIterativ
 		// de destino,e retornará o vertice_final
 		while (!encontrou_caminho) {
 			nosGerados = 0;
-			nosExpandidos = 0;
+			nosExplorados = 0;
 			vertice_final = buscaProfundidadeLimitada(g, inicial, destino, limite);
 			// Limite é incrementado para caso o caminho não seja encontrado na iteração
 			limite++;
 		}
 
-		return Caminho.converter(g, destino, vertice_final.obterDistancia(), nosGerados, nosExpandidos,
+		return Caminho.converter(g, destino, vertice_final.obterDistancia(), nosGerados, nosExplorados,
 				Caminho.gerarTempoProcessamento(tempoInicio));
 	}
 
@@ -70,7 +70,7 @@ public class BuscaAprofundamentoIterativo implements BuscaAprofundamentoIterativ
 		inicial.visitar();
 		inicial.definirDistancia(0);
 		inicial.setCaminho(null);
-		
+
 		// cria e adiciona o vértice inicial a fila
 		Fila fila = new Fila();
 		fila.push(inicial);
@@ -83,7 +83,7 @@ public class BuscaAprofundamentoIterativo implements BuscaAprofundamentoIterativ
 
 				// retira um vértice da fila
 				fila.pop();
-				nosExpandidos++;
+				nosExplorados++;
 				// Verifica se a busca está sendo feita até o limite
 				if (cont <= limite) {
 
