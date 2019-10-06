@@ -31,10 +31,8 @@ public class Caminho {
 		this.caminho = caminho;
 		this.distanciaTotal = distanciaTotal;
 	}
-	
- 
-	public Caminho(Double distanciaTotal, int nosGerados, int nosExpandidos,
-			long tempoProcessamento) {
+
+	public Caminho(Double distanciaTotal, int nosGerados, int nosExpandidos, long tempoProcessamento) {
 		super();
 		this.caminho = new ArrayList<>();
 		this.distanciaTotal = distanciaTotal;
@@ -192,7 +190,7 @@ public class Caminho {
 		}
 		return lCaminho;
 	}
-	
+
 	/**
 	 * Converte o {@link Grafo}, para um {@link Caminho} a partir de um
 	 * {@link String} que representa o {@link Vertice}
@@ -203,7 +201,8 @@ public class Caminho {
 	 *                         percorrida
 	 * @return
 	 */
-	public static Caminho converter(Grafo aGrafo, String aVertices, Double lDistanciaMinima, int nosGerados, int nosExpandidos, long tempoProcessamento) {
+	public static Caminho converter(Grafo aGrafo, String aVertices, Double lDistanciaMinima, int nosGerados,
+			int nosExpandidos, long tempoProcessamento) {
 		String[] lNomes = aVertices.split(" / ");
 		Caminho lCaminho = new Caminho(lDistanciaMinima, nosGerados, nosExpandidos, tempoProcessamento);
 		for (int indice = 0; indice < lNomes.length; indice++) {
@@ -216,7 +215,7 @@ public class Caminho {
 		}
 		return lCaminho;
 	}
-	
+
 	/**
 	 * Converte o {@link Grafo}, para um {@link Caminho} a partir de um
 	 * {@link Vertice} final
@@ -227,7 +226,8 @@ public class Caminho {
 	 *                         percorrida
 	 * @return
 	 */
-	public static Caminho converter(Grafo aGrafo, Vertice aFinal, Double lDistanciaMinima, int nosGerados, int nosExpandidos, long tempoProcessamento) {
+	public static Caminho converter(Grafo aGrafo, Vertice aFinal, Double lDistanciaMinima, int nosGerados,
+			int nosExpandidos, long tempoProcessamento) {
 		String[] lNomes = aFinal.getCaminho().split("/");
 		Caminho lCaminho = new Caminho(lDistanciaMinima, nosGerados, nosExpandidos, tempoProcessamento);
 		for (int indice = 0; indice < lNomes.length; indice++) {
@@ -251,7 +251,7 @@ public class Caminho {
 		long lTempoFinal = System.nanoTime();
 		// Variável para calcular o tempo de demora do método, converte nanosegundos em
 		// milisegundos e depois em segundos
-		long lTempoProcessamento = ((lTempoFinal - aTempoInicio) / 1000) / 1000;
+		long lTempoProcessamento = (lTempoFinal - aTempoInicio) / 1000000;
 		return lTempoProcessamento;
 	}
 }
