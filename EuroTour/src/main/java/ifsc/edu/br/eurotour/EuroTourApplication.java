@@ -40,9 +40,6 @@ public class EuroTourApplication {
 //		BuscaProfundidadeService profundidade = new BuscaProfundidadeService();
 //		caminho = profundidade.buscaProfundidade(g, inicial, destino);
 //		System.out.println("Profundidade:\n" + caminho.toString());
-//Favor não adicionar System.exit(), pois o pessoal do front foi desenvovler a parte deles e
-//não sabia onde estava o problema pois não retornava nada pelo postman já que o programa foi encerrado!!!! 
-// TODO	Se forem testar usem o postman ou comenatar as linhas que podem fazer a aplicação parar.
 //		System.exit(0);
 	}
 }
