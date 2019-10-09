@@ -1,11 +1,11 @@
 package ifsc.edu.br.eurotour.services;
 
+import ifsc.edu.br.eurotour.algorithms.BuscaDeCustoUniforme;
 import ifsc.edu.br.eurotour.model.grafo.Arco;
 import ifsc.edu.br.eurotour.model.grafo.Grafo;
 import ifsc.edu.br.eurotour.model.grafo.Vertice;
 import ifsc.edu.br.eurotour.model.mapeamento.Caminho;
 import ifsc.edu.br.eurotour.repository.BuscaCustoUniformeRepository;
-import ifsc.edu.br.eurotour.util.BuscaDeCustoUniforme;
 
 /**
  * Camada de Serviço para a Busca de Custo Uniforme. <br>

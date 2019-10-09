@@ -4,9 +4,8 @@ import java.net.URISyntaxException;
 
 import javax.validation.Valid;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,24 +16,32 @@ import ifsc.edu.br.eurotour.model.grafo.Grafo;
 import ifsc.edu.br.eurotour.model.grafo.Vertice;
 import ifsc.edu.br.eurotour.model.mapeamento.Caminho;
 import ifsc.edu.br.eurotour.model.mapeamento.Front;
+import ifsc.edu.br.eurotour.model.mapeamento.FrontToBack;
 import ifsc.edu.br.eurotour.services.BuscaAEstrelaService;
 import ifsc.edu.br.eurotour.services.BuscaAprofundamentoIterativoService;
 import ifsc.edu.br.eurotour.services.BuscaBidirecionalService;
 import ifsc.edu.br.eurotour.services.BuscaCustoUniformeService;
 import ifsc.edu.br.eurotour.services.BuscaProfundidadeService;
 import ifsc.edu.br.eurotour.services.DataRoutesService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 /**
  * Camada que provê funções para comunicação com o front-end que é chamado
  * através da requisição http://localhost:8081/busca
  * 
  * @author Tiago
- *
+ * 
+ * Alteração para mostrar o swagger da aplicação
+ * @author wilsonfcj
  */
 
+@CrossOrigin(origins = "*")
 @RestController
-@RequestMapping(value = "/busca")
+@RequestMapping(value="/api")
+@Api(value="API REST Euro Tour")
 public class DataRoutesResource {
+	
 
 	private BuscaAprofundamentoIterativoService aprofundamentoIterativo = new BuscaAprofundamentoIterativoService();
 	private BuscaBidirecionalService bidirecional = new BuscaBidirecionalService();
@@ -62,7 +69,6 @@ public class DataRoutesResource {
 		} catch (URISyntaxException e) {
 			System.err.print("Erro ao tentar ler o arquivo");
 			e.printStackTrace();
-			System.exit(1);
 		}
 	}
 
@@ -75,40 +81,57 @@ public class DataRoutesResource {
 	 *         chegar de {@link Vertice} origem até um {@link Vertice} destino
 	 * @throws Exceção no caso de algoritmo inválido
 	 */
-	@CrossOrigin
-	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Caminho> busca(@Valid @RequestBody Front front) {
-
-		int algoritmo = front.getFront().getAlgoritmo();
-		Vertice origem = grafo.pesquisaVertice(front.getFront().getOrigem());
-		Vertice destino = grafo.pesquisaVertice(front.getFront().getDestino());
-
-		switch (algoritmo) {
-		case 0:
-			// Realiza a busca de buscaProfundidade
-			caminho = profundidade.buscaProfundidade(grafo, origem, destino);
-			return new ResponseEntity<Caminho>(caminho, HttpStatus.OK);
-		case 1:
-			// Realiza a busca de Aprofundamento Iterativo
-			caminho = aprofundamentoIterativo.buscaAprofundamentoIterativo(grafo, origem, destino);
-			return new ResponseEntity<Caminho>(caminho, HttpStatus.OK);
-		case 2:
-			// Realiza a busca de Bidirecional
-			caminho = bidirecional.buscaBidirecional(grafo, origem, destino);
-			return new ResponseEntity<Caminho>(caminho, HttpStatus.OK);
-		case 3:
-			// Realiza a busca de Custo Uniforme
-			caminho = custoUniforme.buscaCustoUniforme(grafo, origem, destino);
-			return new ResponseEntity<Caminho>(caminho, HttpStatus.OK);
-		case 4:
-			// Realiza a busca de A*
-			caminho = aEstrela.buscaAEstrela(grafo, origem, destino);
-			return new ResponseEntity<Caminho>(caminho, HttpStatus.OK);
-		default:
-			System.out.println("Algoritmo incorreto");
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-
+	
+	@ApiOperation(value="Retorna um exemplo de requisição para o método de busca")
+	@GetMapping("/requisicaoExemplo")
+	public Front descricao(){
+		FrontToBack lFrontToBack = new FrontToBack();
+		lFrontToBack.setAlgoritmo(3);
+		lFrontToBack.setOrigem("Grécia – Atenas");
+		lFrontToBack.setDestino("Noruega – Oslo");
+		Front lFront = new Front();
+		lFront.setFront(lFrontToBack);
+		return lFront;
 	}
-
+	
+//	@CrossOrigin
+	@ApiOperation(value="Gera um caminho conforme o algoritmo selecionado")
+	@RequestMapping(value = "/busca", method = RequestMethod.POST)
+	public Caminho busca(@RequestBody @Valid  Front front) {
+		try {
+		
+			int algoritmo = front.getFront().getAlgoritmo();
+			Vertice origem = grafo.pesquisaVertice(front.getFront().getOrigem());
+			Vertice destino = grafo.pesquisaVertice(front.getFront().getDestino());
+		
+			switch (algoritmo) {
+			case 0:
+				// Realiza a busca de buscaProfundidade
+				caminho = profundidade.buscaProfundidade(grafo, origem, destino);
+				return caminho;// new ResponseEntity<Caminho>(caminho, HttpStatus.OK);
+			case 1:
+				// Realiza a busca de Aprofundamento Iterativo
+				caminho = aprofundamentoIterativo.buscaAprofundamentoIterativo(grafo, origem, destino);
+				return caminho;//return new ResponseEntity<Caminho>(caminho, HttpStatus.OK);
+			case 2:
+				// Realiza a busca de Bidirecional
+				caminho = bidirecional.buscaBidirecional(grafo, origem, destino);
+				return caminho;//return new ResponseEntity<Caminho>(caminho, HttpStatus.OK);
+			case 3:
+				// Realiza a busca de Custo Uniforme
+				caminho = custoUniforme.buscaCustoUniforme(grafo, origem, destino);
+				return caminho;//return new ResponseEntity<Caminho>(caminho, HttpStatus.OK);
+			case 4:
+				// Realiza a busca de A*
+				caminho = aEstrela.buscaAEstrela(grafo, origem, destino);
+				return caminho;//return new ResponseEntity<Caminho>(caminho, HttpStatus.OK);
+			default:
+				System.out.println("Algoritmo incorreto");
+				return caminho;//return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return caminho;
+		}
+	}
 }

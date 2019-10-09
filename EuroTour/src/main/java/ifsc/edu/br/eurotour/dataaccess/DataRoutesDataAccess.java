@@ -1,10 +1,8 @@
 package ifsc.edu.br.eurotour.dataaccess;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
+import java.io.InputStream;
 import java.util.Iterator;
 
 import org.apache.poi.ss.usermodel.Cell;
@@ -13,6 +11,9 @@ import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.context.annotation.Bean;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 
 import ifsc.edu.br.eurotour.model.grafo.Arco;
 import ifsc.edu.br.eurotour.model.grafo.Grafo;
@@ -31,15 +32,16 @@ public class DataRoutesDataAccess implements DataRoutesRepository {
 	private Grafo grafo = new Grafo();
 
 	@Override
+	@Bean
 	public Grafo pegarArquivo() {
 		try {
 			// procura o arquivo a partir de seu caminho
-			URL caminhoArquivo = getClass().getResource("../datasource/Planilha de Países-Capitais Ordenada.xlsx");
-			FileInputStream arquivo = new FileInputStream(new File(caminhoArquivo.toURI()));
+			Resource resource = new ClassPathResource("plainha_paises_capitais_ordenadas.xlsx");
+	        InputStream arquivo = resource.getInputStream();
 			// le o arquivo excel para incluir os vertices e Arcos
 			this.lerArquivoExcel(arquivo);
 			return grafo;
-		} catch (IOException | URISyntaxException e) {
+		} catch (IOException e) {
 			System.out.println("Erro ao tentar ler o arquivo Excel");
 			e.printStackTrace();
 			return null;
@@ -54,9 +56,32 @@ public class DataRoutesDataAccess implements DataRoutesRepository {
 	 * @param arquivo url do caminho do arquivo excel
 	 * @throws IOException erro de caso o caminho esteja incorreto
 	 */
+	@SuppressWarnings("unused")
 	private void lerArquivoExcel(FileInputStream arquivo) throws IOException {
 		XSSFWorkbook wb = new XSSFWorkbook(arquivo);
-
+		converterWBParaGrafo(wb);
+	}
+	
+	/**
+	 * Lê a planilha e a partir desta, gera os {@link Vertice}s e {@link Arco}s
+	 * presentes no {@link Grafo}
+	 * 
+	 * @param arquivo url do caminho do arquivo excel
+	 * @throws IOException erro de caso o caminho esteja incorreto
+	 */
+	private void lerArquivoExcel(InputStream arquivo) throws IOException {
+		XSSFWorkbook wb = new XSSFWorkbook(arquivo);
+		converterWBParaGrafo(wb);
+	}
+	
+	/**
+	 * Lê a planilha e a partir desta, gera os {@link Vertice}s e {@link Arco}s
+	 * presentes no {@link Grafo}
+	 * 
+	 * @param wb plainilha convertida conforme o parametro do método {@link lerArquivoExcel}
+	 * @throws IOException 
+	 */
+	private void converterWBParaGrafo(XSSFWorkbook wb) throws IOException {
 		XSSFSheet planilha = wb.getSheetAt(0);
 		XSSFRow linha;
 		XSSFCell celula;

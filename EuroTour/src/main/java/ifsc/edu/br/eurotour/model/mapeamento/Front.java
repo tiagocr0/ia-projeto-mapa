@@ -26,4 +26,8 @@ public class Front {
 		return front;
 	}
 
+	public void setFront(FrontToBack front) {
+		this.front = front;
+	}
+
 }

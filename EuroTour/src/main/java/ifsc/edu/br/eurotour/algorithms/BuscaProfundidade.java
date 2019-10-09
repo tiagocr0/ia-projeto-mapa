@@ -1,4 +1,4 @@
-package ifsc.edu.br.eurotour.util;
+package ifsc.edu.br.eurotour.algorithms;
 
 import java.util.ArrayList;
 

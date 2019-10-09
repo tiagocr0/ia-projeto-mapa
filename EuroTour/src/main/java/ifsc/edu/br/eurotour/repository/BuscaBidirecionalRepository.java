@@ -1,11 +1,11 @@
 package ifsc.edu.br.eurotour.repository;
 
+import ifsc.edu.br.eurotour.algorithms.BuscaBidirecional;
 import ifsc.edu.br.eurotour.model.grafo.Arco;
 import ifsc.edu.br.eurotour.model.grafo.Grafo;
 import ifsc.edu.br.eurotour.model.grafo.Vertice;
 import ifsc.edu.br.eurotour.model.mapeamento.Caminho;
 import ifsc.edu.br.eurotour.services.BuscaBidirecionalService;
-import ifsc.edu.br.eurotour.util.BuscaBidirecional;
 
 /**
  * Camada de acesso a dados da {@link BuscaBidirecional}.<br>

@@ -1,4 +1,4 @@
-package ifsc.edu.br.eurotour.util;
+package ifsc.edu.br.eurotour.algorithms;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,6 +10,8 @@ import ifsc.edu.br.eurotour.model.grafo.Grafo;
 import ifsc.edu.br.eurotour.model.grafo.Vertice;
 import ifsc.edu.br.eurotour.model.mapeamento.Caminho;
 import ifsc.edu.br.eurotour.repository.BuscaCustoUniformeRepository;
+
+
 
 /**
  * Realiza a busca de custo uniforme ao chamar o método buscaCustoUniforme

@@ -45,6 +45,20 @@ public class FrontToBack {
 	public String getDestino() {
 		return destino;
 	}
+	
+	
+
+	public void setAlgoritmo(int algoritmo) {
+		this.algoritmo = algoritmo;
+	}
+
+	public void setOrigem(String origem) {
+		this.origem = origem;
+	}
+
+	public void setDestino(String destino) {
+		this.destino = destino;
+	}
 
 	@Override
 	public String toString() {

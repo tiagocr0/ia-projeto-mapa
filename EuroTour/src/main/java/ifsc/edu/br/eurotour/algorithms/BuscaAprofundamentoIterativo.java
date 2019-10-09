@@ -1,4 +1,4 @@
-package ifsc.edu.br.eurotour.util;
+package ifsc.edu.br.eurotour.algorithms;
 
 import java.util.ArrayList;
 
@@ -8,6 +8,8 @@ import ifsc.edu.br.eurotour.model.grafo.Grafo;
 import ifsc.edu.br.eurotour.model.grafo.Vertice;
 import ifsc.edu.br.eurotour.model.mapeamento.Caminho;
 import ifsc.edu.br.eurotour.repository.BuscaAprofundamentoIterativoRepository;
+
+
 
 /**
  * Realiza a Busca de Aprofundamento Iterativo através do método de mesmo nome

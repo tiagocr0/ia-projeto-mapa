@@ -1,11 +1,11 @@
 package ifsc.edu.br.eurotour.repository;
 
+import ifsc.edu.br.eurotour.algorithms.BuscaAprofundamentoIterativo;
 import ifsc.edu.br.eurotour.model.grafo.Arco;
 import ifsc.edu.br.eurotour.model.grafo.Grafo;
 import ifsc.edu.br.eurotour.model.grafo.Vertice;
 import ifsc.edu.br.eurotour.model.mapeamento.Caminho;
 import ifsc.edu.br.eurotour.services.BuscaAprofundamentoIterativoService;
-import ifsc.edu.br.eurotour.util.BuscaAprofundamentoIterativo;
 
 /**
  * Camada de acesso a dados da {@link BuscaAprofundamentoIterativo}.<br>
